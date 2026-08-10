@@ -4,10 +4,13 @@ import ScreenCaptureKit
 protocol ScreenFrameConsumer: AnyObject { func consume(_ sampleBuffer: CMSampleBuffer) }
 
 /// ScreenCaptureKit adapter. Capture output is isolated on a dedicated serial queue.
-final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
+final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @unchecked Sendable {
     weak var consumer: ScreenFrameConsumer?
     private let queue = DispatchQueue(label: "DrawPad.capture", qos: .userInteractive)
+    private let stateLock = NSLock()
     private var stream: SCStream?
+    private var fallbackTask: Task<Void, Never>?
+    private var receivedStreamFrame = false
 
     @MainActor func start(display: SCDisplay, excluding applications: [SCRunningApplication]) async throws {
         await stop()
@@ -20,14 +23,24 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
         configuration.showsCursor = true
         configuration.capturesAudio = false
         configuration.queueDepth = 3
+        configuration.pixelFormat = kCVPixelFormatType_32BGRA
         let stream = SCStream(filter: filter, configuration: configuration, delegate: self)
         try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: queue)
         self.stream = stream
+
+        stateLock.withLock { receivedStreamFrame = false }
+        fallbackTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled else { return }
+            await self?.runScreenshotFallback(filter: filter, configuration: configuration)
+        }
         try await stream.startCapture()
         DrawPadLogger.capture.info("Capture started at \(configuration.width)x\(configuration.height)")
     }
 
     @MainActor func stop() async {
+        fallbackTask?.cancel()
+        fallbackTask = nil
         guard let stream else { return }
         do { try await stream.stopCapture() } catch { DrawPadLogger.capture.error("Capture stop failed: \(error.localizedDescription)") }
         self.stream = nil
@@ -36,6 +49,26 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
     func stream(_ stream: SCStream, didStopWithError error: any Error) { DrawPadLogger.capture.error("Capture stopped: \(error.localizedDescription)") }
     func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
         guard type == .screen, sampleBuffer.isValid else { return }
+        stateLock.withLock { receivedStreamFrame = true }
         consumer?.consume(sampleBuffer)
+    }
+
+    /// Some beta ScreenCaptureKit builds successfully start an `SCStream` but do
+    /// not deliver output. A bounded screenshot loop keeps mirroring functional
+    /// until the primary stream emits its first frame, then exits automatically.
+    @MainActor
+    private func runScreenshotFallback(filter: SCContentFilter, configuration: SCStreamConfiguration) async {
+        guard !stateLock.withLock({ receivedStreamFrame }) else { return }
+        DrawPadLogger.capture.warning("No SCStream frames received; starting screenshot fallback")
+        while !Task.isCancelled, !stateLock.withLock({ receivedStreamFrame }) {
+            do {
+                let sample = try await SCScreenshotManager.captureSampleBuffer(contentFilter: filter, configuration: configuration)
+                consumer?.consume(sample)
+            } catch {
+                DrawPadLogger.capture.error("Screenshot fallback failed: \(error.localizedDescription)")
+                return
+            }
+            try? await Task.sleep(for: .milliseconds(33))
+        }
     }
 }
