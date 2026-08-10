@@ -18,6 +18,8 @@ enum ControlPacket: Codable, Sendable, Equatable {
 }
 
 struct VideoConfiguration: Codable, Sendable, Equatable {
+    /// Identifies one encoder lifetime so delayed frames from an old display can be rejected.
+    let streamID: UUID
     let width: Int
     let height: Int
     let sps: Data
@@ -26,6 +28,7 @@ struct VideoConfiguration: Codable, Sendable, Equatable {
 
 /// Metadata preceding one length-delimited H.264 access unit payload.
 struct VideoFrameHeader: Codable, Sendable, Equatable {
+    let streamID: UUID
     let presentationTime: Double
     let isKeyframe: Bool
 }

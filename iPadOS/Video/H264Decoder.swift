@@ -7,6 +7,7 @@ final class H264Decoder: @unchecked Sendable {
     weak var displayLayer: AVSampleBufferDisplayLayer?
     private let queue = DispatchQueue(label: "DrawPad.video.decoder", qos: .userInteractive)
     private var formatDescription: CMVideoFormatDescription?
+    private var activeStreamID: UUID?
 
     func configure(_ configuration: VideoConfiguration) {
         queue.async { [weak self] in
@@ -17,13 +18,20 @@ final class H264Decoder: @unchecked Sendable {
             let result = CMVideoFormatDescriptionCreateFromH264ParameterSets(allocator: kCFAllocatorDefault,
                 parameterSetCount: pointers.count, parameterSetPointers: pointers,
                 parameterSetSizes: sizes, nalUnitHeaderLength: 4, formatDescriptionOut: &format)
-            if result == noErr { self?.formatDescription = format } else { DrawPadLogger.video.error("Decoder configuration failed: \(result)") }
+            if result == noErr {
+                self?.formatDescription = format
+                self?.activeStreamID = configuration.streamID
+                DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
+            } else {
+                DrawPadLogger.video.error("Decoder configuration failed: \(result)")
+            }
         }
     }
 
     func decode(payload: Data) {
         queue.async { [weak self] in
-            guard let self, let formatDescription, let (header, accessUnit) = try? VideoEnvelope.decode(payload) else { return }
+            guard let self, let (header, accessUnit) = try? VideoEnvelope.decode(payload),
+                  header.streamID == activeStreamID, let formatDescription else { return }
             var block: CMBlockBuffer?
             let blockStatus = accessUnit.withUnsafeBytes { bytes in
                 CMBlockBufferCreateWithMemoryBlock(allocator: kCFAllocatorDefault, memoryBlock: nil,
@@ -61,5 +69,11 @@ final class H264Decoder: @unchecked Sendable {
         }
     }
 
-    func reset() { queue.async { [weak self] in self?.formatDescription = nil; DispatchQueue.main.async { self?.displayLayer?.flush() } } }
+    func reset() {
+        queue.async { [weak self] in
+            self?.formatDescription = nil
+            self?.activeStreamID = nil
+            DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
+        }
+    }
 }

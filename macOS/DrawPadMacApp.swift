@@ -43,7 +43,9 @@ final class MacAppModel: ObservableObject {
         }
         capture.consumer = encoder
         encoder.onConfiguration = { [weak server] configuration in server?.sendVideoConfiguration(configuration) }
-        encoder.onFrame = { [weak server] frame in server?.sendVideoFrame(frame.data, header: VideoFrameHeader(presentationTime: frame.presentationTime, isKeyframe: frame.isKeyframe)) }
+        encoder.onFrame = { [weak server] frame in
+            server?.sendVideoFrame(frame.data, header: VideoFrameHeader(streamID: frame.streamID, presentationTime: frame.presentationTime, isKeyframe: frame.isKeyframe))
+        }
     }
 
     func start() async {
