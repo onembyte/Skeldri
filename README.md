@@ -22,6 +22,11 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/CLEAN_ARCHITECTURE.md
 ./scripts/test.sh
 ```
 
-Open `DrawPad.xcodeproj`, choose DrawPadMac and **My Mac**, then Run. For iPad Simulator, select DrawPadiPad and an installed iPad simulator. For a physical iPad, select the target, enable Automatically manage signing, choose your Team, select the connected iPad, and Run.
+Open `DrawPad.xcodeproj`, choose DrawPadMac and **My Mac**, then Run. For iPad Simulator, select DrawPadiPad and an installed iPad simulator. For a physical iPad:
+
+1. Enable Settings → Privacy & Security → Developer Mode on iPad and complete its requested restart.
+2. Connect over USB and trust the Mac if prompted.
+3. In DrawPadiPad → Signing & Capabilities, enable Automatically manage signing and choose your Team.
+4. Select the connected iPad as the run destination and press Run.
 
 Grant Screen Recording to the Mac app and Local Network access to the iPad when prompted. See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) and [docs/MANUAL_TESTING.md](docs/MANUAL_TESTING.md).

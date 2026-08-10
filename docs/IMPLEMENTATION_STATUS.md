@@ -16,4 +16,4 @@
 | 11 — Toolbar | Implemented and compiled; runtime validation pending |
 | 12–13 | Pending/in progress |
 
-A USB iPad (7th generation, iPadOS 18.6.2) is detected. Installation/runtime validation still depends on signing and remains pending.
+A USB iPad (7th generation, iPadOS 18.6.2) is detected. Device compilation/install is blocked because Developer Mode is disabled; signing also needs a user-selected Team. Physical runtime validation remains pending.

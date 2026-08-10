@@ -16,12 +16,13 @@ final class TouchDrawingUIView: UIView {
 
     override func draw(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else { return }
+        let videoRect = CoordinateMapper(container: bounds, videoAspectRatio: videoAspectRatio).videoRect
         for stroke in strokes where !stroke.points.isEmpty {
             context.setLineCap(.round); context.setLineJoin(.round)
             context.setStrokeColor(UIColor(red: CGFloat(stroke.style.red), green: CGFloat(stroke.style.green), blue: CGFloat(stroke.style.blue), alpha: CGFloat(stroke.style.alpha)).cgColor)
-            context.setLineWidth(max(1, CGFloat(stroke.style.normalizedWidth) * min(bounds.width, bounds.height)))
-            let first = stroke.points[0]; context.move(to: CGPoint(x: CGFloat(first.x) * bounds.width, y: CGFloat(first.y) * bounds.height))
-            for point in stroke.points.dropFirst() { context.addLine(to: CGPoint(x: CGFloat(point.x) * bounds.width, y: CGFloat(point.y) * bounds.height)) }
+            context.setLineWidth(max(1, CGFloat(stroke.style.normalizedWidth) * min(videoRect.width, videoRect.height)))
+            let first = stroke.points[0]; context.move(to: CGPoint(x: videoRect.minX + CGFloat(first.x) * videoRect.width, y: videoRect.minY + CGFloat(first.y) * videoRect.height))
+            for point in stroke.points.dropFirst() { context.addLine(to: CGPoint(x: videoRect.minX + CGFloat(point.x) * videoRect.width, y: videoRect.minY + CGFloat(point.y) * videoRect.height)) }
             context.strokePath()
         }
     }
@@ -49,8 +50,10 @@ final class TouchDrawingUIView: UIView {
         return StrokePoint(x: Float(normalized.x), y: Float(normalized.y), timestamp: touch.timestamp, pressure: pressure)
     }
     private func erase(at point: CGPoint) {
-        let ids = StrokeHitTesting.hitStrokeIDs(at: point, strokes: strokes, canvasSize: bounds.size)
+        let videoRect = CoordinateMapper(container: bounds, videoAspectRatio: videoAspectRatio).videoRect
+        guard videoRect.contains(point) else { return }
+        let localPoint = CGPoint(x: point.x - videoRect.minX, y: point.y - videoRect.minY)
+        let ids = StrokeHitTesting.hitStrokeIDs(at: localPoint, strokes: strokes, canvasSize: videoRect.size)
         if !ids.isEmpty { onPacket?(.deleteStrokes(ids: ids)) }
     }
 }
-

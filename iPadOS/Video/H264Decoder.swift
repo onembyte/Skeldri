@@ -10,16 +10,14 @@ final class H264Decoder: @unchecked Sendable {
 
     func configure(_ configuration: VideoConfiguration) {
         queue.async { [weak self] in
-            let parameters = [configuration.sps, configuration.pps]
-            parameters.withUnsafeBufferPointer { buffer in
-                let pointers = buffer.map { data in data.withUnsafeBytes { $0.bindMemory(to: UInt8.self).baseAddress! } }
-                let sizes = buffer.map(\.count)
-                var format: CMFormatDescription?
-                let result = CMVideoFormatDescriptionCreateFromH264ParameterSets(allocator: kCFAllocatorDefault,
-                    parameterSetCount: pointers.count, parameterSetPointers: pointers,
-                    parameterSetSizes: sizes, nalUnitHeaderLength: 4, formatDescriptionOut: &format)
-                if result == noErr { self?.formatDescription = format } else { DrawPadLogger.video.error("Decoder configuration failed: \(result)") }
-            }
+            let sps = configuration.sps as NSData, pps = configuration.pps as NSData
+            let pointers = [sps.bytes.assumingMemoryBound(to: UInt8.self), pps.bytes.assumingMemoryBound(to: UInt8.self)]
+            let sizes = [sps.length, pps.length]
+            var format: CMFormatDescription?
+            let result = CMVideoFormatDescriptionCreateFromH264ParameterSets(allocator: kCFAllocatorDefault,
+                parameterSetCount: pointers.count, parameterSetPointers: pointers,
+                parameterSetSizes: sizes, nalUnitHeaderLength: 4, formatDescriptionOut: &format)
+            if result == noErr { self?.formatDescription = format } else { DrawPadLogger.video.error("Decoder configuration failed: \(result)") }
         }
     }
 
