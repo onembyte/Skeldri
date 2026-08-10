@@ -24,6 +24,9 @@ final class MacAppModel: ObservableObject {
     private let encoder = H264Encoder()
     private var screenPairs: [(SCDisplay, DisplayDescriptor)] = []
     private var videoConnected = false
+    private var streamingDisplayID: UInt32?
+    private var requestedDisplayID: UInt32?
+    private var reconciliationIsRunning = false
 
     init() {
         server.onConnectionChanged = { [weak self] value in
@@ -38,7 +41,7 @@ final class MacAppModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.videoConnected = connected
-                if connected { await self.startStreaming() } else { await self.stopStreaming() }
+                self.scheduleReconciliation()
             }
         }
         capture.consumer = encoder
@@ -70,14 +73,24 @@ final class MacAppModel: ObservableObject {
     func toggleOverlay() { annotationsVisible.toggle(); annotationsVisible ? showOverlayForSelection() : overlay.hide() }
     func clear() { drawingState.clear(); overlay.annotationView.strokes = []; server.sendControl(.clear) }
 
-    private func startStreaming() async {
-        guard capturePermission, let id = selectedDisplayID, let display = screenPairs.first(where: { $0.1.id == id })?.0 else { errorMessage = "Screen Recording permission is required."; return }
+    private func startStreaming(displayID: UInt32) async -> Bool {
+        guard capturePermission else {
+            errorMessage = "Screen Recording permission is required."
+            return false
+        }
+        guard let display = screenPairs.first(where: { $0.1.id == displayID })?.0 else {
+            errorMessage = "The selected display is no longer available."
+            return false
+        }
         do {
             let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
             let ownBundleID = Bundle.main.bundleIdentifier
             try await capture.start(display: display, excluding: content.applications.filter { $0.bundleIdentifier == ownBundleID })
-            if let descriptor = displays.first(where: { $0.id == id }) { server.sendControl(.display(descriptor)) }
-        } catch { errorMessage = "Capture failed: \(error.localizedDescription)" }
+            return true
+        } catch {
+            errorMessage = "Capture failed: \(error.localizedDescription)"
+            return false
+        }
     }
 
     private func stopStreaming() async { await capture.stop(); encoder.invalidate() }
@@ -95,13 +108,67 @@ final class MacAppModel: ObservableObject {
         }
     }
 
-    private func selectDisplayFromIPad(id: UInt32) async {
-        guard displays.contains(where: { $0.id == id }), selectedDisplayID != id else { return }
-        if videoConnected { await stopStreaming() }
-        selectedDisplayID = id
-        showOverlayForSelection()
-        publishDisplays()
-        if videoConnected { await startStreaming() }
+    /// Coalesces rapid taps and gives capture lifecycle operations one serial owner.
+    /// If a newer request arrives while capture is stopping or starting, the loop
+    /// immediately converges on the newest requested display.
+    private func requestDisplaySelection(id: UInt32) {
+        guard displays.contains(where: { $0.id == id }) else {
+            publishDisplays()
+            return
+        }
+        guard selectedDisplayID != id else {
+            publishDisplays()
+            return
+        }
+        requestedDisplayID = id
+        scheduleReconciliation()
+    }
+
+    private func scheduleReconciliation() {
+        guard !reconciliationIsRunning else { return }
+        reconciliationIsRunning = true
+        Task { @MainActor [weak self] in await self?.reconcileStreamingState() }
+    }
+
+    private func reconcileStreamingState() async {
+        while true {
+            if requestedDisplayID != nil {
+                if streamingDisplayID != nil {
+                    await stopStreaming()
+                    streamingDisplayID = nil
+                    continue
+                }
+
+                // Read after the await above so intermediate taps are coalesced.
+                guard let target = requestedDisplayID else { continue }
+                requestedDisplayID = nil
+                selectedDisplayID = target
+                showOverlayForSelection()
+                publishDisplays()
+                continue
+            }
+
+            if !videoConnected, streamingDisplayID != nil {
+                await stopStreaming()
+                streamingDisplayID = nil
+                continue
+            }
+
+            if videoConnected, streamingDisplayID == nil, let target = selectedDisplayID {
+                let started = await startStreaming(displayID: target)
+                if started { streamingDisplayID = target }
+
+                // Connection or selection state may have changed while awaiting.
+                if !videoConnected || requestedDisplayID != nil || selectedDisplayID != target {
+                    if started { await stopStreaming() }
+                    streamingDisplayID = nil
+                    continue
+                }
+            }
+
+            reconciliationIsRunning = false
+            return
+        }
     }
 
     private func apply(_ packet: ControlPacket) {
@@ -113,7 +180,7 @@ final class MacAppModel: ObservableObject {
         case .clear: drawingState.clear()
         case let .canvasSnapshot(strokes): drawingState.replace(with: strokes)
         case let .ping(id, sentAt): server.sendControl(.pong(id: id, sentAt: sentAt))
-        case let .selectDisplay(id): Task { await selectDisplayFromIPad(id: id) }
+        case let .selectDisplay(id): requestDisplaySelection(id: id)
         default: break
         }
         overlay.annotationView.strokes = drawingState.strokes

@@ -16,4 +16,4 @@
 | 11 — Toolbar | Implemented and installed, including direct clear and active-tool indicators |
 | 12–13 | Pending/in progress |
 
-A USB iPad (7th generation, iPadOS 18.6.2) is connected and trusted. Signed builds install and launch successfully. Bonjour discovery, connection, drawing synchronization, and destructive drawing actions have been exercised. The latest matched Mac/iPad build adds iPad-side display selection; final visual confirmation of decoded video and display switching remains.
+A USB iPad (7th generation, iPadOS 18.6.2) is connected and trusted. Signed builds install and launch successfully. Bonjour discovery, connection, drawing synchronization, and destructive drawing actions have been exercised. Display switching now serializes capture lifecycle operations, coalesces rapid requests, confirms selection from the Mac, and rejects video frames from obsolete encoder generations. Final visual confirmation of repeated switching on the physical displays remains.

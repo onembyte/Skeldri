@@ -26,7 +26,9 @@ struct DisplaySidebar: View {
                                     .foregroundStyle(.secondary)
                             }
                             Spacer(minLength: 0)
-                            if model.selectedDisplayID == display.id {
+                            if model.pendingDisplayID == display.id {
+                                ProgressView().controlSize(.small)
+                            } else if model.selectedDisplayID == display.id {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundStyle(.blue)
                             }
@@ -35,6 +37,7 @@ struct DisplaySidebar: View {
                     }
                     .buttonStyle(.plain)
                     .padding(.vertical, 5)
+                    .disabled(model.pendingDisplayID == display.id)
                 }
 
                 Divider()

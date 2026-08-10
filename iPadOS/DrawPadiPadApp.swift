@@ -20,6 +20,7 @@ final class iPadAppModel: ObservableObject {
     @Published var videoAspectRatio: CGFloat = 16 / 10
     @Published var displays: [DisplayDescriptor] = []
     @Published var selectedDisplayID: UInt32?
+    @Published var pendingDisplayID: UInt32?
     @Published var clearsDrawingsWhenSwitchingDisplays = false
     let drawingState = DrawingState()
     let decoder = H264Decoder()
@@ -45,9 +46,9 @@ final class iPadAppModel: ObservableObject {
     func undo() { if let id = drawingState.undo() { network.send(.deleteStrokes(ids: [id])) } }
     func clear() { drawingState.clear(); network.send(.clear) }
     func selectDisplay(_ id: UInt32) {
-        guard selectedDisplayID != id else { return }
+        guard selectedDisplayID != id, pendingDisplayID != id else { return }
         if clearsDrawingsWhenSwitchingDisplays { clear() }
-        selectedDisplayID = id
+        pendingDisplayID = id
         network.send(.selectDisplay(id: id))
     }
     private func apply(_ packet: ControlPacket) {
@@ -60,8 +61,9 @@ final class iPadAppModel: ObservableObject {
         case let .canvasSnapshot(value): drawingState.replace(with:value)
         case let .displays(values): displays = values
         case let .display(display):
-            decoder.reset()
+            if selectedDisplayID != display.id { decoder.reset() }
             selectedDisplayID = display.id
+            if pendingDisplayID == display.id { pendingDisplayID = nil }
             videoAspectRatio = CGFloat(display.aspectRatio)
         case let .incompatibleVersion(expected): errorMessage = "Incompatible protocol version. Mac expects \(expected)."; showingError = true
         default: break
