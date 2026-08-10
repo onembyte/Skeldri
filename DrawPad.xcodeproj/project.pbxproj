@@ -52,6 +52,7 @@
 		A96217E40935F6E7E3C69B57 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BD789942C9389511F4FC4 /* Stroke.swift */; };
 		B40EBA6481430A0B5242993A /* DiscoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD327110E7AA0DD01352A50D /* DiscoveryView.swift */; };
 		B473975D04A8B9931A0BE717 /* ConnectionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF42DEB62FD7FC3DF45F0DF /* ConnectionStatusView.swift */; };
+		BD0B84A702ED922F1AC4651A /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD889BB91DD510C4FF61BC9B /* LiquidGlassStyle.swift */; };
 		C5C61A30D11F69D697121B14 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
 		CD9316A280AAC9AFA0C1F1E3 /* iPadNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206A1E994A984D17C08EFD20 /* iPadNetworkClient.swift */; };
 		D1DDCBFEF6D666AEABAE921B /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74376F46535C318848DAD21 /* ProtocolVersion.swift */; };
@@ -107,6 +108,7 @@
 		813D57CD742103BDC8C53664 /* ControlPacketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacketTests.swift; sourceTree = "<group>"; };
 		881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
 		A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionChannel.swift; sourceTree = "<group>"; };
+		AD889BB91DD510C4FF61BC9B /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 		B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDisplayView.swift; sourceTree = "<group>"; };
 		C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeStyle.swift; sourceTree = "<group>"; };
 		D1AE63A02FDB9E3EF838A55E /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				3600EB45DE7D5B3BD2E1162C /* DisplaySidebar.swift */,
 				F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */,
 				084DEA9FC55BF181CE3772B4 /* DrawingToolbar.swift */,
+				AD889BB91DD510C4FF61BC9B /* LiquidGlassStyle.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				21C0A33920E4A4A808E26754 /* DrawingTool.swift in Sources */,
 				47C6C8545A5FF6612B09F892 /* DrawingToolbar.swift in Sources */,
 				60F35E73575BAFABBFD9AA9F /* H264Decoder.swift in Sources */,
+				BD0B84A702ED922F1AC4651A /* LiquidGlassStyle.swift in Sources */,
 				66D60F884126403867EF0A0B /* PacketFramer.swift in Sources */,
 				A1AA82EFBE2D43BEB4ED7C85 /* PeerConnection.swift in Sources */,
 				D25FDE6E511818A11CE51990 /* ProtocolVersion.swift in Sources */,

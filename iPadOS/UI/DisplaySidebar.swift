@@ -5,63 +5,68 @@ struct DisplaySidebar: View {
     @ObservedObject var model: iPadAppModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Label("Displays", systemImage: "rectangle.on.rectangle")
-                .font(.subheadline.weight(.semibold))
-
+        VStack(spacing: 7) {
             if model.displays.isEmpty {
-                ProgressView("Loading…")
+                ProgressView()
                     .controlSize(.small)
+                    .frame(width: 38, height: 38)
+                    .accessibilityLabel("Loading displays")
             } else {
-                ForEach(model.displays) { display in
+                ForEach(Array(model.displays.enumerated()), id: \.element.id) { index, display in
                     Button {
                         model.selectDisplay(display.id)
                     } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "display").font(.caption)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(display.name).font(.caption).lineLimit(1)
-                                Text("\(display.width) × \(display.height)")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer(minLength: 0)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                .stroke(model.selectedDisplayID == display.id ? Color.accentColor : Color.primary.opacity(0.72), lineWidth: 1.5)
+                                .frame(width: 27, height: 19)
+                            Text("\(index + 1)")
+                                .font(.system(size: 10, weight: .semibold, design: .rounded))
                             if model.pendingDisplayID == display.id {
-                                ProgressView().controlSize(.small)
-                            } else if model.selectedDisplayID == display.id {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(.blue)
+                                ProgressView()
+                                    .controlSize(.mini)
+                                    .offset(x: 14, y: -11)
                             }
                         }
-                        .contentShape(Rectangle())
+                        .foregroundStyle(model.selectedDisplayID == display.id ? Color.accentColor : Color.primary)
+                        .frame(width: 38, height: 38)
+                        .background {
+                            Circle().fill(model.selectedDisplayID == display.id ? Color.accentColor.opacity(0.16) : Color.white.opacity(0.055))
+                        }
+                        .contentShape(Circle())
                     }
                     .buttonStyle(.plain)
-                    .padding(.vertical, 5)
                     .disabled(model.pendingDisplayID == display.id)
+                    .accessibilityLabel("Display \(index + 1), \(display.name)")
+                    .accessibilityValue(model.selectedDisplayID == display.id ? "Selected" : "Not selected")
                 }
 
-                Divider()
+                Capsule()
+                    .fill(.white.opacity(0.14))
+                    .frame(width: 22, height: 1)
+                    .padding(.vertical, 2)
 
-                Button {
-                    model.clearsDrawingsWhenSwitchingDisplays.toggle()
-                } label: {
-                    Label("Clear drawings when switching",
-                          systemImage: model.clearsDrawingsWhenSwitchingDisplays ? "checkmark.square.fill" : "square")
-                        .font(.caption)
-                        .multilineTextAlignment(.leading)
+                GlassIconButton(
+                    accessibilityLabel: "Clear drawings when switching displays",
+                    selected: model.clearsDrawingsWhenSwitchingDisplays,
+                    action: { model.clearsDrawingsWhenSwitchingDisplays.toggle() }
+                ) {
+                    ZStack {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                            .font(.system(size: 17, weight: .medium))
+                        Image(systemName: "eraser.fill")
+                            .font(.system(size: 8, weight: .semibold))
+                            .padding(3)
+                            .background(.thinMaterial, in: Circle())
+                            .offset(x: 9, y: 8)
+                    }
                 }
-                .buttonStyle(.plain)
                 .accessibilityValue(model.clearsDrawingsWhenSwitchingDisplays ? "On" : "Off")
             }
         }
-        .padding(12)
-        .frame(width: 170)
+        .padding(7)
+        .frame(width: 52)
         .fixedSize(horizontal: false, vertical: true)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(.white.opacity(0.15), lineWidth: 1)
-        }
-        .shadow(color: .black.opacity(0.28), radius: 12, y: 5)
+        .liquidGlassPanel(in: Capsule())
     }
 }

@@ -17,10 +17,10 @@ struct DrawingScreen: View {
             DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
             DisplaySidebar(model: model)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                .padding(.leading, 16)
+                .padding(.leading, 14)
             DrawingToolbar(model: model)
                 .frame(maxHeight: .infinity, alignment: .bottom)
-                .padding(.bottom)
+                .padding(.bottom, 14)
         }
         .ignoresSafeArea(edges: .vertical)
     }
