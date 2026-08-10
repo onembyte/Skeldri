@@ -11,9 +11,10 @@
 | 6 — Finger drawing synchronization | Finger-to-iPad-to-Mac overlay validated on physical iPad |
 | 7 — H.264 encoding | Implemented; outgoing encoded traffic verified at runtime |
 | 8 — Video transport | Implemented; sustained video-channel byte flow verified |
-| 9 — iPad video decoder | Implemented and installed; final visual confirmation remains |
-| 10 — Composite video + annotation | Implemented and compiled; alignment validation pending |
+| 9 — iPad video decoder | Implemented and visually validated on a physical iPad |
+| 10 — Composite video + annotation | Video, annotation alignment, and display switching validated on physical displays |
 | 11 — Toolbar | Implemented and installed, including direct clear and active-tool indicators |
-| 12–13 | Pending/in progress |
+| 12 — Resilience | Display switching and reconnect paths hardened; complete acceptance sweep remains ongoing |
+| 13 — Documentation and cleanup | Complete for development-stage publication |
 
-A USB iPad (7th generation, iPadOS 18.6.2) is connected and trusted. Signed builds install and launch successfully. Bonjour discovery, connection, drawing synchronization, and destructive drawing actions have been exercised. Display switching now serializes capture lifecycle operations, coalesces rapid requests, confirms selection from the Mac, and rejects video frames from obsolete encoder generations. Final visual confirmation of repeated switching on the physical displays remains.
+A USB iPad (7th generation, iPadOS 18.6.2) was used for validation. Signed builds install and launch successfully. Bonjour discovery, connection, video mirroring, drawing synchronization, destructive drawing actions, and repeated display switching have been exercised. Display switching serializes capture lifecycle operations, coalesces rapid requests, confirms selection from the Mac, and rejects video frames from obsolete encoder generations.

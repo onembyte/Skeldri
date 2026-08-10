@@ -1,18 +1,39 @@
 # DrawPad
 
-DrawPad turns an iPad into a local-network finger annotation surface for a Mac: the Mac display is mirrored to the iPad while normalized vector strokes render immediately on both devices. It requires neither Apple Pencil nor a cloud service and does not control mouse or keyboard input.
+DrawPad turns an iPad into a wireless finger-annotation surface for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes on a separate low-latency channel, so annotations appear immediately on both devices. It requires neither Apple Pencil nor a cloud service and never controls mouse or keyboard input.
+
+> [!NOTE]
+> DrawPad is a development-stage native Apple project. It has been exercised with a physical iPad, but it is not distributed through the App Store and still requires local Xcode signing.
+
+## Features
+
+- Automatic Mac discovery with Bonjour; no IP address configuration.
+- Finger-first pen, highlighter, stroke eraser, color, thickness, undo, and clear.
+- iPad-owned switching between attached Mac displays.
+- Optional clearing of annotations when switching displays.
+- Transparent, click-through Mac annotation overlay.
+- Low-latency H.264 mirroring with stale-frame protection during display changes.
+- Native Liquid Glass controls on current systems, with a material fallback on older supported iPadOS releases.
+- Local-network-only operation with no accounts, telemetry, audio, or cloud backend.
 
 ## Requirements
 
-The project is currently validated against Xcode 27/Swift 6.4 with macOS and iPadOS 27 SDKs. Deployment targets are macOS 15 and iPadOS 18.
+- macOS 15 or later.
+- iPadOS 18 or later.
+- Xcode 27 beta or later for the currently checked-in project (Swift 6 and the current Liquid Glass SDK APIs).
+- Mac and iPad connected to the same local network.
+- XcodeGen only when regenerating `DrawPad.xcodeproj`; it is not needed for normal builds.
+
+The reference development environment is recorded in [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md).
 
 ## Architecture
 
-`ScreenCaptureKit → VideoToolbox → video TCP → iPad video layer`
+```text
+ScreenCaptureKit → VideoToolbox → video TCP → iPad video layer
+Finger → normalized vectors → control TCP → transparent Mac overlay
+```
 
-`Finger → normalized vectors → control TCP → transparent Mac overlay`
-
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/CLEAN_ARCHITECTURE.md](docs/CLEAN_ARCHITECTURE.md).
+Video and drawing state remain independent, preventing the Mac overlay from being recursively captured and keeping finger feedback responsive when video is delayed. See [Architecture](docs/ARCHITECTURE.md), [Clean Architecture](docs/CLEAN_ARCHITECTURE.md), and [Wire Protocol](docs/PROTOCOL.md).
 
 ## Build and test
 
@@ -22,12 +43,50 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/CLEAN_ARCHITECTURE.md
 ./scripts/test.sh
 ```
 
-Open `DrawPad.xcodeproj`, choose DrawPadMac and **My Mac**, then Run. For iPad Simulator, select DrawPadiPad and an installed iPad simulator. For a physical iPad:
+All DerivedData produced by these scripts stays in `.build/DerivedData`.
 
-1. Enable Settings → Privacy & Security → Developer Mode on iPad and complete its requested restart.
-2. Connect over USB and trust the Mac if prompted.
-3. In DrawPadiPad → Signing & Capabilities, enable Automatically manage signing and choose your Team.
+## Run on a Mac
+
+1. Open `DrawPad.xcodeproj`.
+2. Select the `DrawPadMac` scheme and **My Mac** destination.
+3. Run the app.
+4. Grant Screen Recording access when prompted, then relaunch if macOS requests it.
+
+## Run on iPad Simulator
+
+Select the `DrawPadiPad` scheme, choose an installed iPad simulator, and run. Discovery and physical network behavior are best validated on a real iPad.
+
+## Run on a physical iPad
+
+1. Enable **Settings → Privacy & Security → Developer Mode** on iPad and complete its requested restart.
+2. Connect the iPad over USB and trust the Mac if prompted.
+3. In **DrawPadiPad → Signing & Capabilities**, enable automatic signing and choose your Apple Development Team. No Team ID is committed to this repository.
 4. Select the connected iPad as the run destination and press Run.
-5. If iPadOS blocks the first launch, trust the developer under Settings → General → VPN & Device Management.
+5. Permit Local Network access when prompted.
+6. If iPadOS blocks the first launch, trust the developer under **Settings → General → VPN & Device Management**.
 
-Grant Screen Recording to the Mac app and Local Network access to the iPad when prompted. See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) and [docs/MANUAL_TESTING.md](docs/MANUAL_TESTING.md).
+## Privacy and security
+
+DrawPad advertises only `_drawpad._tcp` on the LAN. It has no internet relay, analytics, telemetry, authentication service, microphone access, camera access, or Accessibility permission. V1 does not include pairing authentication, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
+
+## Project generation
+
+`project.yml` is the source of truth for project structure. When XcodeGen is already installed:
+
+```bash
+xcodegen generate
+```
+
+Commit both `project.yml` and the regenerated `DrawPad.xcodeproj` when project structure changes.
+
+## Documentation
+
+- [Manual acceptance testing](docs/MANUAL_TESTING.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Implementation status](docs/IMPLEMENTATION_STATUS.md)
+- [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+
+## License
+
+No open-source license has been selected yet. Until the repository owner adds one, the source remains under default copyright terms.

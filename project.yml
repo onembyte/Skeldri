@@ -24,7 +24,6 @@ targets:
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
         CODE_SIGN_ENTITLEMENTS: macOS/DrawPadMac.entitlements
         CODE_SIGN_STYLE: Automatic
-        DEVELOPMENT_TEAM: M3A5V2ZKZ4
     entitlements:
       path: macOS/DrawPadMac.entitlements
   DrawPadiPad:
@@ -39,7 +38,6 @@ targets:
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: iPadOS/Info.plist
         CODE_SIGN_STYLE: Automatic
-        DEVELOPMENT_TEAM: M3A5V2ZKZ4
         TARGETED_DEVICE_FAMILY: 2
   DrawPadTests:
     type: bundle.unit-test

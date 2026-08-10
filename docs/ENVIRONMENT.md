@@ -1,4 +1,4 @@
-# Development Environment
+# Reference Development Environment
 
 Inspected on 2026-08-10. No secrets or device identifiers are recorded.
 
@@ -14,4 +14,4 @@ Inspected on 2026-08-10. No secrets or device identifiers are recorded.
 | XcodeGen | `/opt/homebrew/bin/xcodegen` |
 | Tuist | Not installed |
 
-The initial `simctl` inspection failed because CoreSimulatorService/simdiskimaged was unavailable; it recovered during Xcode build validation. A USB iPad (7th generation, iPadOS 18.6.2) was subsequently detected. Xcode cannot use it until Developer Mode is enabled on the device; no device identifier is recorded here.
+The initial `simctl` inspection failed because CoreSimulatorService/simdiskimaged was unavailable; it recovered during Xcode build validation. A USB iPad (7th generation, iPadOS 18.6.2) was subsequently used for signed installation and runtime validation; no device identifier is recorded here.
