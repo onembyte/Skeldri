@@ -20,11 +20,17 @@ final class MacAppModel: ObservableObject {
     let drawingState = DrawingState()
     private let overlay = OverlayWindowController()
     private let server = MacNetworkServer()
+    private let capture = ScreenCaptureManager()
+    private let encoder = H264Encoder()
     private var screenPairs: [(SCDisplay, DisplayDescriptor)] = []
 
     init() {
         server.onConnectionChanged = { [weak self] value in Task { @MainActor in self?.connected = value } }
         server.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
+        server.onVideoChannelChanged = { [weak self] connected in Task { @MainActor in if connected { await self?.startStreaming() } else { await self?.stopStreaming() } } }
+        capture.consumer = encoder
+        encoder.onConfiguration = { [weak server] configuration in server?.sendVideoConfiguration(configuration) }
+        encoder.onFrame = { [weak server] frame in server?.sendVideoFrame(frame.data, header: VideoFrameHeader(presentationTime: frame.presentationTime, isKeyframe: frame.isKeyframe)) }
     }
 
     func start() async {
@@ -38,6 +44,18 @@ final class MacAppModel: ObservableObject {
     func selectDisplay(_ id: UInt32?) { showOverlayForSelection() }
     func toggleOverlay() { annotationsVisible.toggle(); annotationsVisible ? showOverlayForSelection() : overlay.hide() }
     func clear() { drawingState.clear(); overlay.annotationView.strokes = []; server.sendControl(.clear) }
+
+    private func startStreaming() async {
+        guard capturePermission, let id = selectedDisplayID, let display = screenPairs.first(where: { $0.1.id == id })?.0 else { errorMessage = "Screen Recording permission is required."; return }
+        do {
+            let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+            let ownBundleID = Bundle.main.bundleIdentifier
+            try await capture.start(display: display, excluding: content.applications.filter { $0.bundleIdentifier == ownBundleID })
+            if let descriptor = displays.first(where: { $0.id == id }) { server.sendControl(.display(descriptor)) }
+        } catch { errorMessage = "Capture failed: \(error.localizedDescription)" }
+    }
+
+    private func stopStreaming() async { await capture.stop(); encoder.invalidate() }
 
     private func showOverlayForSelection() {
         guard annotationsVisible, let id = selectedDisplayID,

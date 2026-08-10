@@ -20,12 +20,18 @@ final class iPadAppModel: ObservableObject {
     @Published var confirmingClear = false
     @Published var videoAspectRatio: CGFloat = 16 / 10
     let drawingState = DrawingState()
+    let decoder = H264Decoder()
     private let network = iPadNetworkClient()
 
     init() {
         network.onServicesChanged = { [weak self] values in Task { @MainActor in self?.macs = values } }
         network.onStateChanged = { [weak self] value, error in Task { @MainActor in self?.connected = value; if let error { self?.errorMessage = error; self?.showingError = true } } }
         network.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
+        network.onVideoPacket = { [weak self] packet in
+            guard let self else { return }
+            if packet.type == .videoConfiguration, let configuration = try? JSONDecoder().decode(VideoConfiguration.self, from: packet.payload) { decoder.configure(configuration) }
+            if packet.type == .videoFrame { decoder.decode(payload: packet.payload) }
+        }
     }
     func start() { network.startBrowsing() }
     func connect(_ mac: DiscoveredMac) { network.connect(to: mac.endpoint) }

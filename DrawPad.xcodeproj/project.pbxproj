@@ -35,6 +35,7 @@
 		5B6D653B3C0CA440A0835078 /* DrawPadiPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10847594C583016B7DEFE325 /* DrawPadiPadApp.swift */; };
 		5F36555D07A7610F8EA4D051 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7487FCD6F379FAF5D453CFDF /* StrokeHitTesting.swift */; };
 		604AB75AA916D011722472B7 /* TouchDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067FCC3443283A662EC780B /* TouchDrawingView.swift */; };
+		60F35E73575BAFABBFD9AA9F /* H264Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F18AB429B307A328A84DA1 /* H264Decoder.swift */; };
 		66D60F884126403867EF0A0B /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
 		6C56681539394CBC9000F024 /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74376F46535C318848DAD21 /* ProtocolVersion.swift */; };
 		712CB5BF98B8E90B5FB8AE68 /* MacAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5529AF49B960D02AF66C050F /* MacAnnotationView.swift */; };
@@ -59,6 +60,7 @@
 		E15265467DB67FCB1D0C5A87 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7487FCD6F379FAF5D453CFDF /* StrokeHitTesting.swift */; };
 		E4956A562945267E72104177 /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7530C47203413CA0A9B1FE58 /* ScreenCaptureManager.swift */; };
 		E4CB6CF1114697B26D54CC18 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */; };
+		E4F02CCE7EBE4F0D601C1D87 /* H264Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AE63A02FDB9E3EF838A55E /* H264Encoder.swift */; };
 		E692D2D2BA7EA17FCBED9AF7 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C8C121964E22B36C3F348B /* ControlPacket.swift */; };
 		F1F38035525CC7467EC0729E /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */; };
 		F22FD5AD659D555640586AC2 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C8C121964E22B36C3F348B /* ControlPacket.swift */; };
@@ -73,6 +75,7 @@
 /* Begin PBXFileReference section */
 		07BB67A1354D8E741CB8B896 /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
 		084DEA9FC55BF181CE3772B4 /* DrawingToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingToolbar.swift; sourceTree = "<group>"; };
+		09F18AB429B307A328A84DA1 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
 		0C49003D1C9C6BE02691BE01 /* DrawPadLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadLogger.swift; sourceTree = "<group>"; };
 		10847594C583016B7DEFE325 /* DrawPadiPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadiPadApp.swift; sourceTree = "<group>"; };
 		1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDescriptor.swift; sourceTree = "<group>"; };
@@ -101,6 +104,7 @@
 		A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionChannel.swift; sourceTree = "<group>"; };
 		B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDisplayView.swift; sourceTree = "<group>"; };
 		C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeStyle.swift; sourceTree = "<group>"; };
+		D1AE63A02FDB9E3EF838A55E /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
 		DC77CCA4893E742BB71BE046 /* PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerConnection.swift; sourceTree = "<group>"; };
 		DEE772DFC9DC2581064991A0 /* DrawPadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrawPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E269ADDFD238BA279BE675C3 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
@@ -139,8 +143,17 @@
 				9E813FA768C00DEB7DC4BA68 /* Network */,
 				613A1C38B4358EBF4D2AA6AE /* Overlay */,
 				CAC7CCDA74D4A9F26E6CD602 /* UI */,
+				1D26D96DEE17D3029B7F4B7C /* Video */,
 			);
 			path = macOS;
+			sourceTree = "<group>";
+		};
+		1D26D96DEE17D3029B7F4B7C /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				D1AE63A02FDB9E3EF838A55E /* H264Encoder.swift */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		2EA476B9F7A25DECA6F6D421 /* Tests */ = {
@@ -256,6 +269,7 @@
 		B9C213F0FC484DC1BAD46E54 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				09F18AB429B307A328A84DA1 /* H264Decoder.swift */,
 				B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */,
 			);
 			path = Video;
@@ -391,6 +405,7 @@
 				F2CE3252FC619838C790B353 /* DrawPadMacApp.swift in Sources */,
 				9B005348B0B466358A79A99C /* DrawingState.swift in Sources */,
 				4A04FB5536C065EA3E4E7977 /* DrawingTool.swift in Sources */,
+				E4F02CCE7EBE4F0D601C1D87 /* H264Encoder.swift in Sources */,
 				712CB5BF98B8E90B5FB8AE68 /* MacAnnotationView.swift in Sources */,
 				7B1B0E8C53908097B1B1F320 /* MacMainView.swift in Sources */,
 				95865FEE0C2CA9E15BEA33A3 /* MacNetworkServer.swift in Sources */,
@@ -421,6 +436,7 @@
 				55851FBDEA1177BCCE663B2D /* DrawingState.swift in Sources */,
 				21C0A33920E4A4A808E26754 /* DrawingTool.swift in Sources */,
 				47C6C8545A5FF6612B09F892 /* DrawingToolbar.swift in Sources */,
+				60F35E73575BAFABBFD9AA9F /* H264Decoder.swift in Sources */,
 				66D60F884126403867EF0A0B /* PacketFramer.swift in Sources */,
 				A1AA82EFBE2D43BEB4ED7C85 /* PeerConnection.swift in Sources */,
 				D25FDE6E511818A11CE51990 /* ProtocolVersion.swift in Sources */,

@@ -9,7 +9,7 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
     private let queue = DispatchQueue(label: "DrawPad.capture", qos: .userInteractive)
     private var stream: SCStream?
 
-    func start(display: SCDisplay, excluding applications: [SCRunningApplication]) async throws {
+    @MainActor func start(display: SCDisplay, excluding applications: [SCRunningApplication]) async throws {
         await stop()
         let filter = SCContentFilter(display: display, excludingApplications: applications, exceptingWindows: [])
         let configuration = SCStreamConfiguration()
@@ -27,7 +27,7 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
         DrawPadLogger.capture.info("Capture started at \(configuration.width)x\(configuration.height)")
     }
 
-    func stop() async {
+    @MainActor func stop() async {
         guard let stream else { return }
         do { try await stream.stopCapture() } catch { DrawPadLogger.capture.error("Capture stop failed: \(error.localizedDescription)") }
         self.stream = nil
@@ -39,4 +39,3 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
         consumer?.consume(sampleBuffer)
     }
 }
-

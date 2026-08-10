@@ -7,5 +7,11 @@ struct ControlPacketTests {
         let values: [ControlPacket] = [.hello(version: 1, channel: .control, client: "iPad"), .ping(id:id, sentAt:1), .pong(id:id, sentAt:1), .strokeBegin(id:id, style:.defaultPen, point:point), .strokePoints(id:id, points:[point]), .strokeEnd(id:id), .deleteStrokes(ids:[id]), .clear]
         for value in values { #expect(try JSONDecoder().decode(ControlPacket.self, from: JSONEncoder().encode(value)) == value) }
     }
+    @Test func videoEnvelopeRoundTripAndTruncation() throws {
+        let header = VideoFrameHeader(presentationTime: 42.5, isKeyframe: true)
+        let bytes = Data([1, 2, 3, 4])
+        let decoded = try VideoEnvelope.decode(VideoEnvelope.encode(header: header, accessUnit: bytes))
+        #expect(decoded.0 == header); #expect(decoded.1 == bytes)
+        #expect(throws: VideoEnvelopeError.self) { try VideoEnvelope.decode(Data([0, 0, 0])) }
+    }
 }
-

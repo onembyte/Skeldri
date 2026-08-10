@@ -6,9 +6,14 @@
 | 1 — Project scaffold | Complete; both targets compile |
 | 2 — Shared drawing model | Complete; automated tests pass |
 | 3 — Mac overlay | Implemented and compiled; desktop behavior needs manual validation |
-| 4 — Mac screen capture | Adapter implemented and compiled; lifecycle integration pending |
+| 4 — Mac screen capture | Integrated and compiled; permission/runtime validation pending |
 | 5 — Network discovery/control | Implemented and compiled; device runtime validation pending |
 | 6 — Finger drawing synchronization | Implemented and compiled; device runtime validation pending |
-| 7–13 | Pending/in progress |
+| 7 — H.264 encoding | Implemented and compiled |
+| 8 — Video transport | Implemented and compiled; runtime validation pending |
+| 9 — iPad video decoder | Implemented and compiled; runtime validation pending |
+| 10 — Composite video + annotation | Implemented and compiled; alignment validation pending |
+| 11 — Toolbar | Implemented and compiled; runtime validation pending |
+| 12–13 | Pending/in progress |
 
 A USB iPad (7th generation, iPadOS 18.6.2) is detected. Installation/runtime validation still depends on signing and remains pending.

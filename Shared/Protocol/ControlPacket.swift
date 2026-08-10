@@ -28,3 +28,24 @@ struct VideoFrameHeader: Codable, Sendable, Equatable {
     let isKeyframe: Bool
 }
 
+enum VideoEnvelopeError: Error { case truncated, invalidHeader }
+
+/// Packs small JSON timing metadata before the encoded AVCC access unit.
+enum VideoEnvelope {
+    static func encode(header: VideoFrameHeader, accessUnit: Data) throws -> Data {
+        let metadata = try JSONEncoder().encode(header)
+        var length = UInt32(metadata.count).bigEndian
+        var result = withUnsafeBytes(of: &length) { Data($0) }
+        result.append(metadata); result.append(accessUnit)
+        return result
+    }
+
+    static func decode(_ data: Data) throws -> (VideoFrameHeader, Data) {
+        guard data.count >= 4 else { throw VideoEnvelopeError.truncated }
+        let length = data.prefix(4).reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
+        guard length <= data.count - 4 else { throw VideoEnvelopeError.truncated }
+        let split = 4 + Int(length)
+        guard let header = try? JSONDecoder().decode(VideoFrameHeader.self, from: data.subdata(in: 4..<split)) else { throw VideoEnvelopeError.invalidHeader }
+        return (header, data.subdata(in: split..<data.count))
+    }
+}

@@ -11,7 +11,7 @@ final class VideoSurfaceView: UIView {
 
 import SwiftUI
 struct VideoDisplayView: UIViewRepresentable {
-    func makeUIView(context: Context) -> VideoSurfaceView { VideoSurfaceView() }
+    let decoder: H264Decoder
+    func makeUIView(context: Context) -> VideoSurfaceView { let view = VideoSurfaceView(); decoder.displayLayer = view.displayLayer; return view }
     func updateUIView(_ uiView: VideoSurfaceView, context: Context) {}
 }
-

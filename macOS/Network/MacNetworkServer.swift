@@ -5,6 +5,7 @@ import Network
 final class MacNetworkServer: @unchecked Sendable {
     var onConnectionChanged: (@Sendable (Bool) -> Void)?
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
+    var onVideoChannelChanged: (@Sendable (Bool) -> Void)?
     private let queue = DispatchQueue(label: "DrawPad.network.server")
     private var listener: NWListener?
     private var control: PeerConnection?
@@ -30,13 +31,23 @@ final class MacNetworkServer: @unchecked Sendable {
         control?.send(PacketFramer.frame(type: .control, payload: data))
     }
 
+    func sendVideoConfiguration(_ configuration: VideoConfiguration) {
+        guard let data = try? JSONEncoder().encode(configuration) else { return }
+        video?.send(PacketFramer.frame(type: .videoConfiguration, payload: data))
+    }
+
+    func sendVideoFrame(_ accessUnit: Data, header: VideoFrameHeader) {
+        guard let data = try? VideoEnvelope.encode(header: header, accessUnit: accessUnit) else { return }
+        video?.send(PacketFramer.frame(type: .videoFrame, payload: data))
+    }
+
     private func accept(_ connection: NWConnection) {
         let peer = PeerConnection(connection: connection, maximumPayload: PacketFramer.controlLimit)
         peer.onPacket = { [weak self, weak peer] packet in self?.classifyOrHandle(peer: peer, packet: packet) }
         peer.onStopped = { [weak self, weak peer] in
             guard let self, let peer else { return }
             if self.control === peer { self.control = nil; self.onConnectionChanged?(false) }
-            if self.video === peer { self.video = nil }
+            if self.video === peer { self.video = nil; self.onVideoChannelChanged?(false) }
         }
         peer.start(queue: queue)
     }
@@ -47,7 +58,7 @@ final class MacNetworkServer: @unchecked Sendable {
             guard version == ProtocolVersion.current else { send(.incompatibleVersion(expected: ProtocolVersion.current), to: peer); peer.cancel(); return }
             switch channel {
             case .control: control?.cancel(); control = peer; onConnectionChanged?(true); onControlPacket?(message)
-            case .video: video?.cancel(); video = peer
+            case .video: video?.cancel(); video = peer; onVideoChannelChanged?(true)
             }
         } else if peer === control { onControlPacket?(message) }
     }
