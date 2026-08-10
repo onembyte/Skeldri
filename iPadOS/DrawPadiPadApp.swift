@@ -17,7 +17,6 @@ final class iPadAppModel: ObservableObject {
     @Published var mode: DrawingInteractionMode = .draw
     @Published var color = Color.red
     @Published var width = 0.005
-    @Published var confirmingClear = false
     @Published var videoAspectRatio: CGFloat = 16 / 10
     let drawingState = DrawingState()
     let decoder = H264Decoder()
