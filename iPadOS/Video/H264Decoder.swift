@@ -45,6 +45,14 @@ final class H264Decoder: @unchecked Sendable {
                 formatDescription: formatDescription, sampleCount: 1, sampleTimingEntryCount: 1,
                 sampleTimingArray: &timing, sampleSizeEntryCount: 1, sampleSizeArray: &size,
                 sampleBufferOut: &sample) == noErr, let sample else { return }
+
+            // The Mac and iPad do not share a media clock. Asking the display layer
+            // to honor the Mac's presentation timestamp can leave every frame queued
+            // in the future. Live DrawPad frames should be rendered as soon as they
+            // arrive; TCP ordering still preserves the encoded stream sequence.
+            CMSetAttachment(sample, key: kCMSampleAttachmentKey_DisplayImmediately,
+                            value: kCFBooleanTrue,
+                            attachmentMode: kCMAttachmentMode_ShouldNotPropagate)
             DispatchQueue.main.async { [weak self] in
                 guard let layer = self?.displayLayer else { return }
                 if layer.sampleBufferRenderer.status == .failed { layer.flush() }
