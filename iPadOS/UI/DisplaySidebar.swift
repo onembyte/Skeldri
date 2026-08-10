@@ -5,9 +5,9 @@ struct DisplaySidebar: View {
     @ObservedObject var model: iPadAppModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             Label("Displays", systemImage: "rectangle.on.rectangle")
-                .font(.headline)
+                .font(.subheadline.weight(.semibold))
 
             if model.displays.isEmpty {
                 ProgressView("Loading…")
@@ -17,10 +17,10 @@ struct DisplaySidebar: View {
                     Button {
                         model.selectDisplay(display.id)
                     } label: {
-                        HStack(spacing: 10) {
-                            Image(systemName: "display")
+                        HStack(spacing: 8) {
+                            Image(systemName: "display").font(.caption)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(display.name).lineLimit(1)
+                                Text(display.name).font(.caption).lineLimit(1)
                                 Text("\(display.width) × \(display.height)")
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
@@ -34,15 +34,18 @@ struct DisplaySidebar: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 5)
                 }
             }
-
-            Spacer()
         }
-        .padding(16)
-        .frame(width: 220)
-        .frame(maxHeight: .infinity, alignment: .topLeading)
-        .background(.ultraThinMaterial)
+        .padding(12)
+        .frame(width: 170)
+        .fixedSize(horizontal: false, vertical: true)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(.white.opacity(0.15), lineWidth: 1)
+        }
+        .shadow(color: .black.opacity(0.28), radius: 12, y: 5)
     }
 }

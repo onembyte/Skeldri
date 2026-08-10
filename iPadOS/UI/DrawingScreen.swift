@@ -11,14 +11,16 @@ struct DrawingCanvasRepresentable: UIViewRepresentable {
 struct DrawingScreen: View {
     @ObservedObject var model: iPadAppModel
     var body: some View {
-        HStack(spacing: 0) {
+        ZStack {
+            Color.black.ignoresSafeArea()
+            VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
+            DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
             DisplaySidebar(model: model)
-            ZStack(alignment: .bottom) {
-                Color.black.ignoresSafeArea()
-                VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
-                DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
-                DrawingToolbar(model: model).padding(.bottom)
-            }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .padding(.leading, 16)
+            DrawingToolbar(model: model)
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom)
         }
         .ignoresSafeArea(edges: .vertical)
     }
