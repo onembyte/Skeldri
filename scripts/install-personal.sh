@@ -104,7 +104,7 @@ echo "Installing DrawPadiPad on ${DEVICE_NAME}…"
 xcrun devicectl device install app --device "$DEVICE_NAME" "$IPAD_APP"
 
 echo "Launching DrawPadMac…"
-open -n "$MAC_APP"
+open "$MAC_APP"
 
 echo "Launching DrawPadiPad…"
 if ! xcrun devicectl device process launch --device "$DEVICE_NAME" com.example.drawpad.ipad; then

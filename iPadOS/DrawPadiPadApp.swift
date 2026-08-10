@@ -37,6 +37,7 @@ final class iPadAppModel: ObservableObject {
         }
     }
     func start() { network.startBrowsing() }
+    func refreshDiscovery() { network.refreshBrowsing() }
     func connect(_ mac: DiscoveredMac) { network.connect(to: mac.endpoint) }
     func choosePen() { mode = .draw; style = StrokeStyle(tool: .pen, red: style.red, green: style.green, blue: style.blue, alpha: 1, normalizedWidth: Float(width)) }
     func chooseHighlighter() { mode = .draw; style = StrokeStyle(tool: .highlighter, red: style.red, green: style.green, blue: style.blue, alpha: 0.3, normalizedWidth: Float(max(width, 0.015))) }

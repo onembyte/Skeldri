@@ -9,3 +9,5 @@ The normal quality profile scales the captured display to a maximum dimension of
 The iPad applies touches locally before transmission. Both peers maintain deterministic `DrawingState`. Coordinates use a top-left origin in `[0, 1]`; `CoordinateMapper` accounts for aspect-fit letterboxing. The Mac overlay is transparent, non-activating, mouse-transparent, and excluded from capture.
 
 Network.framework advertises/browses `_drawpad._tcp` on the LAN. There is no cloud endpoint, telemetry, audio, Accessibility access, or remote input. The apps use outgoing/incoming network sandbox entitlements as needed. Screen recording is governed solely by macOS privacy controls.
+
+Each Mac installation persists a stable, non-secret service UUID in `UserDefaults` and advertises it in the Bonjour TXT record. The iPad reconciles browse results by this identity, with a compatibility fallback for Bonjour's numeric auto-rename suffixes. Browser refreshes use generation tokens so callbacks from a cancelled browser cannot restore stale entries. macOS Launch Services is also instructed to prohibit multiple DrawPadMac instances.

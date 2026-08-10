@@ -21,3 +21,4 @@ All notable project changes will be documented here. DrawPad has not published a
 - Bounded video queuing prevents stale frames from accumulating behind real time.
 - Encoder-generation identifiers prevent frames from a previous display entering a new decode session.
 - Display switching is serialized and uses latest-request-wins reconciliation.
+- Bonjour discovery deduplicates Mac instances by stable identity and guards refreshes against stale browser callbacks.

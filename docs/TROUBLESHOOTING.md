@@ -2,6 +2,7 @@
 
 - **Screen recording unavailable:** In System Settings, grant DrawPadMac Screen & System Audio Recording access, then relaunch if macOS requests it. DrawPad never changes this setting itself.
 - **No Mac appears:** Ensure both devices use the same LAN, permit Local Network access on iPad, and confirm the Mac app is running.
+- **A Mac appears twice:** Pull down on the discovery list to refresh. Current builds deduplicate advertisements using a stable Bonjour identity and prohibit multiple Mac instances; quit any older DrawPadMac processes left running from a development build.
 - **Simulator unavailable:** Restart Xcode/CoreSimulator from the GUI. Generic simulator compilation does not require a booted device.
 - **Physical-device signing fails:** Select DrawPadiPad → Signing & Capabilities, enable automatic signing, and select your own Team. No team ID is checked in.
 - **Personal install asks for a Team ID:** In Xcode, open DrawPadiPad → Signing & Capabilities and read the selected Team. Run `./scripts/install-personal.sh --team TEAM_ID --device "Your iPad Name"` once; the values are stored only in `.build`.
