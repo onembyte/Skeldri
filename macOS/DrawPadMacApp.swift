@@ -34,11 +34,20 @@ final class MacAppModel: ObservableObject {
     }
 
     func start() async {
+        // Discovery must remain available even when screen-recording permission or
+        // ScreenCaptureKit display enumeration is unavailable.
+        do {
+            try server.start(); listenerReady = true
+        } catch {
+            errorMessage = "Local network listener failed: \(error.localizedDescription)"
+            return
+        }
         do {
             screenPairs = try await DisplayManager().availableDisplays(); displays = screenPairs.map(\.1)
             selectedDisplayID = displays.first?.id; showOverlayForSelection()
-            try server.start(); listenerReady = true
-        } catch { errorMessage = error.localizedDescription }
+        } catch {
+            errorMessage = "Display enumeration failed: \(error.localizedDescription)"
+        }
     }
 
     func selectDisplay(_ id: UInt32?) { showOverlayForSelection() }
