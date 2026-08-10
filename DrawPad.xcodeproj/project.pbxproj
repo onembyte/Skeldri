@@ -15,6 +15,7 @@
 		1DACDB75D51F561428DC5C24 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */; };
 		21C0A33920E4A4A808E26754 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */; };
 		236BAEDF76A944E83C12F571 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */; };
+		2909F0741870AA2B4999465D /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */; };
 		34AE6624431843CB26D04878 /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D57CD742103BDC8C53664 /* ControlPacketTests.swift */; };
 		38BFA26AFEC661DBBEF9FBDF /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */; };
 		39C855BDC18F8166557062FC /* VideoDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */; };
@@ -43,11 +44,14 @@
 		769D2C989EDF257A4C1F6D9C /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751C3FA82135C713E7CC3C5E /* StrokePoint.swift */; };
 		788C05CE4321646E7A21BC7E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */; };
 		7B1B0E8C53908097B1B1F320 /* MacMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F7BB3CC0FFCA2A0055E6A /* MacMainView.swift */; };
+		7EF2AC97E452F181C231645A /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */; };
+		7FA6987885EC5F65B8AA2BBA /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */; };
 		84F1AE2724A140BB626EE415 /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751C3FA82135C713E7CC3C5E /* StrokePoint.swift */; };
 		906245036890136814D76E8D /* DisplaySidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600EB45DE7D5B3BD2E1162C /* DisplaySidebar.swift */; };
 		928F85AEC0EF55D0B73D1ADD /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */; };
 		95865FEE0C2CA9E15BEA33A3 /* MacNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1367405A0099A80BE461D5 /* MacNetworkServer.swift */; };
 		9B005348B0B466358A79A99C /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479052FA96693988B0972 /* DrawingState.swift */; };
+		9E58C4D6C643E55D3601E66F /* DiscoveryIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEBA055C05C2AF21220A66C /* DiscoveryIdentityTests.swift */; };
 		A1AA82EFBE2D43BEB4ED7C85 /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC77CCA4893E742BB71BE046 /* PeerConnection.swift */; };
 		A96217E40935F6E7E3C69B57 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BD789942C9389511F4FC4 /* Stroke.swift */; };
 		B40EBA6481430A0B5242993A /* DiscoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD327110E7AA0DD01352A50D /* DiscoveryView.swift */; };
@@ -76,6 +80,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentity.swift; sourceTree = "<group>"; };
 		07BB67A1354D8E741CB8B896 /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
 		084DEA9FC55BF181CE3772B4 /* DrawingToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingToolbar.swift; sourceTree = "<group>"; };
 		09F18AB429B307A328A84DA1 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
@@ -117,6 +122,7 @@
 		E269ADDFD238BA279BE675C3 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
 		F74376F46535C318848DAD21 /* ProtocolVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolVersion.swift; sourceTree = "<group>"; };
 		F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingScreen.swift; sourceTree = "<group>"; };
+		FAEBA055C05C2AF21220A66C /* DiscoveryIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentityTests.swift; sourceTree = "<group>"; };
 		FCCB8FAAAA9C1DEBC8573814 /* DrawPadMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawPadMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD327110E7AA0DD01352A50D /* DiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,6 +174,7 @@
 			children = (
 				813D57CD742103BDC8C53664 /* ControlPacketTests.swift */,
 				07BB67A1354D8E741CB8B896 /* CoordinateMapperTests.swift */,
+				FAEBA055C05C2AF21220A66C /* DiscoveryIdentityTests.swift */,
 				7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */,
 				4FDCB2D7848A3D85F743AFC3 /* PacketFramerTests.swift */,
 				474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */,
@@ -228,6 +235,7 @@
 			children = (
 				A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */,
 				74C8C121964E22B36C3F348B /* ControlPacket.swift */,
+				048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */,
 				80D162ED5A76FC1F060F666A /* PacketFramer.swift */,
 				DC77CCA4893E742BB71BE046 /* PeerConnection.swift */,
 				F74376F46535C318848DAD21 /* ProtocolVersion.swift */,
@@ -416,6 +424,7 @@
 				B473975D04A8B9931A0BE717 /* ConnectionStatusView.swift in Sources */,
 				E692D2D2BA7EA17FCBED9AF7 /* ControlPacket.swift in Sources */,
 				FDA8364FB2DA4506A21B1F08 /* CoordinateMapper.swift in Sources */,
+				7FA6987885EC5F65B8AA2BBA /* DiscoveryIdentity.swift in Sources */,
 				DCD7B4ABE5BCBBE94612FB4A /* DisplayDescriptor.swift in Sources */,
 				563845E26E51D6AB49C43BF9 /* DisplayManager.swift in Sources */,
 				0658571AEF2C833D13B06261 /* DrawPadLogger.swift in Sources */,
@@ -445,6 +454,7 @@
 				F1F38035525CC7467EC0729E /* ConnectionChannel.swift in Sources */,
 				3E5B8E5466F1D55CA6692C48 /* ControlPacket.swift in Sources */,
 				470A80DA5C4266D798D46C7A /* CoordinateMapper.swift in Sources */,
+				2909F0741870AA2B4999465D /* DiscoveryIdentity.swift in Sources */,
 				B40EBA6481430A0B5242993A /* DiscoveryView.swift in Sources */,
 				49616D6F4533D45DACBB09E1 /* DisplayDescriptor.swift in Sources */,
 				906245036890136814D76E8D /* DisplaySidebar.swift in Sources */,
@@ -478,6 +488,8 @@
 				34AE6624431843CB26D04878 /* ControlPacketTests.swift in Sources */,
 				16FCC8D680DF3A1DDDD5F0B0 /* CoordinateMapper.swift in Sources */,
 				D232BB716E038FD37B1E8A6E /* CoordinateMapperTests.swift in Sources */,
+				7EF2AC97E452F181C231645A /* DiscoveryIdentity.swift in Sources */,
+				9E58C4D6C643E55D3601E66F /* DiscoveryIdentityTests.swift in Sources */,
 				38BFA26AFEC661DBBEF9FBDF /* DisplayDescriptor.swift in Sources */,
 				43EAFC95711AA4E4B3F22E33 /* DrawPadLogger.swift in Sources */,
 				55E954BD4D4C218B92BE52FF /* DrawingState.swift in Sources */,
@@ -526,6 +538,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DrawPad;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				INFOPLIST_KEY_LSMultipleInstancesProhibited = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -545,6 +558,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DrawPad;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				INFOPLIST_KEY_LSMultipleInstancesProhibited = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

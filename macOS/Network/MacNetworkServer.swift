@@ -13,12 +13,29 @@ final class MacNetworkServer: @unchecked Sendable {
     private var pendingPeers: [ObjectIdentifier: PeerConnection] = [:]
     private var control: PeerConnection?
     private var video: PeerConnection?
+    private let serviceID: String
+
+    init(defaults: UserDefaults = .standard) {
+        let key = "DrawPadBonjourServiceID"
+        if let existing = defaults.string(forKey: key) {
+            serviceID = existing
+        } else {
+            let created = UUID().uuidString
+            defaults.set(created, forKey: key)
+            serviceID = created
+        }
+    }
 
     func start() throws {
         let parameters = NWParameters.tcp
         parameters.allowLocalEndpointReuse = true
         let listener = try NWListener(using: parameters)
-        listener.service = NWListener.Service(name: Host.current().localizedName ?? "Mac", type: "_drawpad._tcp")
+        let record = NWTXTRecord(["id": serviceID, "protocol": String(ProtocolVersion.current)])
+        listener.service = NWListener.Service(
+            name: Host.current().localizedName ?? "Mac",
+            type: "_drawpad._tcp",
+            txtRecord: record
+        )
         listener.stateUpdateHandler = { state in
             if case let .failed(error) = state { DrawPadLogger.network.error("Listener failed: \(error.localizedDescription)") }
         }

@@ -14,9 +14,11 @@ All notable project changes will be documented here. DrawPad has not published a
 - iPad display selection with optional clear-on-switch behavior.
 - Native Liquid Glass floating controls with backward-compatible material styling.
 - Unit coverage for framing, protocol coding, coordinates, drawing state, and hit testing.
+- One-command Personal Team Release builds, Mac packaging, and physical-iPad installation/refresh.
 
 ### Reliability
 
 - Bounded video queuing prevents stale frames from accumulating behind real time.
 - Encoder-generation identifiers prevent frames from a previous display entering a new decode session.
 - Display switching is serialized and uses latest-request-wins reconciliation.
+- Bonjour discovery deduplicates Mac instances by stable identity and guards refreshes against stale browser callbacks.
