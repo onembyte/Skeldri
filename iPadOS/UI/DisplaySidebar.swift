@@ -36,6 +36,19 @@ struct DisplaySidebar: View {
                     .buttonStyle(.plain)
                     .padding(.vertical, 5)
                 }
+
+                Divider()
+
+                Button {
+                    model.clearsDrawingsWhenSwitchingDisplays.toggle()
+                } label: {
+                    Label("Clear drawings when switching",
+                          systemImage: model.clearsDrawingsWhenSwitchingDisplays ? "checkmark.square.fill" : "square")
+                        .font(.caption)
+                        .multilineTextAlignment(.leading)
+                }
+                .buttonStyle(.plain)
+                .accessibilityValue(model.clearsDrawingsWhenSwitchingDisplays ? "On" : "Off")
             }
         }
         .padding(12)

@@ -20,6 +20,7 @@ final class iPadAppModel: ObservableObject {
     @Published var videoAspectRatio: CGFloat = 16 / 10
     @Published var displays: [DisplayDescriptor] = []
     @Published var selectedDisplayID: UInt32?
+    @Published var clearsDrawingsWhenSwitchingDisplays = false
     let drawingState = DrawingState()
     let decoder = H264Decoder()
     private let network = iPadNetworkClient()
@@ -45,6 +46,7 @@ final class iPadAppModel: ObservableObject {
     func clear() { drawingState.clear(); network.send(.clear) }
     func selectDisplay(_ id: UInt32) {
         guard selectedDisplayID != id else { return }
+        if clearsDrawingsWhenSwitchingDisplays { clear() }
         selectedDisplayID = id
         network.send(.selectDisplay(id: id))
     }
