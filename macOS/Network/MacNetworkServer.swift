@@ -50,7 +50,7 @@ final class MacNetworkServer: @unchecked Sendable {
 
     func sendVideoFrame(_ accessUnit: Data, header: VideoFrameHeader) {
         guard let data = try? VideoEnvelope.encode(header: header, accessUnit: accessUnit) else { return }
-        video?.send(PacketFramer.frame(type: .videoFrame, payload: data))
+        video?.sendLatest(PacketFramer.frame(type: .videoFrame, payload: data))
     }
 
     private func accept(_ connection: NWConnection) {

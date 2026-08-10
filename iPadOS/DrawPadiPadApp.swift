@@ -58,6 +58,7 @@ final class iPadAppModel: ObservableObject {
         case let .canvasSnapshot(value): drawingState.replace(with:value)
         case let .displays(values): displays = values
         case let .display(display):
+            decoder.reset()
             selectedDisplayID = display.id
             videoAspectRatio = CGFloat(display.aspectRatio)
         case let .incompatibleVersion(expected): errorMessage = "Incompatible protocol version. Mac expects \(expected)."; showingError = true
