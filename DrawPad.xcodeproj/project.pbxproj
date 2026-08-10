@@ -14,6 +14,7 @@
 		1C2394EC6F776AF8EF7CFF76 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
 		1DACDB75D51F561428DC5C24 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */; };
 		21C0A33920E4A4A808E26754 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */; };
+		236BAEDF76A944E83C12F571 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */; };
 		34AE6624431843CB26D04878 /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D57CD742103BDC8C53664 /* ControlPacketTests.swift */; };
 		38BFA26AFEC661DBBEF9FBDF /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */; };
 		39C855BDC18F8166557062FC /* VideoDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */; };
@@ -99,6 +100,7 @@
 		751C3FA82135C713E7CC3C5E /* StrokePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePoint.swift; sourceTree = "<group>"; };
 		7530C47203413CA0A9B1FE58 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
 		7E366F4B535C34E2CBCBB2DD /* DrawPadMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadMacApp.swift; sourceTree = "<group>"; };
+		7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStateTests.swift; sourceTree = "<group>"; };
 		80D162ED5A76FC1F060F666A /* PacketFramer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramer.swift; sourceTree = "<group>"; };
 		813D57CD742103BDC8C53664 /* ControlPacketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacketTests.swift; sourceTree = "<group>"; };
 		881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 			children = (
 				813D57CD742103BDC8C53664 /* ControlPacketTests.swift */,
 				07BB67A1354D8E741CB8B896 /* CoordinateMapperTests.swift */,
+				7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */,
 				4FDCB2D7848A3D85F743AFC3 /* PacketFramerTests.swift */,
 				474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */,
 			);
@@ -472,6 +475,7 @@
 				38BFA26AFEC661DBBEF9FBDF /* DisplayDescriptor.swift in Sources */,
 				43EAFC95711AA4E4B3F22E33 /* DrawPadLogger.swift in Sources */,
 				55E954BD4D4C218B92BE52FF /* DrawingState.swift in Sources */,
+				236BAEDF76A944E83C12F571 /* DrawingStateTests.swift in Sources */,
 				E4CB6CF1114697B26D54CC18 /* DrawingTool.swift in Sources */,
 				1C2394EC6F776AF8EF7CFF76 /* PacketFramer.swift in Sources */,
 				FBBECE93D6DE1902DA0B594F /* PacketFramerTests.swift in Sources */,

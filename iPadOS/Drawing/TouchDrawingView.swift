@@ -11,7 +11,13 @@ final class TouchDrawingUIView: UIView {
     var onPacket: ((ControlPacket) -> Void)?
     private var activeID: UUID?
 
-    override init(frame: CGRect) { super.init(frame: frame); isMultipleTouchEnabled = false; backgroundColor = .clear }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        isMultipleTouchEnabled = false
+        isOpaque = false
+        clearsContextBeforeDrawing = true
+        backgroundColor = .clear
+    }
     required init?(coder: NSCoder) { super.init(coder: coder) }
 
     override func draw(_ rect: CGRect) {
