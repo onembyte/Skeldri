@@ -23,11 +23,24 @@ final class MacAppModel: ObservableObject {
     private let capture = ScreenCaptureManager()
     private let encoder = H264Encoder()
     private var screenPairs: [(SCDisplay, DisplayDescriptor)] = []
+    private var videoConnected = false
 
     init() {
-        server.onConnectionChanged = { [weak self] value in Task { @MainActor in self?.connected = value } }
+        server.onConnectionChanged = { [weak self] value in
+            Task { @MainActor in
+                guard let self else { return }
+                self.connected = value
+                if value { self.publishDisplays() }
+            }
+        }
         server.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
-        server.onVideoChannelChanged = { [weak self] connected in Task { @MainActor in if connected { await self?.startStreaming() } else { await self?.stopStreaming() } } }
+        server.onVideoChannelChanged = { [weak self] connected in
+            Task { @MainActor in
+                guard let self else { return }
+                self.videoConnected = connected
+                if connected { await self.startStreaming() } else { await self.stopStreaming() }
+            }
+        }
         capture.consumer = encoder
         encoder.onConfiguration = { [weak server] configuration in server?.sendVideoConfiguration(configuration) }
         encoder.onFrame = { [weak server] frame in server?.sendVideoFrame(frame.data, header: VideoFrameHeader(presentationTime: frame.presentationTime, isKeyframe: frame.isKeyframe)) }
@@ -45,6 +58,7 @@ final class MacAppModel: ObservableObject {
         do {
             screenPairs = try await DisplayManager().availableDisplays(); displays = screenPairs.map(\.1)
             selectedDisplayID = displays.first?.id; showOverlayForSelection()
+            if connected { publishDisplays() }
         } catch {
             errorMessage = "Display enumeration failed: \(error.localizedDescription)"
         }
@@ -72,6 +86,22 @@ final class MacAppModel: ObservableObject {
         overlay.show(on: screen)
     }
 
+    private func publishDisplays() {
+        server.sendControl(.displays(displays))
+        if let id = selectedDisplayID, let descriptor = displays.first(where: { $0.id == id }) {
+            server.sendControl(.display(descriptor))
+        }
+    }
+
+    private func selectDisplayFromIPad(id: UInt32) async {
+        guard displays.contains(where: { $0.id == id }), selectedDisplayID != id else { return }
+        if videoConnected { await stopStreaming() }
+        selectedDisplayID = id
+        showOverlayForSelection()
+        publishDisplays()
+        if videoConnected { await startStreaming() }
+    }
+
     private func apply(_ packet: ControlPacket) {
         switch packet {
         case let .strokeBegin(id, style, point): drawingState.begin(id: id, style: style, point: point)
@@ -81,6 +111,7 @@ final class MacAppModel: ObservableObject {
         case .clear: drawingState.clear()
         case let .canvasSnapshot(strokes): drawingState.replace(with: strokes)
         case let .ping(id, sentAt): server.sendControl(.pong(id: id, sentAt: sentAt))
+        case let .selectDisplay(id): Task { await selectDisplayFromIPad(id: id) }
         default: break
         }
         overlay.annotationView.strokes = drawingState.strokes

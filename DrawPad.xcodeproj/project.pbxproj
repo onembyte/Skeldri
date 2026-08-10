@@ -44,6 +44,7 @@
 		788C05CE4321646E7A21BC7E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */; };
 		7B1B0E8C53908097B1B1F320 /* MacMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F7BB3CC0FFCA2A0055E6A /* MacMainView.swift */; };
 		84F1AE2724A140BB626EE415 /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751C3FA82135C713E7CC3C5E /* StrokePoint.swift */; };
+		906245036890136814D76E8D /* DisplaySidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600EB45DE7D5B3BD2E1162C /* DisplaySidebar.swift */; };
 		928F85AEC0EF55D0B73D1ADD /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */; };
 		95865FEE0C2CA9E15BEA33A3 /* MacNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1367405A0099A80BE461D5 /* MacNetworkServer.swift */; };
 		9B005348B0B466358A79A99C /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479052FA96693988B0972 /* DrawingState.swift */; };
@@ -83,6 +84,7 @@
 		206A1E994A984D17C08EFD20 /* iPadNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadNetworkClient.swift; sourceTree = "<group>"; };
 		214EC52A258F09129AC1B420 /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
 		279F7BB3CC0FFCA2A0055E6A /* MacMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacMainView.swift; sourceTree = "<group>"; };
+		3600EB45DE7D5B3BD2E1162C /* DisplaySidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySidebar.swift; sourceTree = "<group>"; };
 		3CF42DEB62FD7FC3DF45F0DF /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
 		439B08F2DBD45EAF4DDE6595 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeHitTestingTests.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				FD327110E7AA0DD01352A50D /* DiscoveryView.swift */,
+				3600EB45DE7D5B3BD2E1162C /* DisplaySidebar.swift */,
 				F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */,
 				084DEA9FC55BF181CE3772B4 /* DrawingToolbar.swift */,
 			);
@@ -443,6 +446,7 @@
 				470A80DA5C4266D798D46C7A /* CoordinateMapper.swift in Sources */,
 				B40EBA6481430A0B5242993A /* DiscoveryView.swift in Sources */,
 				49616D6F4533D45DACBB09E1 /* DisplayDescriptor.swift in Sources */,
+				906245036890136814D76E8D /* DisplaySidebar.swift in Sources */,
 				FD36808E65D18E1B7B3C2CA1 /* DrawPadLogger.swift in Sources */,
 				5B6D653B3C0CA440A0835078 /* DrawPadiPadApp.swift in Sources */,
 				788C05CE4321646E7A21BC7E /* DrawingScreen.swift in Sources */,

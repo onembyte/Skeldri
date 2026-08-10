@@ -18,6 +18,8 @@ final class iPadAppModel: ObservableObject {
     @Published var color = Color.red
     @Published var width = 0.005
     @Published var videoAspectRatio: CGFloat = 16 / 10
+    @Published var displays: [DisplayDescriptor] = []
+    @Published var selectedDisplayID: UInt32?
     let drawingState = DrawingState()
     let decoder = H264Decoder()
     private let network = iPadNetworkClient()
@@ -41,6 +43,11 @@ final class iPadAppModel: ObservableObject {
     func handleLocal(_ packet: ControlPacket) { apply(packet); network.send(packet) }
     func undo() { if let id = drawingState.undo() { network.send(.deleteStrokes(ids: [id])) } }
     func clear() { drawingState.clear(); network.send(.clear) }
+    func selectDisplay(_ id: UInt32) {
+        guard selectedDisplayID != id else { return }
+        selectedDisplayID = id
+        network.send(.selectDisplay(id: id))
+    }
     private func apply(_ packet: ControlPacket) {
         switch packet {
         case let .strokeBegin(id, style, point): drawingState.begin(id:id, style:style, point:point)
@@ -49,7 +56,10 @@ final class iPadAppModel: ObservableObject {
         case let .deleteStrokes(ids): drawingState.delete(ids:ids)
         case .clear: drawingState.clear()
         case let .canvasSnapshot(value): drawingState.replace(with:value)
-        case let .display(display): videoAspectRatio = CGFloat(display.aspectRatio)
+        case let .displays(values): displays = values
+        case let .display(display):
+            selectedDisplayID = display.id
+            videoAspectRatio = CGFloat(display.aspectRatio)
         case let .incompatibleVersion(expected): errorMessage = "Incompatible protocol version. Mac expects \(expected)."; showingError = true
         default: break
         }
