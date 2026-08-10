@@ -23,6 +23,8 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: DrawPad
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
         CODE_SIGN_ENTITLEMENTS: macOS/DrawPadMac.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: M3A5V2ZKZ4
     entitlements:
       path: macOS/DrawPadMac.entitlements
   DrawPadiPad:
@@ -34,12 +36,10 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.ipad
-        GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: DrawPad
-        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
-        INFOPLIST_KEY_UILaunchScreen_Generation: YES
-        INFOPLIST_KEY_NSLocalNetworkUsageDescription: DrawPad uses your local network to connect your iPad to your Mac and mirror the Mac display.
-        INFOPLIST_KEY_NSBonjourServices: '_drawpad._tcp'
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: iPadOS/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: M3A5V2ZKZ4
         TARGETED_DEVICE_FAMILY: 2
   DrawPadTests:
     type: bundle.unit-test
@@ -67,4 +67,3 @@ schemes:
     test:
       targets:
         - DrawPadTests
-

@@ -83,6 +83,7 @@
 		214EC52A258F09129AC1B420 /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
 		279F7BB3CC0FFCA2A0055E6A /* MacMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacMainView.swift; sourceTree = "<group>"; };
 		3CF42DEB62FD7FC3DF45F0DF /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
+		439B08F2DBD45EAF4DDE6595 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeHitTestingTests.swift; sourceTree = "<group>"; };
 		4ECEFAA8696F02797865C3C0 /* DrawPadiPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DrawPadiPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FDCB2D7848A3D85F743AFC3 /* PacketFramerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramerTests.swift; sourceTree = "<group>"; };
@@ -247,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				10847594C583016B7DEFE325 /* DrawPadiPadApp.swift */,
+				439B08F2DBD45EAF4DDE6595 /* Info.plist */,
 				365FD7F6CC05308AAFC08D29 /* Drawing */,
 				98DC6144D05BDFA8092FCFDC /* Network */,
 				DEDE7C99D73B97EDDA9F408D /* UI */,
@@ -367,6 +369,14 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					21272A4D853C7816D388F55A = {
+						DevelopmentTeam = M3A5V2ZKZ4;
+						ProvisioningStyle = Automatic;
+					};
+					4880C774C3366B17D3D597D5 = {
+						DevelopmentTeam = M3A5V2ZKZ4;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = F0DD6A3F54D71D4E6D70E8BF /* Build configuration list for PBXProject "DrawPad" */;
@@ -483,12 +493,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = DrawPad;
-				INFOPLIST_KEY_NSBonjourServices = _drawpad._tcp;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "DrawPad uses your local network to connect your iPad to your Mac and mirror the Mac display.";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M3A5V2ZKZ4;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iPadOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -504,7 +512,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = macOS/DrawPadMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = M3A5V2ZKZ4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DrawPad;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
@@ -522,7 +532,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = macOS/DrawPadMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = M3A5V2ZKZ4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DrawPad;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
@@ -556,12 +568,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = DrawPad;
-				INFOPLIST_KEY_NSBonjourServices = _drawpad._tcp;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "DrawPad uses your local network to connect your iPad to your Mac and mirror the Mac display.";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M3A5V2ZKZ4;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iPadOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

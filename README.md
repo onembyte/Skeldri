@@ -28,5 +28,6 @@ Open `DrawPad.xcodeproj`, choose DrawPadMac and **My Mac**, then Run. For iPad S
 2. Connect over USB and trust the Mac if prompted.
 3. In DrawPadiPad → Signing & Capabilities, enable Automatically manage signing and choose your Team.
 4. Select the connected iPad as the run destination and press Run.
+5. If iPadOS blocks the first launch, trust the developer under Settings → General → VPN & Device Management.
 
 Grant Screen Recording to the Mac app and Local Network access to the iPad when prompted. See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) and [docs/MANUAL_TESTING.md](docs/MANUAL_TESTING.md).
