@@ -8,6 +8,9 @@ final class MacNetworkServer: @unchecked Sendable {
     var onVideoChannelChanged: (@Sendable (Bool) -> Void)?
     private let queue = DispatchQueue(label: "DrawPad.network.server")
     private var listener: NWListener?
+    /// Connections must be retained while waiting for their first hello packet.
+    /// The channel-specific properties take ownership after classification.
+    private var pendingPeers: [ObjectIdentifier: PeerConnection] = [:]
     private var control: PeerConnection?
     private var video: PeerConnection?
 
@@ -24,7 +27,16 @@ final class MacNetworkServer: @unchecked Sendable {
         listener.start(queue: queue)
     }
 
-    func stop() { queue.async { [weak self] in self?.control?.cancel(); self?.video?.cancel(); self?.listener?.cancel() } }
+    func stop() {
+        queue.async { [weak self] in
+            guard let self else { return }
+            pendingPeers.values.forEach { $0.cancel() }
+            pendingPeers.removeAll()
+            control?.cancel()
+            video?.cancel()
+            listener?.cancel()
+        }
+    }
 
     func sendControl(_ packet: ControlPacket) {
         guard let data = try? JSONEncoder().encode(packet) else { return }
@@ -43,9 +55,12 @@ final class MacNetworkServer: @unchecked Sendable {
 
     private func accept(_ connection: NWConnection) {
         let peer = PeerConnection(connection: connection, maximumPayload: PacketFramer.controlLimit)
+        let identifier = ObjectIdentifier(peer)
+        pendingPeers[identifier] = peer
         peer.onPacket = { [weak self, weak peer] packet in self?.classifyOrHandle(peer: peer, packet: packet) }
         peer.onStopped = { [weak self, weak peer] in
             guard let self, let peer else { return }
+            self.pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
             if self.control === peer { self.control = nil; self.onConnectionChanged?(false) }
             if self.video === peer { self.video = nil; self.onVideoChannelChanged?(false) }
         }
@@ -57,8 +72,19 @@ final class MacNetworkServer: @unchecked Sendable {
         if case let .hello(version, channel, _) = message {
             guard version == ProtocolVersion.current else { send(.incompatibleVersion(expected: ProtocolVersion.current), to: peer); peer.cancel(); return }
             switch channel {
-            case .control: control?.cancel(); control = peer; onConnectionChanged?(true); onControlPacket?(message)
-            case .video: video?.cancel(); video = peer; onVideoChannelChanged?(true)
+            case .control:
+                control?.cancel()
+                control = peer
+                pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
+                DrawPadLogger.network.info("Control channel connected")
+                onConnectionChanged?(true)
+                onControlPacket?(message)
+            case .video:
+                video?.cancel()
+                video = peer
+                pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
+                DrawPadLogger.network.info("Video channel connected")
+                onVideoChannelChanged?(true)
             }
         } else if peer === control { onControlPacket?(message) }
     }
