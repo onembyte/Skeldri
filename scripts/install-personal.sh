@@ -104,7 +104,22 @@ echo "Installing DrawPadiPad on ${DEVICE_NAME}…"
 xcrun devicectl device install app --device "$DEVICE_NAME" "$IPAD_APP"
 
 echo "Launching DrawPadMac…"
-open "$MAC_APP"
+# `open` reuses an existing application process even when its on-disk binary was
+# just replaced. That can leave the Mac and iPad speaking different protocol
+# versions after an upgrade, so terminate only DrawPadMac and wait for its clean
+# shutdown before launching the newly built bundle.
+if pgrep -x DrawPadMac >/dev/null; then
+    killall DrawPadMac
+    for _ in {1..50}; do
+        pgrep -x DrawPadMac >/dev/null || break
+        sleep 0.1
+    done
+fi
+if pgrep -x DrawPadMac >/dev/null; then
+    echo "DrawPadMac did not stop; quit it from the menu bar and rerun this installer." >&2
+    exit 1
+fi
+open -n "$MAC_APP"
 
 echo "Launching DrawPadiPad…"
 if ! xcrun devicectl device process launch --device "$DEVICE_NAME" com.example.drawpad.ipad; then

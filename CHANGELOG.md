@@ -24,6 +24,7 @@ All notable project changes will be documented here. DrawPad has not published a
 
 ### Reliability
 
+- Personal installation now restarts DrawPadMac after upgrades so the Mac and iPad cannot retain mismatched in-memory protocol versions.
 - End-to-end video acknowledgements cap TCP at two unconsumed frames.
 - Capture and encoding queues discard overload before H.264 compression, then force IDR recovery after congestion.
 - Sequence-aware decoding rejects broken reference chains, stale generations, and duplicate frames.
