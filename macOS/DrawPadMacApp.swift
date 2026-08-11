@@ -4,8 +4,27 @@ import SwiftUI
 
 @main
 struct DrawPadMacApp: App {
-    @StateObject private var model = MacAppModel()
-    var body: some Scene { WindowGroup { MacMainView(model: model).task { await model.start() } }.windowResizability(.contentSize) }
+    @NSApplicationDelegateAdaptor(DrawPadMacAppDelegate.self) private var appDelegate
+
+    var body: some Scene {
+        MenuBarExtra {
+            MacMainView(model: appDelegate.model)
+        } label: {
+            Label("DrawPad", systemImage: "pencil.and.outline")
+        }
+        .menuBarExtraStyle(.window)
+    }
+}
+
+/// Owns startup independently from presentation so Bonjour is available before
+/// the user opens the menu-bar popover.
+@MainActor
+final class DrawPadMacAppDelegate: NSObject, NSApplicationDelegate {
+    let model = MacAppModel()
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        Task { await model.start() }
+    }
 }
 
 @MainActor
