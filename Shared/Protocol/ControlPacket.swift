@@ -7,6 +7,8 @@ enum ControlPacket: Codable, Sendable, Equatable {
     case ping(id: UUID, sentAt: Double)
     case pong(id: UUID, sentAt: Double)
     case videoAcknowledgement(streamID: UUID, sequence: UInt64, requiresKeyframe: Bool)
+    case inputMode(DrawPadInputMode)
+    case trackpad(TrackpadEvent)
     case displays([DisplayDescriptor])
     case display(DisplayDescriptor)
     case selectDisplay(id: UInt32)

@@ -7,6 +7,8 @@ final class MacNetworkServer: @unchecked Sendable {
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
     var onVideoChannelChanged: (@Sendable (Bool) -> Void)?
     var onVideoRecoveryRequested: (@Sendable () -> Void)?
+    var onInputModeChanged: (@Sendable (DrawPadInputMode) -> Void)?
+    var onTrackpadEvent: (@Sendable (TrackpadEvent) -> Void)?
     private let queue = DispatchQueue(label: "DrawPad.network.server")
     private var listener: NWListener?
     /// Connections must be retained while waiting for their first hello packet.
@@ -97,7 +99,11 @@ final class MacNetworkServer: @unchecked Sendable {
         peer.onStopped = { [weak self, weak peer] in
             guard let self, let peer else { return }
             self.pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
-            if self.control === peer { self.control = nil; self.onConnectionChanged?(false) }
+            if self.control === peer {
+                self.control = nil
+                self.onInputModeChanged?(.drawing)
+                self.onConnectionChanged?(false)
+            }
             if self.video === peer {
                 self.video = nil
                 self.videoFlowLock.withLock {
@@ -137,6 +143,10 @@ final class MacNetworkServer: @unchecked Sendable {
             if case let .videoAcknowledgement(streamID, sequence, requiresKeyframe) = message {
                 acknowledgeVideoFrame(streamID: streamID, through: sequence)
                 if requiresKeyframe { onVideoRecoveryRequested?() }
+            } else if case let .inputMode(mode) = message {
+                onInputModeChanged?(mode)
+            } else if case let .trackpad(event) = message {
+                onTrackpadEvent?(event)
             } else {
                 onControlPacket?(message)
             }

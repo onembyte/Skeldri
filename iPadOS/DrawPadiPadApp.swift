@@ -4,7 +4,28 @@ import UIKit
 @main
 struct DrawPadiPadApp: App {
     @StateObject private var model = iPadAppModel()
-    var body: some Scene { WindowGroup { Group { if model.connected { DrawingScreen(model: model) } else { DiscoveryView(model: model) } }.task { model.start() }.alert("DrawPad", isPresented: $model.showingError) { Button("OK") {} } message: { Text(model.errorMessage ?? "Unknown error") } } }
+    @Environment(\.scenePhase) private var scenePhase
+
+    var body: some Scene {
+        WindowGroup {
+            Group {
+                if model.connected {
+                    DrawingScreen(model: model)
+                } else {
+                    DiscoveryView(model: model)
+                }
+            }
+            .task { model.start() }
+            .onChange(of: scenePhase) { _, phase in
+                if phase != .active { model.suspendPointerInput() }
+            }
+            .alert("DrawPad", isPresented: $model.showingError) {
+                Button("OK") {}
+            } message: {
+                Text(model.errorMessage ?? "Unknown error")
+            }
+        }
+    }
 }
 
 @MainActor
@@ -22,13 +43,20 @@ final class iPadAppModel: ObservableObject {
     @Published var selectedDisplayID: UInt32?
     @Published var pendingDisplayID: UInt32?
     @Published var clearsDrawingsWhenSwitchingDisplays = false
+    @Published var inputMode: DrawPadInputMode = .drawing
     let drawingState = DrawingState()
     let decoder = H264Decoder()
     private let network = iPadNetworkClient()
+    private var trackpadSequence: UInt64 = 0
 
     init() {
         network.onServicesChanged = { [weak self] values in Task { @MainActor in self?.macs = values } }
-        network.onStateChanged = { [weak self] value, error in Task { @MainActor in self?.connected = value; if let error { self?.errorMessage = error; self?.showingError = true } } }
+        network.onStateChanged = { [weak self] value, error in Task { @MainActor in
+            guard let self else { return }
+            self.connected = value
+            if !value { self.inputMode = .drawing; self.decoder.reset() }
+            if let error { self.errorMessage = error; self.showingError = true }
+        } }
         network.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
         decoder.onFrameConsumed = { [weak network] receipt in
             network?.send(.videoAcknowledgement(
@@ -46,6 +74,31 @@ final class iPadAppModel: ObservableObject {
     func start() { network.startBrowsing() }
     func refreshDiscovery() { network.refreshBrowsing() }
     func connect(_ mac: DiscoveredMac) { network.connect(to: mac.endpoint) }
+    func disconnect() {
+        sendTrackpadReset()
+        network.send(.inputMode(.drawing))
+        network.disconnect()
+        decoder.reset()
+        inputMode = .drawing
+    }
+    func toggleInputMode() {
+        if inputMode == .trackpad { sendTrackpadReset() }
+        inputMode = inputMode == .drawing ? .trackpad : .drawing
+        network.send(.inputMode(inputMode))
+    }
+    func suspendPointerInput() {
+        guard inputMode == .trackpad else { return }
+        sendTrackpadReset()
+    }
+    func sendTrackpadMove(deltaX: CGFloat, deltaY: CGFloat) {
+        sendTrackpad(.move(sequence: nextTrackpadSequence(), deltaX: Float(deltaX), deltaY: Float(deltaY)))
+    }
+    func sendTrackpadScroll(deltaX: CGFloat, deltaY: CGFloat) {
+        sendTrackpad(.scroll(sequence: nextTrackpadSequence(), deltaX: Float(deltaX), deltaY: Float(deltaY)))
+    }
+    func sendTrackpadButton(_ button: TrackpadButton, isDown: Bool, clickCount: Int) {
+        sendTrackpad(.button(sequence: nextTrackpadSequence(), button: button, isDown: isDown, clickCount: clickCount))
+    }
     func choosePen() { mode = .draw; style = StrokeStyle(tool: .pen, red: style.red, green: style.green, blue: style.blue, alpha: 1, normalizedWidth: Float(width)) }
     func chooseHighlighter() { mode = .draw; style = StrokeStyle(tool: .highlighter, red: style.red, green: style.green, blue: style.blue, alpha: 0.3, normalizedWidth: Float(max(width, 0.015))) }
     func updateColor(_ color: Color) { let resolved = UIColor(color); var r: CGFloat=0,g: CGFloat=0,b: CGFloat=0,a: CGFloat=0; resolved.getRed(&r, green:&g, blue:&b, alpha:&a); style = StrokeStyle(tool: style.tool, red: Float(r), green: Float(g), blue: Float(b), alpha: style.alpha, normalizedWidth: style.normalizedWidth) }
@@ -58,6 +111,19 @@ final class iPadAppModel: ObservableObject {
         if clearsDrawingsWhenSwitchingDisplays { clear() }
         pendingDisplayID = id
         network.send(.selectDisplay(id: id))
+    }
+    private func sendTrackpadReset() {
+        sendTrackpad(.reset(sequence: nextTrackpadSequence()))
+    }
+    private func sendTrackpad(_ event: TrackpadEvent) {
+        if inputMode != .trackpad {
+            guard case .reset = event else { return }
+        }
+        network.send(.trackpad(event))
+    }
+    private func nextTrackpadSequence() -> UInt64 {
+        defer { trackpadSequence &+= 1 }
+        return trackpadSequence
     }
     private func apply(_ packet: ControlPacket) {
         switch packet {

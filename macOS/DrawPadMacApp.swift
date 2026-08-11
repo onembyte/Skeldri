@@ -35,12 +35,14 @@ final class MacAppModel: ObservableObject {
     @Published var listenerReady = false
     @Published var connected = false
     @Published var annotationsVisible = true
+    @Published var inputPermission = CGPreflightPostEventAccess()
     @Published var errorMessage: String?
     let drawingState = DrawingState()
     private let overlay = OverlayWindowController()
     private let server = MacNetworkServer()
     private let capture = ScreenCaptureManager()
     private let encoder = H264Encoder()
+    private let input = MacInputController()
     private var screenPairs: [(SCDisplay, DisplayDescriptor)] = []
     private var videoConnected = false
     private var streamingDisplayID: UInt32?
@@ -64,6 +66,11 @@ final class MacAppModel: ObservableObject {
             }
         }
         server.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
+        server.onInputModeChanged = { [weak input] mode in input?.setActive(mode == .trackpad) }
+        server.onTrackpadEvent = { [weak input] event in input?.handle(event) }
+        input.onPermissionChanged = { [weak self] granted in
+            Task { @MainActor in self?.inputPermission = granted }
+        }
         capture.consumer = encoder
         encoder.onConfiguration = { [weak server] configuration in server?.sendVideoConfiguration(configuration) }
         encoder.onFrame = { [weak server] frame in
@@ -100,6 +107,8 @@ final class MacAppModel: ObservableObject {
     func selectDisplay(_ id: UInt32?) { showOverlayForSelection() }
     func toggleOverlay() { annotationsVisible.toggle(); annotationsVisible ? showOverlayForSelection() : overlay.hide() }
     func clear() { drawingState.clear(); overlay.annotationView.strokes = []; server.sendControl(.clear) }
+    func requestInputPermission() { input.requestPermission() }
+    func refreshInputPermission() { inputPermission = input.hasPermission }
 
     private func startStreaming(displayID: UInt32) async -> Bool {
         guard capturePermission else {

@@ -12,9 +12,11 @@
 		16FCC8D680DF3A1DDDD5F0B0 /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214EC52A258F09129AC1B420 /* CoordinateMapper.swift */; };
 		1B17C6D20741D0AF861B8C9C /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC77CCA4893E742BB71BE046 /* PeerConnection.swift */; };
 		1C2394EC6F776AF8EF7CFF76 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
+		1CCB65DAAF386FC19DF420F2 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A06F8293132CDE545C08D3D /* TrackpadEvent.swift */; };
 		1DACDB75D51F561428DC5C24 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */; };
 		21C0A33920E4A4A808E26754 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */; };
 		236BAEDF76A944E83C12F571 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */; };
+		2438FE20AFA669A2F470E884 /* DrawPadInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71745C3BA83111C2E9F007 /* DrawPadInputMode.swift */; };
 		2909F0741870AA2B4999465D /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */; };
 		34AE6624431843CB26D04878 /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D57CD742103BDC8C53664 /* ControlPacketTests.swift */; };
 		36D47E9D718A2FD18311D373 /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */; };
@@ -31,6 +33,7 @@
 		47C6C8545A5FF6612B09F892 /* DrawingToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084DEA9FC55BF181CE3772B4 /* DrawingToolbar.swift */; };
 		49616D6F4533D45DACBB09E1 /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */; };
 		4A04FB5536C065EA3E4E7977 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */; };
+		4DDB24EED02FCCEBBC6EF8ED /* DrawPadInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71745C3BA83111C2E9F007 /* DrawPadInputMode.swift */; };
 		55851FBDEA1177BCCE663B2D /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479052FA96693988B0972 /* DrawingState.swift */; };
 		55E954BD4D4C218B92BE52FF /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479052FA96693988B0972 /* DrawingState.swift */; };
 		563845E26E51D6AB49C43BF9 /* DisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269ADDFD238BA279BE675C3 /* DisplayManager.swift */; };
@@ -43,6 +46,7 @@
 		66D60F884126403867EF0A0B /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
 		6C56681539394CBC9000F024 /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74376F46535C318848DAD21 /* ProtocolVersion.swift */; };
 		712CB5BF98B8E90B5FB8AE68 /* MacAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5529AF49B960D02AF66C050F /* MacAnnotationView.swift */; };
+		76368497C9C7D569A20763BF /* TrackpadEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5DBD4C7360A6AC31EFC490 /* TrackpadEventTests.swift */; };
 		769D2C989EDF257A4C1F6D9C /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751C3FA82135C713E7CC3C5E /* StrokePoint.swift */; };
 		788C05CE4321646E7A21BC7E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */; };
 		7B1B0E8C53908097B1B1F320 /* MacMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F7BB3CC0FFCA2A0055E6A /* MacMainView.swift */; };
@@ -56,11 +60,14 @@
 		9D1463AA4D5342D1D6152E2A /* VideoFlowControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36287D4FC4B0EF5C6BF88B0 /* VideoFlowControlTests.swift */; };
 		9E58C4D6C643E55D3601E66F /* DiscoveryIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEBA055C05C2AF21220A66C /* DiscoveryIdentityTests.swift */; };
 		A1AA82EFBE2D43BEB4ED7C85 /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC77CCA4893E742BB71BE046 /* PeerConnection.swift */; };
+		A29EDFF8C862FC8076716555 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A06F8293132CDE545C08D3D /* TrackpadEvent.swift */; };
 		A96217E40935F6E7E3C69B57 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BD789942C9389511F4FC4 /* Stroke.swift */; };
 		B40EBA6481430A0B5242993A /* DiscoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD327110E7AA0DD01352A50D /* DiscoveryView.swift */; };
 		B473975D04A8B9931A0BE717 /* ConnectionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF42DEB62FD7FC3DF45F0DF /* ConnectionStatusView.swift */; };
 		BD0B84A702ED922F1AC4651A /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD889BB91DD510C4FF61BC9B /* LiquidGlassStyle.swift */; };
+		C3134EDCE62D0676A3E29784 /* MacInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C166832F4433F28C2DC23687 /* MacInputController.swift */; };
 		C5C61A30D11F69D697121B14 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
+		CD6E5461470ADB737C8FC781 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A06F8293132CDE545C08D3D /* TrackpadEvent.swift */; };
 		CD9316A280AAC9AFA0C1F1E3 /* iPadNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206A1E994A984D17C08EFD20 /* iPadNetworkClient.swift */; };
 		CE070F7482CB2CF0EF7807EC /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */; };
 		D1DDCBFEF6D666AEABAE921B /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74376F46535C318848DAD21 /* ProtocolVersion.swift */; };
@@ -78,6 +85,8 @@
 		F2CE3252FC619838C790B353 /* DrawPadMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E366F4B535C34E2CBCBB2DD /* DrawPadMacApp.swift */; };
 		F48153F81571A4A72DEC7D30 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7487FCD6F379FAF5D453CFDF /* StrokeHitTesting.swift */; };
 		F6138F9949C73EF30D2AB434 /* OverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC86458539F64B1648EF3EB /* OverlayWindowController.swift */; };
+		F903D6A84C907E9407F360B0 /* TrackpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C8735E932F300BDF1FC939 /* TrackpadView.swift */; };
+		FAA9EAD56EC5E27BE696EEB0 /* DrawPadInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71745C3BA83111C2E9F007 /* DrawPadInputMode.swift */; };
 		FBBECE93D6DE1902DA0B594F /* PacketFramerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDCB2D7848A3D85F743AFC3 /* PacketFramerTests.swift */; };
 		FD36808E65D18E1B7B3C2CA1 /* DrawPadLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C49003D1C9C6BE02691BE01 /* DrawPadLogger.swift */; };
 		FDA8364FB2DA4506A21B1F08 /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214EC52A258F09129AC1B420 /* CoordinateMapper.swift */; };
@@ -90,6 +99,7 @@
 		09F18AB429B307A328A84DA1 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
 		0C49003D1C9C6BE02691BE01 /* DrawPadLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadLogger.swift; sourceTree = "<group>"; };
 		10847594C583016B7DEFE325 /* DrawPadiPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadiPadApp.swift; sourceTree = "<group>"; };
+		1A06F8293132CDE545C08D3D /* TrackpadEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEvent.swift; sourceTree = "<group>"; };
 		1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControl.swift; sourceTree = "<group>"; };
 		1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDescriptor.swift; sourceTree = "<group>"; };
 		206A1E994A984D17C08EFD20 /* iPadNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadNetworkClient.swift; sourceTree = "<group>"; };
@@ -117,11 +127,15 @@
 		80D162ED5A76FC1F060F666A /* PacketFramer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramer.swift; sourceTree = "<group>"; };
 		813D57CD742103BDC8C53664 /* ControlPacketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacketTests.swift; sourceTree = "<group>"; };
 		881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
+		A2C8735E932F300BDF1FC939 /* TrackpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadView.swift; sourceTree = "<group>"; };
 		A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionChannel.swift; sourceTree = "<group>"; };
+		AD5DBD4C7360A6AC31EFC490 /* TrackpadEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEventTests.swift; sourceTree = "<group>"; };
 		AD889BB91DD510C4FF61BC9B /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 		B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDisplayView.swift; sourceTree = "<group>"; };
+		C166832F4433F28C2DC23687 /* MacInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacInputController.swift; sourceTree = "<group>"; };
 		C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeStyle.swift; sourceTree = "<group>"; };
 		D1AE63A02FDB9E3EF838A55E /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
+		DA71745C3BA83111C2E9F007 /* DrawPadInputMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadInputMode.swift; sourceTree = "<group>"; };
 		DC77CCA4893E742BB71BE046 /* PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerConnection.swift; sourceTree = "<group>"; };
 		DEE772DFC9DC2581064991A0 /* DrawPadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrawPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E269ADDFD238BA279BE675C3 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
@@ -153,12 +167,21 @@
 			path = Capture;
 			sourceTree = "<group>";
 		};
+		17D4328C69A1C315B421938B /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				C166832F4433F28C2DC23687 /* MacInputController.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
 		1876C8EF44A9A563B6B271EA /* macOS */ = {
 			isa = PBXGroup;
 			children = (
 				625CB10526D48A919FFAE8B4 /* DrawPadMac.entitlements */,
 				7E366F4B535C34E2CBCBB2DD /* DrawPadMacApp.swift */,
 				0AD83E530D0801A22C4E7B3F /* Capture */,
+				17D4328C69A1C315B421938B /* Input */,
 				9E813FA768C00DEB7DC4BA68 /* Network */,
 				613A1C38B4358EBF4D2AA6AE /* Overlay */,
 				CAC7CCDA74D4A9F26E6CD602 /* UI */,
@@ -184,6 +207,7 @@
 				7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */,
 				4FDCB2D7848A3D85F743AFC3 /* PacketFramerTests.swift */,
 				474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */,
+				AD5DBD4C7360A6AC31EFC490 /* TrackpadEventTests.swift */,
 				E36287D4FC4B0EF5C6BF88B0 /* VideoFlowControlTests.swift */,
 			);
 			path = Tests;
@@ -194,6 +218,7 @@
 			children = (
 				1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */,
 				881FDAA1EBF65ABC9A116BE6 /* DrawingTool.swift */,
+				DA71745C3BA83111C2E9F007 /* DrawPadInputMode.swift */,
 				733BD789942C9389511F4FC4 /* Stroke.swift */,
 				751C3FA82135C713E7CC3C5E /* StrokePoint.swift */,
 				C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */,
@@ -216,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				6067FCC3443283A662EC780B /* TouchDrawingView.swift */,
+				A2C8735E932F300BDF1FC939 /* TrackpadView.swift */,
 			);
 			path = Drawing;
 			sourceTree = "<group>";
@@ -246,6 +272,7 @@
 				80D162ED5A76FC1F060F666A /* PacketFramer.swift */,
 				DC77CCA4893E742BB71BE046 /* PeerConnection.swift */,
 				F74376F46535C318848DAD21 /* ProtocolVersion.swift */,
+				1A06F8293132CDE545C08D3D /* TrackpadEvent.swift */,
 				1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */,
 			);
 			path = Protocol;
@@ -435,12 +462,14 @@
 				7FA6987885EC5F65B8AA2BBA /* DiscoveryIdentity.swift in Sources */,
 				DCD7B4ABE5BCBBE94612FB4A /* DisplayDescriptor.swift in Sources */,
 				563845E26E51D6AB49C43BF9 /* DisplayManager.swift in Sources */,
+				2438FE20AFA669A2F470E884 /* DrawPadInputMode.swift in Sources */,
 				0658571AEF2C833D13B06261 /* DrawPadLogger.swift in Sources */,
 				F2CE3252FC619838C790B353 /* DrawPadMacApp.swift in Sources */,
 				9B005348B0B466358A79A99C /* DrawingState.swift in Sources */,
 				4A04FB5536C065EA3E4E7977 /* DrawingTool.swift in Sources */,
 				E4F02CCE7EBE4F0D601C1D87 /* H264Encoder.swift in Sources */,
 				712CB5BF98B8E90B5FB8AE68 /* MacAnnotationView.swift in Sources */,
+				C3134EDCE62D0676A3E29784 /* MacInputController.swift in Sources */,
 				7B1B0E8C53908097B1B1F320 /* MacMainView.swift in Sources */,
 				95865FEE0C2CA9E15BEA33A3 /* MacNetworkServer.swift in Sources */,
 				F6138F9949C73EF30D2AB434 /* OverlayWindowController.swift in Sources */,
@@ -452,6 +481,7 @@
 				F48153F81571A4A72DEC7D30 /* StrokeHitTesting.swift in Sources */,
 				84F1AE2724A140BB626EE415 /* StrokePoint.swift in Sources */,
 				928F85AEC0EF55D0B73D1ADD /* StrokeStyle.swift in Sources */,
+				A29EDFF8C862FC8076716555 /* TrackpadEvent.swift in Sources */,
 				3E8EA53A4C830D29FD162B6D /* VideoFlowControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -467,6 +497,7 @@
 				B40EBA6481430A0B5242993A /* DiscoveryView.swift in Sources */,
 				49616D6F4533D45DACBB09E1 /* DisplayDescriptor.swift in Sources */,
 				906245036890136814D76E8D /* DisplaySidebar.swift in Sources */,
+				4DDB24EED02FCCEBBC6EF8ED /* DrawPadInputMode.swift in Sources */,
 				FD36808E65D18E1B7B3C2CA1 /* DrawPadLogger.swift in Sources */,
 				5B6D653B3C0CA440A0835078 /* DrawPadiPadApp.swift in Sources */,
 				788C05CE4321646E7A21BC7E /* DrawingScreen.swift in Sources */,
@@ -483,6 +514,8 @@
 				769D2C989EDF257A4C1F6D9C /* StrokePoint.swift in Sources */,
 				3AB3086CF49B9CEC2405BDAB /* StrokeStyle.swift in Sources */,
 				604AB75AA916D011722472B7 /* TouchDrawingView.swift in Sources */,
+				1CCB65DAAF386FC19DF420F2 /* TrackpadEvent.swift in Sources */,
+				F903D6A84C907E9407F360B0 /* TrackpadView.swift in Sources */,
 				39C855BDC18F8166557062FC /* VideoDisplayView.swift in Sources */,
 				36D47E9D718A2FD18311D373 /* VideoFlowControl.swift in Sources */,
 				CD9316A280AAC9AFA0C1F1E3 /* iPadNetworkClient.swift in Sources */,
@@ -501,6 +534,7 @@
 				7EF2AC97E452F181C231645A /* DiscoveryIdentity.swift in Sources */,
 				9E58C4D6C643E55D3601E66F /* DiscoveryIdentityTests.swift in Sources */,
 				38BFA26AFEC661DBBEF9FBDF /* DisplayDescriptor.swift in Sources */,
+				FAA9EAD56EC5E27BE696EEB0 /* DrawPadInputMode.swift in Sources */,
 				43EAFC95711AA4E4B3F22E33 /* DrawPadLogger.swift in Sources */,
 				55E954BD4D4C218B92BE52FF /* DrawingState.swift in Sources */,
 				236BAEDF76A944E83C12F571 /* DrawingStateTests.swift in Sources */,
@@ -514,6 +548,8 @@
 				43EA0EB9F8C9E34299A18357 /* StrokeHitTestingTests.swift in Sources */,
 				57532184A5C0376820C084F9 /* StrokePoint.swift in Sources */,
 				39E2F04095ED0B13E9CD7FD5 /* StrokeStyle.swift in Sources */,
+				CD6E5461470ADB737C8FC781 /* TrackpadEvent.swift in Sources */,
+				76368497C9C7D569A20763BF /* TrackpadEventTests.swift in Sources */,
 				CE070F7482CB2CF0EF7807EC /* VideoFlowControl.swift in Sources */,
 				9D1463AA4D5342D1D6152E2A /* VideoFlowControlTests.swift in Sources */,
 			);

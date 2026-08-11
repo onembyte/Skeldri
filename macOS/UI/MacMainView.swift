@@ -19,6 +19,10 @@ struct MacMainView: View {
             }
             ConnectionStatusView(title: "Screen Recording", ready: model.capturePermission, detail: model.capturePermission ? "Ready" : "Permission required")
             ConnectionStatusView(title: "Local Network", ready: model.listenerReady, detail: model.listenerReady ? "Ready" : "Starting")
+            ConnectionStatusView(title: "Pointer Control", ready: model.inputPermission, detail: model.inputPermission ? "Ready" : "Permission required")
+            if !model.inputPermission {
+                Button("Grant Pointer Permission") { model.requestInputPermission() }
+            }
             LabeledContent("Display", value: model.displays.first(where: { $0.id == model.selectedDisplayID })?.name ?? "Unavailable")
             ConnectionStatusView(title: "iPad", ready: model.connected, detail: model.connected ? "Connected" : "Waiting")
             HStack {
@@ -31,5 +35,6 @@ struct MacMainView: View {
         }
         .padding(18)
         .frame(width: 340)
+        .onAppear { model.refreshInputPermission() }
     }
 }
