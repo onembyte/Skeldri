@@ -20,7 +20,10 @@ All notable project changes will be documented here. DrawPad has not published a
 
 ### Reliability
 
-- Bounded video queuing prevents stale frames from accumulating behind real time.
+- End-to-end video acknowledgements cap TCP at two unconsumed frames.
+- Capture and encoding queues discard overload before H.264 compression, then force IDR recovery after congestion.
+- Sequence-aware decoding rejects broken reference chains, stale generations, and duplicate frames.
+- Repeated SPS/PPS no longer flushes the iPad display layer; renderer pressure flushes stale video instead of buffering it.
 - Encoder-generation identifiers prevent frames from a previous display entering a new decode session.
 - Display switching is serialized and uses latest-request-wins reconciliation.
 - Bonjour discovery deduplicates Mac instances by stable identity and guards refreshes against stale browser callbacks.

@@ -11,3 +11,4 @@
 - **Xcode says Developer Mode is disabled:** On iPad open Settings → Privacy & Security → Developer Mode, enable it, restart when prompted, and confirm after restart.
 - **Installed app will not launch because its developer is untrusted:** On iPad open Settings → General → VPN & Device Management, select the Apple Development profile, and explicitly trust it. Then launch DrawPad again.
 - **Video is blank:** Confirm screen recording permission and reconnect so capture/encoder state restarts.
+- **Video becomes delayed:** Current protocol-3 builds bound end-to-end video buffering and recover at a forced keyframe. Confirm both devices were installed together, reconnect, and inspect Mac Console logs for `Video metrics` or `screenshot fallback`; a protocol mismatch is reported instead of silently connecting.
