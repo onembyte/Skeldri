@@ -26,20 +26,19 @@ struct DrawingScreen: View {
     @ObservedObject var model: iPadAppModel
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
             if model.inputMode == .drawing {
+                Color.black.ignoresSafeArea()
+                VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
                 DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
-            } else {
-                TrackpadRepresentable(model: model).ignoresSafeArea()
-            }
-            DisplaySidebar(model: model)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                .padding(.leading, 14)
-            if model.inputMode == .drawing {
+                DisplaySidebar(model: model)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .padding(.leading, 14)
                 DrawingToolbar(model: model)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .padding(.bottom, 14)
+            } else {
+                Color(uiColor: .systemGray4).ignoresSafeArea()
+                TrackpadRepresentable(model: model).ignoresSafeArea()
             }
 
             GlassIconButton(accessibilityLabel: "Back to Mac selection", action: model.disconnect) {
