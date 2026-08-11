@@ -1,6 +1,6 @@
 # DrawPad
 
-DrawPad turns an iPad into a wireless finger-annotation surface for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes on a separate low-latency channel, so annotations appear immediately on both devices. It requires neither Apple Pencil nor a cloud service and never controls mouse or keyboard input.
+DrawPad turns an iPad into a wireless finger-annotation surface and opt-in trackpad for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes or relative pointer gestures on a separate low-latency channel. It requires neither Apple Pencil nor a cloud service.
 
 > [!NOTE]
 > DrawPad is a development-stage native Apple project. It has been exercised with a physical iPad, but it is not distributed through the App Store and still requires local Xcode signing.
@@ -13,6 +13,8 @@ DrawPad turns an iPad into a wireless finger-annotation surface for a Mac. It mi
 - Optional clearing of annotations when switching displays.
 - Transparent, click-through Mac annotation overlay.
 - Low-latency H.264 mirroring with stale-frame protection during display changes.
+- Explicit Draw/Trackpad toggle, with pointer movement, tap, drag, two-finger scroll, and secondary click.
+- A top-left Back control that safely releases pointer state and returns to Mac discovery.
 - Native Liquid Glass controls on current systems, with a material fallback on older supported iPadOS releases.
 - Local-network-only operation with no accounts, telemetry, audio, or cloud backend.
 
@@ -31,6 +33,7 @@ The reference development environment is recorded in [docs/ENVIRONMENT.md](docs/
 ```text
 ScreenCaptureKit → VideoToolbox → video TCP → iPad video layer
 Finger → normalized vectors → control TCP → transparent Mac overlay
+Trackpad gesture → validated relative event → control TCP → permission-gated Mac pointer
 ```
 
 Video and drawing state remain independent, preventing the Mac overlay from being recursively captured and keeping finger feedback responsive when video is delayed. See [Architecture](docs/ARCHITECTURE.md), [Clean Architecture](docs/CLEAN_ARCHITECTURE.md), and [Wire Protocol](docs/PROTOCOL.md).
@@ -51,6 +54,7 @@ All DerivedData produced by these scripts stays in `.build/DerivedData`.
 2. Select the `DrawPadMac` scheme and **My Mac** destination.
 3. Run the app.
 4. Grant Screen Recording access when prompted, then relaunch if macOS requests it.
+5. To use Trackpad mode, grant Pointer Control access from the menu-bar popover and follow the macOS prompt.
 
 ## Run on iPad Simulator
 
@@ -83,7 +87,7 @@ The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall
 
 ## Privacy and security
 
-DrawPad advertises only `_drawpad._tcp` on the LAN. It has no internet relay, analytics, telemetry, authentication service, microphone access, camera access, or Accessibility permission. V1 does not include pairing authentication, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
+DrawPad advertises only `_drawpad._tcp` on the LAN. It has no internet relay, analytics, telemetry, authentication service, microphone access, camera access, or keyboard control. Trackpad mode uses macOS's permission-gated event-posting API; DrawPad cannot move the pointer until you explicitly approve it. V1 does not include pairing authentication, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
 
 ## Project generation
 
