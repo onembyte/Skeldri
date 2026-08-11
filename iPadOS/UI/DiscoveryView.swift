@@ -17,7 +17,12 @@ struct DiscoveryView: View {
             .refreshable { model.refreshDiscovery() }
             .overlay {
                 if model.macs.isEmpty {
-                    ContentUnavailableView("Looking for Macs…", systemImage: "network")
+                    Text("NEW AVAILABLE CONNECTIONS WILL APPEAR HERE")
+                        .font(.system(.callout, design: .monospaced, weight: .medium))
+                        .tracking(1.4)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
                 }
             }
             .navigationTitle("DrawPad")

@@ -6,6 +6,7 @@ All notable project changes will be documented here. DrawPad has not published a
 
 ### Added
 
+- Retro monospaced empty state for iPad connection discovery.
 - Menu-bar-only Mac presentation with status and annotation controls in a compact popover.
 - Native macOS and iPadOS targets with shared domain and protocol code.
 - ScreenCaptureKit capture and low-latency VideoToolbox H.264 transport.
