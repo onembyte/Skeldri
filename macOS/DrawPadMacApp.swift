@@ -63,10 +63,19 @@ final class MacAppModel: ObservableObject {
                 self.scheduleReconciliation()
             }
         }
+        server.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
         capture.consumer = encoder
         encoder.onConfiguration = { [weak server] configuration in server?.sendVideoConfiguration(configuration) }
         encoder.onFrame = { [weak server] frame in
-            server?.sendVideoFrame(frame.data, header: VideoFrameHeader(streamID: frame.streamID, presentationTime: frame.presentationTime, isKeyframe: frame.isKeyframe))
+            server?.sendVideoFrame(
+                frame.data,
+                header: VideoFrameHeader(
+                    streamID: frame.streamID,
+                    sequence: frame.sequence,
+                    presentationTime: frame.presentationTime,
+                    isKeyframe: frame.isKeyframe
+                )
+            ) ?? false
         }
     }
 

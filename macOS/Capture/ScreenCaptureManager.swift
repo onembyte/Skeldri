@@ -22,7 +22,9 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
         configuration.minimumFrameInterval = CMTime(value: 1, timescale: 30)
         configuration.showsCursor = true
         configuration.capturesAudio = false
-        configuration.queueDepth = 3
+        // Two surfaces absorb normal scheduling jitter without allowing capture
+        // itself to become a visible multi-frame latency reservoir.
+        configuration.queueDepth = 2
         configuration.pixelFormat = kCVPixelFormatType_32BGRA
         let stream = SCStream(filter: filter, configuration: configuration, delegate: self)
         try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: queue)

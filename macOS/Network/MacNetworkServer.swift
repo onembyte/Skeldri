@@ -6,6 +6,7 @@ final class MacNetworkServer: @unchecked Sendable {
     var onConnectionChanged: (@Sendable (Bool) -> Void)?
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
     var onVideoChannelChanged: (@Sendable (Bool) -> Void)?
+    var onVideoRecoveryRequested: (@Sendable () -> Void)?
     private let queue = DispatchQueue(label: "DrawPad.network.server")
     private var listener: NWListener?
     /// Connections must be retained while waiting for their first hello packet.
@@ -13,6 +14,9 @@ final class MacNetworkServer: @unchecked Sendable {
     private var pendingPeers: [ObjectIdentifier: PeerConnection] = [:]
     private var control: PeerConnection?
     private var video: PeerConnection?
+    private let videoFlowLock = NSLock()
+    private var videoSendWindow = VideoSendWindow(maximumOutstandingFrames: 2)
+    private var videoConfigurationGate = VideoConfigurationGate()
     private let serviceID: String
 
     init(defaults: UserDefaults = .standard) {
@@ -62,12 +66,27 @@ final class MacNetworkServer: @unchecked Sendable {
 
     func sendVideoConfiguration(_ configuration: VideoConfiguration) {
         guard let data = try? JSONEncoder().encode(configuration) else { return }
+        let shouldSend = videoFlowLock.withLock {
+            guard videoConfigurationGate.shouldSend(streamID: configuration.streamID) else { return false }
+            videoSendWindow.begin(streamID: configuration.streamID)
+            return true
+        }
+        guard shouldSend else { return }
         video?.send(PacketFramer.frame(type: .videoConfiguration, payload: data))
     }
 
-    func sendVideoFrame(_ accessUnit: Data, header: VideoFrameHeader) {
-        guard let data = try? VideoEnvelope.encode(header: header, accessUnit: accessUnit) else { return }
-        video?.sendLatest(PacketFramer.frame(type: .videoFrame, payload: data))
+    /// Returns false when the end-to-end acknowledgement window is full. The
+    /// encoder uses that signal to force an independently decodable next frame.
+    func sendVideoFrame(_ accessUnit: Data, header: VideoFrameHeader) -> Bool {
+        guard let video,
+              videoFlowLock.withLock({ videoSendWindow.reserve(streamID: header.streamID, sequence: header.sequence) }),
+              let data = try? VideoEnvelope.encode(header: header, accessUnit: accessUnit) else { return false }
+        video.send(PacketFramer.frame(type: .videoFrame, payload: data))
+        return true
+    }
+
+    func acknowledgeVideoFrame(streamID: UUID, through sequence: UInt64) {
+        videoFlowLock.withLock { videoSendWindow.acknowledge(streamID: streamID, through: sequence) }
     }
 
     private func accept(_ connection: NWConnection) {
@@ -79,7 +98,14 @@ final class MacNetworkServer: @unchecked Sendable {
             guard let self, let peer else { return }
             self.pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
             if self.control === peer { self.control = nil; self.onConnectionChanged?(false) }
-            if self.video === peer { self.video = nil; self.onVideoChannelChanged?(false) }
+            if self.video === peer {
+                self.video = nil
+                self.videoFlowLock.withLock {
+                    self.videoSendWindow.reset()
+                    self.videoConfigurationGate.reset()
+                }
+                self.onVideoChannelChanged?(false)
+            }
         }
         peer.start(queue: queue)
     }
@@ -99,11 +125,22 @@ final class MacNetworkServer: @unchecked Sendable {
             case .video:
                 video?.cancel()
                 video = peer
+                videoFlowLock.withLock {
+                    videoSendWindow.reset()
+                    videoConfigurationGate.reset()
+                }
                 pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
                 DrawPadLogger.network.info("Video channel connected")
                 onVideoChannelChanged?(true)
             }
-        } else if peer === control { onControlPacket?(message) }
+        } else if peer === control {
+            if case let .videoAcknowledgement(streamID, sequence, requiresKeyframe) = message {
+                acknowledgeVideoFrame(streamID: streamID, through: sequence)
+                if requiresKeyframe { onVideoRecoveryRequested?() }
+            } else {
+                onControlPacket?(message)
+            }
+        }
     }
 
     private func send(_ packet: ControlPacket, to peer: PeerConnection) {

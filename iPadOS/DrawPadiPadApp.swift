@@ -30,6 +30,13 @@ final class iPadAppModel: ObservableObject {
         network.onServicesChanged = { [weak self] values in Task { @MainActor in self?.macs = values } }
         network.onStateChanged = { [weak self] value, error in Task { @MainActor in self?.connected = value; if let error { self?.errorMessage = error; self?.showingError = true } } }
         network.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
+        decoder.onFrameConsumed = { [weak network] receipt in
+            network?.send(.videoAcknowledgement(
+                streamID: receipt.streamID,
+                sequence: receipt.sequence,
+                requiresKeyframe: receipt.requiresKeyframe
+            ))
+        }
         network.onVideoPacket = { [weak self] packet in
             guard let self else { return }
             if packet.type == .videoConfiguration, let configuration = try? JSONDecoder().decode(VideoConfiguration.self, from: packet.payload) { decoder.configure(configuration) }

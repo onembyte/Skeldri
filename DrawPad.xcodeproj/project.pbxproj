@@ -17,11 +17,13 @@
 		236BAEDF76A944E83C12F571 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */; };
 		2909F0741870AA2B4999465D /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048D5CBBB005EA0E3D68BB1A /* DiscoveryIdentity.swift */; };
 		34AE6624431843CB26D04878 /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D57CD742103BDC8C53664 /* ControlPacketTests.swift */; };
+		36D47E9D718A2FD18311D373 /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */; };
 		38BFA26AFEC661DBBEF9FBDF /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */; };
 		39C855BDC18F8166557062FC /* VideoDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF600A7CA5F980DF2FB5F /* VideoDisplayView.swift */; };
 		39E2F04095ED0B13E9CD7FD5 /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */; };
 		3AB3086CF49B9CEC2405BDAB /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */; };
 		3E5B8E5466F1D55CA6692C48 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C8C121964E22B36C3F348B /* ControlPacket.swift */; };
+		3E8EA53A4C830D29FD162B6D /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */; };
 		40B0CDA8174993DE996DC41B /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644994CC9E3F04FBBE947CF /* ConnectionChannel.swift */; };
 		43EA0EB9F8C9E34299A18357 /* StrokeHitTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */; };
 		43EAFC95711AA4E4B3F22E33 /* DrawPadLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C49003D1C9C6BE02691BE01 /* DrawPadLogger.swift */; };
@@ -51,6 +53,7 @@
 		928F85AEC0EF55D0B73D1ADD /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EB97D3EF83DF862F4FED90 /* StrokeStyle.swift */; };
 		95865FEE0C2CA9E15BEA33A3 /* MacNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1367405A0099A80BE461D5 /* MacNetworkServer.swift */; };
 		9B005348B0B466358A79A99C /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479052FA96693988B0972 /* DrawingState.swift */; };
+		9D1463AA4D5342D1D6152E2A /* VideoFlowControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36287D4FC4B0EF5C6BF88B0 /* VideoFlowControlTests.swift */; };
 		9E58C4D6C643E55D3601E66F /* DiscoveryIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEBA055C05C2AF21220A66C /* DiscoveryIdentityTests.swift */; };
 		A1AA82EFBE2D43BEB4ED7C85 /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC77CCA4893E742BB71BE046 /* PeerConnection.swift */; };
 		A96217E40935F6E7E3C69B57 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733BD789942C9389511F4FC4 /* Stroke.swift */; };
@@ -59,6 +62,7 @@
 		BD0B84A702ED922F1AC4651A /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD889BB91DD510C4FF61BC9B /* LiquidGlassStyle.swift */; };
 		C5C61A30D11F69D697121B14 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D162ED5A76FC1F060F666A /* PacketFramer.swift */; };
 		CD9316A280AAC9AFA0C1F1E3 /* iPadNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206A1E994A984D17C08EFD20 /* iPadNetworkClient.swift */; };
+		CE070F7482CB2CF0EF7807EC /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */; };
 		D1DDCBFEF6D666AEABAE921B /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74376F46535C318848DAD21 /* ProtocolVersion.swift */; };
 		D232BB716E038FD37B1E8A6E /* CoordinateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB67A1354D8E741CB8B896 /* CoordinateMapperTests.swift */; };
 		D25FDE6E511818A11CE51990 /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74376F46535C318848DAD21 /* ProtocolVersion.swift */; };
@@ -86,6 +90,7 @@
 		09F18AB429B307A328A84DA1 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
 		0C49003D1C9C6BE02691BE01 /* DrawPadLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadLogger.swift; sourceTree = "<group>"; };
 		10847594C583016B7DEFE325 /* DrawPadiPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPadiPadApp.swift; sourceTree = "<group>"; };
+		1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControl.swift; sourceTree = "<group>"; };
 		1F2BB3414392B48A51CEE25B /* DisplayDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDescriptor.swift; sourceTree = "<group>"; };
 		206A1E994A984D17C08EFD20 /* iPadNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadNetworkClient.swift; sourceTree = "<group>"; };
 		214EC52A258F09129AC1B420 /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
@@ -120,6 +125,7 @@
 		DC77CCA4893E742BB71BE046 /* PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerConnection.swift; sourceTree = "<group>"; };
 		DEE772DFC9DC2581064991A0 /* DrawPadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrawPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E269ADDFD238BA279BE675C3 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
+		E36287D4FC4B0EF5C6BF88B0 /* VideoFlowControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControlTests.swift; sourceTree = "<group>"; };
 		F74376F46535C318848DAD21 /* ProtocolVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolVersion.swift; sourceTree = "<group>"; };
 		F9BC09BCB331FA8FC0570557 /* DrawingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingScreen.swift; sourceTree = "<group>"; };
 		FAEBA055C05C2AF21220A66C /* DiscoveryIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentityTests.swift; sourceTree = "<group>"; };
@@ -178,6 +184,7 @@
 				7F83DA7E4CAFCCEB62EAD39D /* DrawingStateTests.swift */,
 				4FDCB2D7848A3D85F743AFC3 /* PacketFramerTests.swift */,
 				474323E04D6A40F568AE0E6A /* StrokeHitTestingTests.swift */,
+				E36287D4FC4B0EF5C6BF88B0 /* VideoFlowControlTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -239,6 +246,7 @@
 				80D162ED5A76FC1F060F666A /* PacketFramer.swift */,
 				DC77CCA4893E742BB71BE046 /* PeerConnection.swift */,
 				F74376F46535C318848DAD21 /* ProtocolVersion.swift */,
+				1D47BFAA70C323071A11C522 /* VideoFlowControl.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -444,6 +452,7 @@
 				F48153F81571A4A72DEC7D30 /* StrokeHitTesting.swift in Sources */,
 				84F1AE2724A140BB626EE415 /* StrokePoint.swift in Sources */,
 				928F85AEC0EF55D0B73D1ADD /* StrokeStyle.swift in Sources */,
+				3E8EA53A4C830D29FD162B6D /* VideoFlowControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +484,7 @@
 				3AB3086CF49B9CEC2405BDAB /* StrokeStyle.swift in Sources */,
 				604AB75AA916D011722472B7 /* TouchDrawingView.swift in Sources */,
 				39C855BDC18F8166557062FC /* VideoDisplayView.swift in Sources */,
+				36D47E9D718A2FD18311D373 /* VideoFlowControl.swift in Sources */,
 				CD9316A280AAC9AFA0C1F1E3 /* iPadNetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,6 +514,8 @@
 				43EA0EB9F8C9E34299A18357 /* StrokeHitTestingTests.swift in Sources */,
 				57532184A5C0376820C084F9 /* StrokePoint.swift in Sources */,
 				39E2F04095ED0B13E9CD7FD5 /* StrokeStyle.swift in Sources */,
+				CE070F7482CB2CF0EF7807EC /* VideoFlowControl.swift in Sources */,
+				9D1463AA4D5342D1D6152E2A /* VideoFlowControlTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@ enum ControlPacket: Codable, Sendable, Equatable {
     case incompatibleVersion(expected: Int)
     case ping(id: UUID, sentAt: Double)
     case pong(id: UUID, sentAt: Double)
+    case videoAcknowledgement(streamID: UUID, sequence: UInt64, requiresKeyframe: Bool)
     case displays([DisplayDescriptor])
     case display(DisplayDescriptor)
     case selectDisplay(id: UInt32)
@@ -29,6 +30,7 @@ struct VideoConfiguration: Codable, Sendable, Equatable {
 /// Metadata preceding one length-delimited H.264 access unit payload.
 struct VideoFrameHeader: Codable, Sendable, Equatable {
     let streamID: UUID
+    let sequence: UInt64
     let presentationTime: Double
     let isKeyframe: Bool
 }
