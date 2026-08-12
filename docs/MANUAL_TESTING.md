@@ -16,6 +16,13 @@
 - [ ] Finger stroke appears immediately on iPad and aligns on Mac; no Pencil required
 - [ ] Pen, highlighter, color, thickness, stroke eraser, undo, and clear work
 - [ ] Hide/show restores Mac annotations
+- [ ] Two-finger pinch magnifies the Draw surface; one finger still draws
+- [ ] Strokes drawn while magnified land in the same place on the Mac as unmagnified ones
+- [ ] Starting a pinch withdraws the mark the first finger began instead of leaving a scratch
+- [ ] Two-finger pan only moves within content that exists, never past the edge
+- [ ] Two-finger double-tap returns to the unzoomed surface
+- [ ] Pinching back out snaps cleanly to 1x and re-centres
+- [ ] Switching display or experience mode resets the magnification
 
 ## Trackpad and navigation
 

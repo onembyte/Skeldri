@@ -4,6 +4,8 @@ All notable project changes will be documented here. Skeldri has not published a
 
 ## Unreleased
 
+- Added local two-finger pinch zoom and pan to Draw mode so a finger can write larger on screen than the stroke it produces. Magnification is presentation only: strokes stay in normalized coordinates and land on the Mac exactly where an unzoomed stroke would.
+
 - Added Read (Lecture) mode: a third, read-only experience that mirrors a Mac-approved window or display as a locally zoomable and pannable reading viewport, with a precision navigation rail. It is not a virtual display and adds no private virtual-display API.
 - The Mac owner chooses what may be read from a menu-bar picker. The iPad sends only a request identifier and can never name a source; Skeldri's own windows are never offered.
 - Read mode is enforced read-only by the Mac, not only hidden on the iPad: drawing mutations and pointer events are refused while the peer declares Read, with the trackpad release fail-safe still allowed.

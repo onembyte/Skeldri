@@ -75,6 +75,7 @@
 		68545A8EA9BF830B728B67BA /* TrackpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD374CA2E084D8C3F30818 /* TrackpadView.swift */; };
 		6B66E6947ECDFCBE8E945931 /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
 		6E3A11323635501DA189D70B /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
+		70F4E58222D81ECC57403D10 /* DrawingViewport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE5A3EA3BE9C4A4A4B0B821 /* DrawingViewport.swift */; };
 		711CFBBE35AF11F37CB49282 /* PacketFramerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */; };
 		720DF0680404D369BC87AC8E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9C0CCF8D61225C76CFAAD010 /* PrivacyInfo.xcprivacy */; };
 		72353091E19E0E3A7F39AFF4 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
@@ -88,6 +89,7 @@
 		91943120E505E0EFF0F50B53 /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
 		9352081EB17EBD4351202943 /* AfiNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40E428C72F00486C2E340EE /* AfiNetworkServer.swift */; };
 		94409F279B59D36D8AE317E6 /* ExperienceModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7274D58B2879D4F2BF74F807 /* ExperienceModeSelector.swift */; };
+		95F79DC4565970A541DF195C /* DrawingViewport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE5A3EA3BE9C4A4A4B0B821 /* DrawingViewport.swift */; };
 		96A77EAD18C908F3B1C76108 /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */; };
 		97173A1CCDAA00ABFF32CB2C /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */; };
 		97F52AFD2BC04EEC84CFC173 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
@@ -96,6 +98,7 @@
 		9ECB1AB470A85CBBDDA198AA /* LectureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17138905D88DB558C1FBFC98 /* LectureScreen.swift */; };
 		9EFEAA1D1D0E177269240C59 /* TrackpadCursorTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */; };
 		A05E4528FABAD630BA22B551 /* TrackpadEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */; };
+		A2E12818130AC77AF4608585 /* DrawingViewport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE5A3EA3BE9C4A4A4B0B821 /* DrawingViewport.swift */; };
 		A44CFC9EA8FCDE17E6462534 /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
 		A69A0E0341DC7989E18426BA /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
 		AAD93463B1BD3E0DB7C3F8EB /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */; };
@@ -116,6 +119,7 @@
 		C3A4218D858AD269D392E227 /* LectureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A9C826C45C47BB193C597 /* LectureSource.swift */; };
 		C44842D96AE9B1324B804E6E /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		C81A7BD1D8CEEF016408BAF4 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
+		C8A1E877D9A863AC7591D0B4 /* DrawingViewportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D1185F4E308DB8678458AF /* DrawingViewportTests.swift */; };
 		C94F6C99DD23842FBC192E1C /* LectureNavigationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06C637285D6B26A96F0F57C /* LectureNavigationPolicy.swift */; };
 		CA12AA294ACCFD6B01EE06C3 /* VideoStreamingProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */; };
 		CB6DB25E10856A132B02B21E /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
@@ -177,6 +181,7 @@
 		4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
 		4F9750797A4B0811E0484C8F /* TrackpadMotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadMotionTests.swift; sourceTree = "<group>"; };
 		50811F5EC5ADDA2AACC6EAEC /* SkeldriTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkeldriTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		51D1185F4E308DB8678458AF /* DrawingViewportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewportTests.swift; sourceTree = "<group>"; };
 		576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingState.swift; sourceTree = "<group>"; };
 		5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriInputMode.swift; sourceTree = "<group>"; };
 		58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionLifecycle.swift; sourceTree = "<group>"; };
@@ -210,6 +215,7 @@
 		B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfiControlProtocolTests.swift; sourceTree = "<group>"; };
 		B4FC3678B953C0B5E6C6BD03 /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 		B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySidebar.swift; sourceTree = "<group>"; };
+		BAE5A3EA3BE9C4A4A4B0B821 /* DrawingViewport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewport.swift; sourceTree = "<group>"; };
 		BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePoint.swift; sourceTree = "<group>"; };
 		C01DBF31D8D90BB379B1DAE3 /* LectureViewportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewportView.swift; sourceTree = "<group>"; };
 		C1F1261228B49B8717685122 /* DisplayDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDescriptor.swift; sourceTree = "<group>"; };
@@ -244,6 +250,7 @@
 				4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */,
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
 				C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */,
+				51D1185F4E308DB8678458AF /* DrawingViewportTests.swift */,
 				CB24E921AE92B0B833A1A907 /* LectureDomainTests.swift */,
 				3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */,
 				430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */,
@@ -341,6 +348,7 @@
 			children = (
 				5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */,
 				576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */,
+				BAE5A3EA3BE9C4A4A4B0B821 /* DrawingViewport.swift */,
 				E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */,
 				9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */,
 			);
@@ -649,6 +657,7 @@
 				E9AC7E61F4EFD1E71FA16CBC /* DisplayManager.swift in Sources */,
 				CF1E46F243EFB52F38116355 /* DrawingState.swift in Sources */,
 				05C8A099E76B39A5D90CDB43 /* DrawingTool.swift in Sources */,
+				70F4E58222D81ECC57403D10 /* DrawingViewport.swift in Sources */,
 				0FC9BCC13B441CD3E0FAE559 /* ExperienceModeTransition.swift in Sources */,
 				E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */,
 				6B66E6947ECDFCBE8E945931 /* LectureInputPolicy.swift in Sources */,
@@ -701,6 +710,8 @@
 				ACBE81DBC13B76A81E5782D2 /* DrawingState.swift in Sources */,
 				43CC5094E3F717B0326E94C8 /* DrawingStateTests.swift in Sources */,
 				53C79556296EA0EE7BCB56C3 /* DrawingTool.swift in Sources */,
+				95F79DC4565970A541DF195C /* DrawingViewport.swift in Sources */,
+				C8A1E877D9A863AC7591D0B4 /* DrawingViewportTests.swift in Sources */,
 				B655422CE5FB48EFEE19C5EE /* ExperienceModeTransition.swift in Sources */,
 				F0EE5079DF98FB16A1C44411 /* LectureDomainTests.swift in Sources */,
 				3FCF15E29F5A12AC00EECE7A /* LectureInputPolicy.swift in Sources */,
@@ -753,6 +764,7 @@
 				9BAFEF7BF0DFDD97FAF8DD59 /* DrawingState.swift in Sources */,
 				C81A7BD1D8CEEF016408BAF4 /* DrawingTool.swift in Sources */,
 				60EDAC78ABC72FA4CED464C1 /* DrawingToolbar.swift in Sources */,
+				A2E12818130AC77AF4608585 /* DrawingViewport.swift in Sources */,
 				94409F279B59D36D8AE317E6 /* ExperienceModeSelector.swift in Sources */,
 				40FC432B7C705DE0C5AB8201 /* ExperienceModeTransition.swift in Sources */,
 				10CA7BA8A4E3DF6068053C51 /* H264Decoder.swift in Sources */,

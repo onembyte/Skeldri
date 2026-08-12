@@ -3,9 +3,20 @@ import SwiftUI
 struct DrawingCanvasRepresentable: UIViewRepresentable {
     @ObservedObject var model: iPadAppModel
     @ObservedObject var drawingState: DrawingState
+    @Binding var viewport: DrawingViewport
 
-    func makeUIView(context: Context) -> TouchDrawingUIView { let view = TouchDrawingUIView(); view.onPacket = { model.handleLocal($0) }; return view }
-    func updateUIView(_ view: TouchDrawingUIView, context: Context) { view.strokes = drawingState.strokes; view.style = model.style; view.mode = model.mode; view.videoAspectRatio = model.videoAspectRatio }
+    func makeUIView(context: Context) -> TouchDrawingUIView {
+        let view = TouchDrawingUIView()
+        view.onPacket = { model.handleLocal($0) }
+        view.onViewportChanged = { viewport = $0 }
+        return view
+    }
+    func updateUIView(_ view: TouchDrawingUIView, context: Context) {
+        view.strokes = drawingState.strokes; view.style = model.style; view.mode = model.mode; view.videoAspectRatio = model.videoAspectRatio
+        // Only re-sync when something outside the gesture changed it, such as a
+        // display switch resetting the zoom.
+        if view.viewport != viewport { view.viewport = viewport }
+    }
 }
 
 struct TrackpadRepresentable: UIViewRepresentable {
@@ -94,13 +105,27 @@ private struct TrackpadSettingsPanel: View {
 
 struct DrawingScreen: View {
     @ObservedObject var model: iPadAppModel
+    @State private var drawingViewport = DrawingViewport()
     var body: some View {
         ZStack {
             switch model.inputMode {
             case .drawing:
                 Color.black.ignoresSafeArea()
-                VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
-                DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
+                // The video and the annotation layer take the identical
+                // transform, which is what keeps strokes registered to the
+                // pixels underneath them while magnified.
+                VideoDisplayView(decoder: model.decoder)
+                    .ignoresSafeArea()
+                    .scaleEffect(drawingViewport.scale)
+                    .offset(x: drawingViewport.offset.x, y: drawingViewport.offset.y)
+                DrawingCanvasRepresentable(
+                    model: model,
+                    drawingState: model.drawingState,
+                    viewport: $drawingViewport
+                )
+                .ignoresSafeArea()
+                .scaleEffect(drawingViewport.scale)
+                .offset(x: drawingViewport.offset.x, y: drawingViewport.offset.y)
                 DisplaySidebar(model: model)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(.leading, 14)
@@ -133,5 +158,10 @@ struct DrawingScreen: View {
             .padding(.top, 14)
         }
         .ignoresSafeArea(edges: .vertical)
+        // A different display or experience is a different canvas; carrying a
+        // magnified region across would leave the user looking at a corner of
+        // something they did not zoom into.
+        .onChange(of: model.selectedDisplayID) { _, _ in drawingViewport.reset() }
+        .onChange(of: model.inputMode) { _, _ in drawingViewport.reset() }
     }
 }
