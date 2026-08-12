@@ -10,6 +10,7 @@
 		003F26311874A0C8940887C9 /* ConnectionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2295F11A64BF6417E9DABD91 /* ConnectionStatusView.swift */; };
 		01BFF9E375AFCF2831FD0C99 /* iPadNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24883CDD41353EBC1304DC /* iPadNetworkClient.swift */; };
 		05C8A099E76B39A5D90CDB43 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
+		07F49493F740721E0A123424 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86553A4F09D4849FB27647AD /* Assets.xcassets */; };
 		0AD912A67B2EDDF07850246C /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */; };
 		0BC01F2512710469CD7A2464 /* SkeldriPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907220C463BE2B6C233C4EAF /* SkeldriPadApp.swift */; };
 		106A1DD2AA20A6524E10B9BD /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
@@ -81,6 +82,7 @@
 		D3F48AB5321D20851AE669B3 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		D4E609086940C15AAF83A952 /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F1261228B49B8717685122 /* DisplayDescriptor.swift */; };
 		DCA62D7A23240AD475AA0907 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
+		DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A31CD6D684777117B51B6A10 /* Assets.xcassets */; };
 		E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82264D3115D066E08A928202 /* H264Encoder.swift */; };
 		E51E44E8434552E85809203F /* TrackpadMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */; };
 		E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
@@ -125,6 +127,7 @@
 		78DD229B64EB0D530424A769 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
 		7D4A965FD080A73549AD5FA5 /* DiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryView.swift; sourceTree = "<group>"; };
 		82264D3115D066E08A928202 /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
+		86553A4F09D4849FB27647AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		907220C463BE2B6C233C4EAF /* SkeldriPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriPadApp.swift; sourceTree = "<group>"; };
 		94979FA5662548E99A898454 /* TouchDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawingView.swift; sourceTree = "<group>"; };
 		95DB2256D96C304F58080362 /* SkeldriPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkeldriPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +135,7 @@
 		9A8232CD785D3538ED944FC5 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
 		9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadMotion.swift; sourceTree = "<group>"; };
 		A1F87F5DD4CE62D4B8FDE054 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
+		A31CD6D684777117B51B6A10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA5B78E6147D054FD4A9DC09 /* SkeldriMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkeldriMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4FC3678B953C0B5E6C6BD03 /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 		B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySidebar.swift; sourceTree = "<group>"; };
@@ -274,6 +278,7 @@
 		81C6C2853F512758BB5F8CA1 /* iPadOS */ = {
 			isa = PBXGroup;
 			children = (
+				A31CD6D684777117B51B6A10 /* Assets.xcassets */,
 				435373CD77B4DF23E7E4CAC1 /* Info.plist */,
 				907220C463BE2B6C233C4EAF /* SkeldriPadApp.swift */,
 				7F6A7A29FE6796D833267FB5 /* Drawing */,
@@ -354,6 +359,7 @@
 		DCFBD4992AE1A40C175D14E7 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				86553A4F09D4849FB27647AD /* Assets.xcassets */,
 				7039D25CFD791DB20693D0AB /* SkeldriMac.entitlements */,
 				DA61A00FD694A9DC350D1229 /* SkeldriMacApp.swift */,
 				8D09A3DD96E309B7F460266A /* Capture */,
@@ -374,6 +380,7 @@
 			buildConfigurationList = 26EBA98B51113911A10C5671 /* Build configuration list for PBXNativeTarget "SkeldriPad" */;
 			buildPhases = (
 				63858731E529DA72443040E6 /* Sources */,
+				E0DE11A6B025B0A8E871442A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -408,6 +415,7 @@
 			buildConfigurationList = E7AE3B92A7062D59E74BAAD9 /* Build configuration list for PBXNativeTarget "SkeldriMac" */;
 			buildPhases = (
 				02568F59C2053CD734BB4B23 /* Sources */,
+				112B63030684A1E25CC65C5A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -457,6 +465,25 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		112B63030684A1E25CC65C5A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07F49493F740721E0A123424 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0DE11A6B025B0A8E871442A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		02568F59C2053CD734BB4B23 /* Sources */ = {

@@ -10,7 +10,11 @@ struct SkeldriMacApp: App {
         MenuBarExtra {
             MacMainView(model: appDelegate.model)
         } label: {
-            Label("Skeldri", systemImage: "pencil.and.outline")
+            Label {
+                Text("Skeldri")
+            } icon: {
+                Image("MenuBarMark")
+            }
         }
         .menuBarExtraStyle(.window)
     }
