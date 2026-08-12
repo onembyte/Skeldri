@@ -15,9 +15,7 @@ final class TrackpadUIView: UIView {
     private var totalMovement: CGFloat = 0
     private var dragging = false
     private var lastTwoFingerDistance: CGFloat?
-    private var twoFingerGesture = TwoFingerGesture.undecided
-
-    private enum TwoFingerGesture { case undecided, scroll, magnify }
+    private var twoFingerClassifier = TrackpadTwoFingerClassifier()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +37,7 @@ final class TrackpadUIView: UIView {
         gestureStartedAt = active.map(\.timestamp).min() ?? ProcessInfo.processInfo.systemUptime
         lastCentroid = centroid(of: active)
         lastTwoFingerDistance = active.count == 2 ? distance(between: active) : nil
-        twoFingerGesture = .undecided
+        twoFingerClassifier.reset()
         totalMovement = 0
     }
 
@@ -63,22 +61,19 @@ final class TrackpadUIView: UIView {
             onMove?(transformed.x, transformed.y)
         case 2:
             let currentDistance = distance(between: active)
-            let relativeDistanceChange = lastTwoFingerDistance.flatMap { previous in
-                previous > 0 ? (currentDistance - previous) / previous : nil
-            } ?? 0
+            let previousDistance = lastTwoFingerDistance ?? currentDistance
+            let spanChange = currentDistance - previousDistance
+            let relativeDistanceChange = previousDistance > 0 ? spanChange / previousDistance : 0
             lastTwoFingerDistance = currentDistance
 
-            if twoFingerGesture == .undecided {
-                if abs(relativeDistanceChange) >= 0.012 {
-                    twoFingerGesture = .magnify
-                } else if hypot(delta.x, delta.y) >= 2.5 {
-                    twoFingerGesture = .scroll
-                }
-            }
-            switch twoFingerGesture {
-            case .magnify: onMagnify?(relativeDistanceChange)
-            case .scroll: onScroll?(delta.x, delta.y)
-            case .undecided: break
+            let intent = twoFingerClassifier.update(
+                centroidTravel: Float(hypot(delta.x, delta.y)),
+                spanChange: Float(spanChange)
+            )
+            switch intent {
+            case .magnify?: onMagnify?(relativeDistanceChange)
+            case .scroll?: onScroll?(delta.x, delta.y)
+            case nil: break
             }
         default:
             break
@@ -90,7 +85,7 @@ final class TrackpadUIView: UIView {
         let duration = (touches.map(\.timestamp).max() ?? gestureStartedAt) - gestureStartedAt
         if dragging {
             endDrag()
-        } else if totalMovement < 10, duration < 0.35, twoFingerGesture == .undecided {
+        } else if totalMovement < 10, duration < 0.35, twoFingerClassifier.intent == nil {
             if gestureTouchCount == 1 {
                 let clickCount = TrackpadGesturePolicy.clickCount(from: touches.first?.tapCount ?? 1)
                 click(.left, count: clickCount)
@@ -122,7 +117,7 @@ final class TrackpadUIView: UIView {
         lastCentroid = nil
         totalMovement = 0
         lastTwoFingerDistance = nil
-        twoFingerGesture = .undecided
+        twoFingerClassifier.reset()
     }
 
     private func activeTouches(in event: UIEvent?) -> [UITouch] {

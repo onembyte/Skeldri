@@ -78,4 +78,29 @@ struct TrackpadEventTests {
         accumulator.reset()
         #expect(accumulator.consume(delta: 0.09) == 0)
     }
+
+    @Test func twoFingerClassifierSeparatesPinchFromIncidentalTranslation() {
+        var classifier = TrackpadTwoFingerClassifier()
+
+        #expect(classifier.update(centroidTravel: 2.8, spanChange: 2.0) == nil)
+        #expect(classifier.update(centroidTravel: 1.4, spanChange: 3.5) == .magnify)
+        #expect(classifier.update(centroidTravel: 8, spanChange: 0) == .magnify)
+    }
+
+    @Test func twoFingerClassifierRecognizesParallelScrollAndLocksIntent() {
+        var classifier = TrackpadTwoFingerClassifier()
+
+        #expect(classifier.update(centroidTravel: 3, spanChange: 0.8) == nil)
+        #expect(classifier.update(centroidTravel: 3.5, spanChange: -0.4) == .scroll)
+        #expect(classifier.update(centroidTravel: 0, spanChange: 12) == .scroll)
+    }
+
+    @Test func twoFingerClassifierWaitsWhenMotionIsAmbiguous() {
+        var classifier = TrackpadTwoFingerClassifier()
+
+        #expect(classifier.update(centroidTravel: 3, spanChange: 3) == nil)
+        #expect(classifier.update(centroidTravel: 2, spanChange: 2) == nil)
+        classifier.reset()
+        #expect(classifier.update(centroidTravel: 6.5, spanChange: 0.2) == .scroll)
+    }
 }

@@ -56,6 +56,50 @@ enum TrackpadGesturePolicy {
     }
 }
 
+enum TrackpadTwoFingerIntent: Sendable, Equatable {
+    case scroll
+    case magnify
+}
+
+/// Resolves a two-finger gesture from accumulated geometry instead of racing
+/// per-frame thresholds. A scroll primarily translates the fingers' centroid;
+/// a pinch primarily changes the distance between them. Once resolved, intent
+/// remains locked until every finger is lifted so one gesture cannot emit both
+/// scroll and zoom events.
+struct TrackpadTwoFingerClassifier: Sendable {
+    private let minimumEvidence: Float
+    private let dominanceRatio: Float
+    private var centroidTravel: Float = 0
+    private var signedSpanChange: Float = 0
+    private(set) var intent: TrackpadTwoFingerIntent?
+
+    init(minimumEvidence: Float = 5, dominanceRatio: Float = 1.25) {
+        self.minimumEvidence = max(1, minimumEvidence)
+        self.dominanceRatio = max(1.05, dominanceRatio)
+    }
+
+    mutating func update(centroidTravel: Float, spanChange: Float) -> TrackpadTwoFingerIntent? {
+        guard intent == nil, centroidTravel.isFinite, spanChange.isFinite else { return intent }
+        self.centroidTravel += abs(centroidTravel)
+        signedSpanChange += spanChange
+
+        let spanTravel = abs(signedSpanChange)
+        if spanTravel >= minimumEvidence, spanTravel > self.centroidTravel * dominanceRatio {
+            intent = .magnify
+        } else if self.centroidTravel >= minimumEvidence,
+                  self.centroidTravel > spanTravel * dominanceRatio {
+            intent = .scroll
+        }
+        return intent
+    }
+
+    mutating func reset() {
+        centroidTravel = 0
+        signedSpanChange = 0
+        intent = nil
+    }
+}
+
 struct TrackpadScrollStep: Sendable, Equatable {
     static let zero = TrackpadScrollStep(vertical: 0, horizontal: 0)
 
