@@ -39,5 +39,7 @@
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Skeldri uses your local network to connect this Mac to your iPad for screen mirroring and annotation.</string>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>Skeldri captures only the display or window you choose so it can mirror that content to an approved iPad on your local network.</string>
 </dict>
 </plist>

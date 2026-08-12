@@ -19,6 +19,7 @@ The last command creates unsigned Release archives under `.build/Archives` and c
 - Answer App Privacy with “Data Not Collected”; the app has no tracking.
 - Use the reviewer notes in `APP_REVIEW_NOTES.md` and provide both apps for review together.
 - Archive using the current App Store-required Xcode/SDK, select the paid distribution Team, validate, and inspect signing before upload.
+- Produce the submission archive with a non-beta Xcode release. The current machine has Xcode 27 beta, which is suitable for compatibility testing but not a final App Store upload artifact.
 - Do not add Accessibility, camera, microphone, location, or audio entitlements.
 
 ## Physical release gate

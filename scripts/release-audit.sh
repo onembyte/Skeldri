@@ -22,6 +22,13 @@ for key in \
   fi
 done
 
+if [[ "$(xcodebuild -project "$ROOT/Skeldri.xcodeproj" -scheme SkeldriMac \
+  -configuration Release -showBuildSettings 2>/dev/null | \
+  awk -F ' = ' '/ENABLE_HARDENED_RUNTIME/ { print $2; exit }')" != "YES" ]]; then
+  echo "Hardened Runtime must be enabled for the Mac Release configuration" >&2
+  exit 1
+fi
+
 xcodebuild -project "$ROOT/Skeldri.xcodeproj" -scheme SkeldriMac \
   -configuration Release -destination 'generic/platform=macOS' \
   -archivePath "$MAC_ARCHIVE" -derivedDataPath "$DERIVED_DATA" \
@@ -58,6 +65,9 @@ test "$(plutil -extract CFBundleShortVersionString raw -o - "$MAC_PLIST")" = "1.
 test "$(plutil -extract CFBundleShortVersionString raw -o - "$PAD_PLIST")" = "1.0"
 test "$(plutil -extract ITSAppUsesNonExemptEncryption raw -o - "$MAC_PLIST")" = "false"
 test "$(plutil -extract ITSAppUsesNonExemptEncryption raw -o - "$PAD_PLIST")" = "false"
+test -n "$(plutil -extract NSScreenCaptureUsageDescription raw -o - "$MAC_PLIST")"
+test -n "$(plutil -extract NSLocalNetworkUsageDescription raw -o - "$MAC_PLIST")"
+test -n "$(plutil -extract NSLocalNetworkUsageDescription raw -o - "$PAD_PLIST")"
 
 file "$MAC_APP/Contents/MacOS/SkeldriMac" | grep -q 'arm64'
 file "$PAD_APP/SkeldriPad" | grep -q 'arm64'

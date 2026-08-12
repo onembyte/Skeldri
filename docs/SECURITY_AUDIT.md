@@ -4,7 +4,7 @@ Audit date: August 12, 2026
 
 ## Controls implemented
 
-- App Sandbox is enabled for the Mac target with only client/server network entitlements.
+- App Sandbox and Hardened Runtime are enabled for the Mac target, with only client/server network sandbox exceptions.
 - Screen capture and pointer control remain behind macOS consent; no privacy setting is modified programmatically.
 - A random session UUID binds the two TCP channels, and every new session requires an explicit Mac-side Allow decision.
 - Video and control mutations are blocked before approval. Rejected, timed-out, malformed, oversized, duplicate, and additional-client traffic is rejected.

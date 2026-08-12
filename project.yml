@@ -24,6 +24,7 @@ targets:
         INFOPLIST_FILE: macOS/Info.plist
         CODE_SIGN_ENTITLEMENTS: macOS/SkeldriMac.entitlements
         CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
     entitlements:
       path: macOS/SkeldriMac.entitlements
       properties:
