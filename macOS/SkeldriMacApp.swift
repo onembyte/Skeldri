@@ -63,6 +63,8 @@ final class MacAppModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.modernControlConnected = value
+                self.afiServer.setAcceptingClients(!value)
+                if value { self.afiServer.disconnectClient() }
                 self.connected = self.modernControlConnected || self.afiControlConnected
                 if value { self.publishDisplays() }
             }
@@ -128,11 +130,17 @@ final class MacAppModel: ObservableObject {
         // ScreenCaptureKit display enumeration is unavailable.
         do {
             try server.start()
-            try afiServer.start()
             listenerReady = true
         } catch {
             errorMessage = "Local network listener failed: \(error.localizedDescription)"
             return
+        }
+        do {
+            try afiServer.start()
+        } catch {
+            // Compatibility is additive. Its failure must never take down the
+            // modern listener, display discovery, or normal Skeldri workflow.
+            SkeldriLogger.network.error("Afi compatibility unavailable: \(error.localizedDescription)")
         }
         do {
             screenPairs = try await DisplayManager().availableDisplays(); displays = screenPairs.map(\.1)

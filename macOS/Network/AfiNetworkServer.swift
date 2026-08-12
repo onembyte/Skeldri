@@ -19,6 +19,7 @@ final class AfiNetworkServer: @unchecked Sendable {
     private let videoFlowLock = NSLock()
     private var videoSendWindow = VideoSendWindow(maximumOutstandingFrames: 2)
     private var videoConfigurationGate = VideoConfigurationGate()
+    private var acceptsClients = true
     private let serviceID: String
 
     init(defaults: UserDefaults = .standard) {
@@ -60,6 +61,17 @@ final class AfiNetworkServer: @unchecked Sendable {
         }
     }
 
+    func disconnectClient() {
+        queue.async { [weak self] in
+            self?.control?.cancel()
+            self?.video?.cancel()
+        }
+    }
+
+    func setAcceptingClients(_ accepting: Bool) {
+        queue.async { [weak self] in self?.acceptsClients = accepting }
+    }
+
     func sendControl(_ packet: ControlPacket) {
         guard let data = try? AfiControlCodec.encode(packet) else { return }
         control?.send(PacketFramer.frame(type: .control, payload: data))
@@ -85,6 +97,11 @@ final class AfiNetworkServer: @unchecked Sendable {
     }
 
     private func accept(_ connection: NWConnection) {
+        guard acceptsClients else {
+            connection.cancel()
+            SkeldriLogger.network.info("Rejected Afi client while modern Skeldri is connected")
+            return
+        }
         let peer = PeerConnection(connection: connection, maximumPayload: PacketFramer.controlLimit)
         let identifier = ObjectIdentifier(peer)
         pendingPeers[identifier] = peer
