@@ -35,6 +35,7 @@
 		26D3E18200E4FADC4FF65F48 /* LectureSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */; };
 		278EAAFA0AD11A3291258596 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		2A0530976DF5F67CFBA5C7E4 /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
+		2AC7DEE371AE1AF06F6A3B30 /* LectureInputPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */; };
 		2C0481E5B69FEC2AAA77D59C /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
 		2CD8BF89E418C076C498CAF1 /* LectureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A9C826C45C47BB193C597 /* LectureSource.swift */; };
 		2E4827EAE19E987A0B947D46 /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FC3678B953C0B5E6C6BD03 /* LiquidGlassStyle.swift */; };
@@ -50,6 +51,7 @@
 		3C00CB5ACC22A95B82C5F078 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		3E2CF2A43CFDD55C79AAD82E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEACF120D118B99DC35B70 /* DrawingScreen.swift */; };
 		3F0A0818EE62645DF09ACFA4 /* LectureSourceCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */; };
+		3FCF15E29F5A12AC00EECE7A /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
 		40FC432B7C705DE0C5AB8201 /* ExperienceModeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792BF47634DD95F210BC43D0 /* ExperienceModeTransition.swift */; };
 		43CC5094E3F717B0326E94C8 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */; };
 		48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
@@ -71,6 +73,7 @@
 		63BE3580976B29430BB676C2 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		6426B776045D46D3CEEEEE3F /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */; };
 		68545A8EA9BF830B728B67BA /* TrackpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD374CA2E084D8C3F30818 /* TrackpadView.swift */; };
+		6B66E6947ECDFCBE8E945931 /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
 		6E3A11323635501DA189D70B /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
 		711CFBBE35AF11F37CB49282 /* PacketFramerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */; };
 		720DF0680404D369BC87AC8E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9C0CCF8D61225C76CFAAD010 /* PrivacyInfo.xcprivacy */; };
@@ -82,6 +85,7 @@
 		7D45FD2E32463E9A2C80098D /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		9150384FB984A019CDFC97EA /* TouchDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94979FA5662548E99A898454 /* TouchDrawingView.swift */; };
+		91943120E505E0EFF0F50B53 /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
 		9352081EB17EBD4351202943 /* AfiNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40E428C72F00486C2E340EE /* AfiNetworkServer.swift */; };
 		94409F279B59D36D8AE317E6 /* ExperienceModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7274D58B2879D4F2BF74F807 /* ExperienceModeSelector.swift */; };
 		96A77EAD18C908F3B1C76108 /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */; };
@@ -143,6 +147,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInputPolicy.swift; sourceTree = "<group>"; };
 		0D394A0BB905F0E570400676 /* ControlPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacket.swift; sourceTree = "<group>"; };
 		11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSessionState.swift; sourceTree = "<group>"; };
 		167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEventTests.swift; sourceTree = "<group>"; };
@@ -159,6 +164,7 @@
 		35AD374CA2E084D8C3F30818 /* TrackpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadView.swift; sourceTree = "<group>"; };
 		36EDB74E53B1C6F06E75DB4F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
+		3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInputPolicyTests.swift; sourceTree = "<group>"; };
 		402801EB066BC5180232032E /* VideoFlowControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControl.swift; sourceTree = "<group>"; };
 		430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSourceCatalogTests.swift; sourceTree = "<group>"; };
 		435373CD77B4DF23E7E4CAC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -237,6 +243,7 @@
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
 				C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */,
 				CB24E921AE92B0B833A1A907 /* LectureDomainTests.swift */,
+				3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */,
 				430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */,
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
 				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
@@ -303,6 +310,7 @@
 				58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */,
 				0D394A0BB905F0E570400676 /* ControlPacket.swift */,
 				EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */,
+				06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */,
 				46ED91F9E70F5EEEC277275A /* PacketFramer.swift */,
 				C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */,
 				486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */,
@@ -640,6 +648,7 @@
 				05C8A099E76B39A5D90CDB43 /* DrawingTool.swift in Sources */,
 				0FC9BCC13B441CD3E0FAE559 /* ExperienceModeTransition.swift in Sources */,
 				E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */,
+				6B66E6947ECDFCBE8E945931 /* LectureInputPolicy.swift in Sources */,
 				22D0009838045031ABBCD7B7 /* LectureNavigationPolicy.swift in Sources */,
 				5D4B982DF2AC528CB23EF0F8 /* LectureSessionState.swift in Sources */,
 				2CD8BF89E418C076C498CAF1 /* LectureSource.swift in Sources */,
@@ -691,6 +700,8 @@
 				53C79556296EA0EE7BCB56C3 /* DrawingTool.swift in Sources */,
 				B655422CE5FB48EFEE19C5EE /* ExperienceModeTransition.swift in Sources */,
 				F0EE5079DF98FB16A1C44411 /* LectureDomainTests.swift in Sources */,
+				3FCF15E29F5A12AC00EECE7A /* LectureInputPolicy.swift in Sources */,
+				2AC7DEE371AE1AF06F6A3B30 /* LectureInputPolicyTests.swift in Sources */,
 				C94F6C99DD23842FBC192E1C /* LectureNavigationPolicy.swift in Sources */,
 				0A02895D4A830C0682C084C3 /* LectureSessionState.swift in Sources */,
 				48E49DBC273E4DD4EBB58BB3 /* LectureSource.swift in Sources */,
@@ -741,6 +752,7 @@
 				94409F279B59D36D8AE317E6 /* ExperienceModeSelector.swift in Sources */,
 				40FC432B7C705DE0C5AB8201 /* ExperienceModeTransition.swift in Sources */,
 				10CA7BA8A4E3DF6068053C51 /* H264Decoder.swift in Sources */,
+				91943120E505E0EFF0F50B53 /* LectureInputPolicy.swift in Sources */,
 				1C7225D3FD93774E43195A0C /* LectureNavigationPolicy.swift in Sources */,
 				360D6EED6F891BF16DA480FA /* LectureNavigationRail.swift in Sources */,
 				9ECB1AB470A85CBBDDA198AA /* LectureScreen.swift in Sources */,

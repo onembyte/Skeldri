@@ -22,6 +22,9 @@ final class MacNetworkServer: @unchecked Sendable {
     private var videoSessionID: UUID?
     private var authorized = false
     private var authorizationGeneration = 0
+    /// The experience the peer last declared. Read mode is enforced here, not
+    /// only in the iPad's presentation layer.
+    private var peerInputMode: SkeldriInputMode = .drawing
     private let videoFlowLock = NSLock()
     private var videoSendWindow = VideoSendWindow(maximumOutstandingFrames: 2)
     private var videoConfigurationGate = VideoConfigurationGate()
@@ -149,6 +152,7 @@ final class MacNetworkServer: @unchecked Sendable {
                 self.controlSessionID = nil
                 self.authorizationGeneration += 1
                 self.video?.cancel()
+                self.peerInputMode = .drawing
                 self.onInputModeChanged?(.drawing)
                 self.onAuthorizationChanged?(false)
                 self.onConnectionChanged?(false)
@@ -180,6 +184,7 @@ final class MacNetworkServer: @unchecked Sendable {
             case .control:
                 control?.cancel()
                 authorized = false
+                peerInputMode = .drawing
                 controlSessionID = sessionID
                 if let videoSessionID, videoSessionID != sessionID {
                     video?.cancel()
@@ -209,10 +214,15 @@ final class MacNetworkServer: @unchecked Sendable {
                 onVideoChannelChanged?(true)
             }
         } else if peer === control, authorized {
+            guard LectureInputPolicy.allows(message, whileIn: peerInputMode) else {
+                SkeldriLogger.network.warning("Rejected a mutating packet while the peer is in Read mode")
+                return
+            }
             if case let .videoAcknowledgement(streamID, sequence, requiresKeyframe) = message {
                 acknowledgeVideoFrame(streamID: streamID, through: sequence)
                 if requiresKeyframe { onVideoRecoveryRequested?() }
             } else if case let .inputMode(mode) = message {
+                peerInputMode = mode
                 onInputModeChanged?(mode)
             } else if case let .trackpad(event) = message {
                 onTrackpadEvent?(event)
@@ -244,6 +254,7 @@ final class MacNetworkServer: @unchecked Sendable {
         let oldVideo = video
         authorizationGeneration += 1
         authorized = false
+        peerInputMode = .drawing
         controlSessionID = nil
         videoSessionID = nil
         control = nil
