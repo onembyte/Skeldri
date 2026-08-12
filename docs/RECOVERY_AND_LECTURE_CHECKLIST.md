@@ -1,0 +1,118 @@
+# Recovery and Lecture Viewport Checklist
+
+This checklist is the execution gate after the interrupted model switch on
+2026-08-12. Existing behavior is stabilized and revalidated before Lecture
+mode changes the protocol, capture lifecycle, or iPad presentation.
+
+## Verified recovery state
+
+- [x] Modern repository is clean and matches `origin/agent/personal-install`.
+- [x] Legacy repository is clean and matches `origin/agent/app-store-security`.
+- [x] No incomplete Lecture-mode source files or mixed working-tree changes exist.
+- [x] Modern automated baseline passes: 40 tests in 13 suites.
+- [x] The current failure is outside Swift compilation: Xcode 27 beta loses
+  `CoreSimulatorService` because the root-owned `simdiskimaged` service is
+  unresponsive, and `xcodebuild` exits with signal 15 before compiling.
+- [x] A non-privileged restart was attempted and correctly refused; Skeldri did
+  not use `sudo` or change machine-wide configuration.
+- [x] The separate Xcode 9.4.1 extraction for Skeldri Afi is still running on
+  the TrueNAS-backed volume. It is unrelated to the modern feature branch and
+  must not be mixed into Lecture work.
+
+## Gate A — restore a trustworthy build environment
+
+- [ ] Allow the current Xcode 9 extraction to finish or stop it deliberately.
+- [ ] Restart the Mac so the root-owned CoreSimulator disk-image service starts
+  cleanly. No repo change can repair that system service.
+- [ ] Run `./scripts/doctor.sh` and confirm the simulator-service preflight is
+  healthy.
+- [ ] Run `xcodebuild -list -project Skeldri.xcodeproj` successfully.
+- [ ] Run `./scripts/test.sh`; retain the 40-test baseline.
+- [ ] Run `./scripts/build.sh`; confirm both SkeldriMac and generic SkeldriPad
+  simulator builds succeed.
+- [ ] Do not begin Lecture implementation until every Gate A item is green.
+
+## Gate B — regression sweep of existing behavior
+
+- [ ] Install matching current Mac and iPad builds together.
+- [ ] Connect once, reject once, reconnect, and disconnect with Back.
+- [ ] Confirm mirroring remains low latency and never returns to a stale stream
+  after a display switch.
+- [ ] Confirm Draw, Pen, Highlighter, Eraser, Undo, Clear, and clear-on-switch.
+- [ ] Confirm Trackpad move, click, double/triple click, drag, scroll, and pinch
+  classification; pinch must not emit scroll for the same gesture.
+- [ ] Confirm leaving Trackpad releases every pressed mouse button.
+- [ ] Record any reproducible app defect as a failing test before its fix.
+
+## Gate C — Lecture domain, navigation, and protocol (TDD)
+
+- [ ] Add `lecture` as a third mutually exclusive experience mode.
+- [ ] Test transitions among Draw, Trackpad, and Lecture, including trackpad
+  reset when Trackpad loses ownership.
+- [ ] Define and test Lecture session states: inactive, selecting, active,
+  source unavailable, disconnected, and leaving.
+- [ ] Implement the pure navigation-rail policy first; test dead zone, cubic
+  acceleration, precision gain, clamping, elapsed-time integration, and
+  accessibility increments.
+- [ ] Define bounded source descriptors and selection messages.
+- [ ] Extend Codable round-trip and malformed-input coverage.
+- [ ] Bump the modern protocol version deliberately and document compatibility.
+- [ ] Keep Skeldri Afi protocol 1 unchanged; unsupported Lecture selection must
+  degrade explicitly rather than corrupting its Draw/Trackpad session.
+
+## Gate D — three-state mode control
+
+- [ ] Replace the two-state top-right button with a compact native SwiftUI
+  Draw / Trackpad / Read selector.
+- [ ] Use SF Symbols, semantic materials, native Liquid Glass on iPadOS 26+,
+  and the existing material fallback on iPadOS 18.
+- [ ] Give each segment a minimum 44-point target, selected-state contrast,
+  VoiceOver label/value, Reduce Motion behavior, and keyboard focus semantics.
+- [ ] Keep Back at top left and ensure the selector consumes touches without
+  leaking them into drawing, trackpad, or viewport gestures.
+- [ ] Snapshot/manual-check portrait, landscape, light/dark appearance, and
+  large accessibility text without introducing bitmap UI assets.
+
+## Gate E — Lecture capture and viewport
+
+- [ ] Add a Mac capture-source boundary that supports the current display and a
+  user-approved ScreenCaptureKit window source.
+- [ ] Exclude Skeldri-owned windows and reject stale/unavailable source IDs.
+- [ ] Serialize display/window capture changes through the existing
+  reconciliation owner; never run overlapping `SCStream` lifecycles.
+- [ ] Attach a generation UUID to each accepted source and reject delayed frames
+  from prior sources.
+- [ ] Build the iPad viewport around the decoded surface with immediate local
+  pinch zoom, pan, fit/reset, and a collapsed precision navigation rail.
+- [ ] Keep Lecture read-only: no drawing packets, mouse events, clicks, keyboard
+  events, or generic remote scroll events.
+- [ ] Show explicit states for selecting, window closed/unavailable, connection
+  lost with last frame retained, and permission required.
+- [ ] Restore the previously selected display stream when leaving Lecture.
+
+## Gate F — quality, security, and release validation
+
+- [ ] Measure text legibility, viewport frame pacing, decode memory, bitrate,
+  end-to-end delay, thermal behavior, and reconnect recovery on the modern iPad.
+- [ ] Confirm the Mac remains usable in a different foreground app while the
+  approved Lecture window continues updating.
+- [ ] Verify minimized/hidden/other-Space behavior empirically and document the
+  observed OS limitations.
+- [ ] Repeat all existing Draw and Trackpad acceptance checks.
+- [ ] Run unit tests, Mac build, simulator build, signed Mac build, and physical
+  iPad install/launch.
+- [ ] Review App Sandbox, privacy manifest, Screen Recording explanation,
+  local-network disclosure, and App Review notes. Add no private virtual-display
+  API and make no true-extended-display claim.
+- [ ] Update architecture, protocol, manual testing, troubleshooting, status,
+  and README documents.
+- [ ] Commit each green TDD milestone separately and push only reviewed, clean
+  commits to the existing private branch/PR.
+
+## Product boundary
+
+Lecture is a selected-window or selected-display reading viewport. Local zoom
+and pan move through captured pixels and remain responsive without a network
+round trip. It is not a macOS virtual monitor and cannot reveal off-screen pages
+of an arbitrary document without mutating the Mac application. A later native
+PDF/image reader is the correct path for truly independent long-document scroll.
