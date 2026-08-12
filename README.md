@@ -13,7 +13,8 @@ Skeldri turns an iPad into a wireless finger-annotation surface and opt-in track
 - Optional clearing of annotations when switching displays.
 - Transparent, click-through Mac annotation overlay.
 - Low-latency H.264 mirroring with stale-frame protection during display changes.
-- Explicit Draw/Trackpad toggle, with pointer movement, tap, drag, two-finger scroll, and secondary click.
+- Explicit Draw/Trackpad/Read selector, with pointer movement, tap, drag, two-finger scroll, and secondary click.
+- Read mode: a strictly read-only reading viewport over a Mac-approved window or display, with local pinch zoom, pan, fit, and a precision navigation rail. The Mac's owner chooses the source; the iPad can never name one.
 - Collapsible trackpad sensitivity, speed, and acceleration controls with persistent preferences.
 - A top-left Back control that safely releases pointer state and returns to Mac discovery.
 - Native Liquid Glass controls on current systems, with a material fallback on older supported iPadOS releases.

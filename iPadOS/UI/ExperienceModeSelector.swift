@@ -25,16 +25,20 @@ struct ExperienceModeSelector: View {
             Image(systemName: symbol)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(selection == mode ? Color.accentColor : Color.primary)
-                .frame(width: 40, height: 40)
+                // 44 points is the minimum comfortable touch target; the circular
+                // indicator stays visually smaller than the target it sits in.
+                .frame(width: 44, height: 44)
                 .background {
                     Circle()
                         .fill(selection == mode ? Color.accentColor.opacity(0.17) : Color.clear)
+                        .padding(2)
                 }
                 .overlay {
                     Circle()
                         .stroke(selection == mode ? Color.accentColor.opacity(0.52) : Color.clear, lineWidth: 0.75)
+                        .padding(2)
                 }
-                .contentShape(Circle())
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)

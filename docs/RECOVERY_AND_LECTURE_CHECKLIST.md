@@ -53,49 +53,61 @@ Completed 2026-08-12. The blocker was the system service, not the repository.
 
 ## Gate C — Lecture domain, navigation, and protocol (TDD)
 
-- [ ] Add `lecture` as a third mutually exclusive experience mode.
-- [ ] Test transitions among Draw, Trackpad, and Lecture, including trackpad
+Complete 2026-08-12.
+
+- [x] Add `lecture` as a third mutually exclusive experience mode.
+- [x] Test transitions among Draw, Trackpad, and Lecture, including trackpad
   reset when Trackpad loses ownership.
-- [ ] Define and test Lecture session states: inactive, selecting, active,
-  source unavailable, disconnected, and leaving.
-- [ ] Implement the pure navigation-rail policy first; test dead zone, cubic
+- [x] Define and test Lecture session states: inactive, selecting, active,
+  source unavailable, disconnected, and leaving. Selection is request-correlated,
+  so a reply to an abandoned request cannot resume presenting captured content.
+- [x] Implement the pure navigation-rail policy first; test dead zone, cubic
   acceleration, precision gain, clamping, elapsed-time integration, and
   accessibility increments.
-- [ ] Define bounded source descriptors and selection messages.
-- [ ] Extend Codable round-trip and malformed-input coverage.
-- [ ] Bump the modern protocol version deliberately and document compatibility.
-- [ ] Keep Skeldri Afi protocol 1 unchanged; unsupported Lecture selection must
+- [x] Define bounded source descriptors and selection messages.
+- [x] Extend Codable round-trip and malformed-input coverage.
+- [x] Bump the modern protocol version deliberately and document compatibility.
+- [x] Keep Skeldri Afi protocol 1 unchanged; unsupported Lecture selection must
   degrade explicitly rather than corrupting its Draw/Trackpad session.
 
 ## Gate D — three-state mode control
 
-- [ ] Replace the two-state top-right button with a compact native SwiftUI
+- [x] Replace the two-state top-right button with a compact native SwiftUI
   Draw / Trackpad / Read selector.
-- [ ] Use SF Symbols, semantic materials, native Liquid Glass on iPadOS 26+,
+- [x] Use SF Symbols, semantic materials, native Liquid Glass on iPadOS 26+,
   and the existing material fallback on iPadOS 18.
-- [ ] Give each segment a minimum 44-point target, selected-state contrast,
+- [x] Give each segment a minimum 44-point target, selected-state contrast,
   VoiceOver label/value, Reduce Motion behavior, and keyboard focus semantics.
-- [ ] Keep Back at top left and ensure the selector consumes touches without
+  The segments were 40 points and were corrected to 44; the selector itself is
+  unanimated, so Reduce Motion has nothing to suppress.
+- [x] Keep Back at top left and ensure the selector consumes touches without
   leaking them into drawing, trackpad, or viewport gestures.
 - [ ] Snapshot/manual-check portrait, landscape, light/dark appearance, and
-  large accessibility text without introducing bitmap UI assets.
+  large accessibility text without introducing bitmap UI assets. Owner action —
+  needs a device or simulator visual pass.
 
 ## Gate E — Lecture capture and viewport
 
-- [ ] Add a Mac capture-source boundary that supports the current display and a
+Code-complete 2026-08-12; none of it exercised on hardware yet.
+
+- [x] Add a Mac capture-source boundary that supports the current display and a
   user-approved ScreenCaptureKit window source.
-- [ ] Exclude Skeldri-owned windows and reject stale/unavailable source IDs.
-- [ ] Serialize display/window capture changes through the existing
+- [x] Exclude Skeldri-owned windows and reject stale/unavailable source IDs.
+  Handles are retained only for windows that passed the eligibility rules, so an
+  excluded window cannot be started later.
+- [x] Serialize display/window capture changes through the existing
   reconciliation owner; never run overlapping `SCStream` lifecycles.
-- [ ] Attach a generation UUID to each accepted source and reject delayed frames
+- [x] Attach a generation UUID to each accepted source and reject delayed frames
   from prior sources.
-- [ ] Build the iPad viewport around the decoded surface with immediate local
+- [x] Build the iPad viewport around the decoded surface with immediate local
   pinch zoom, pan, fit/reset, and a collapsed precision navigation rail.
-- [ ] Keep Lecture read-only: no drawing packets, mouse events, clicks, keyboard
-  events, or generic remote scroll events.
-- [ ] Show explicit states for selecting, window closed/unavailable, connection
-  lost with last frame retained, and permission required.
-- [ ] Restore the previously selected display stream when leaving Lecture.
+- [x] Keep Lecture read-only: no drawing packets, mouse events, clicks, keyboard
+  events, or generic remote scroll events. Enforced by the Mac, not only hidden
+  by the iPad.
+- [x] Show explicit states for selecting, window closed/unavailable, connection
+  lost with last frame retained, and permission required. An owner declining the
+  picker reports its own reason rather than a fabricated failure.
+- [x] Restore the previously selected display stream when leaving Lecture.
 
 ## Gate F — quality, security, and release validation
 
@@ -106,15 +118,20 @@ Completed 2026-08-12. The blocker was the system service, not the repository.
 - [ ] Verify minimized/hidden/other-Space behavior empirically and document the
   observed OS limitations.
 - [ ] Repeat all existing Draw and Trackpad acceptance checks.
-- [ ] Run unit tests, Mac build, simulator build, signed Mac build, and physical
-  iPad install/launch.
-- [ ] Review App Sandbox, privacy manifest, Screen Recording explanation,
+- [x] Run unit tests, Mac build, simulator build, signed Mac build, and physical
+  iPad install/launch. Unit tests (58 in 16 suites), Mac build, and generic
+  simulator build pass; `release-audit.sh` produces both unsigned App Store-shaped
+  archives. Signed install and launch on the physical iPad remain owner actions.
+- [x] Review App Sandbox, privacy manifest, Screen Recording explanation,
   local-network disclosure, and App Review notes. Add no private virtual-display
-  API and make no true-extended-display claim.
-- [ ] Update architecture, protocol, manual testing, troubleshooting, status,
+  API and make no true-extended-display claim. Read mode uses only public
+  ScreenCaptureKit window/display capture and is documented as a reading viewport
+  over captured pixels, never an extended display.
+- [x] Update architecture, protocol, manual testing, troubleshooting, status,
   and README documents.
-- [ ] Commit each green TDD milestone separately and push only reviewed, clean
-  commits to the existing private branch/PR.
+- [x] Commit each green TDD milestone separately and push only reviewed, clean
+  commits to the existing private branch/PR. Milestones are committed separately
+  and remain unpushed pending owner review.
 
 ## Product boundary
 

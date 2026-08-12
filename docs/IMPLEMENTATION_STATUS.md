@@ -19,17 +19,25 @@
 
 A USB iPad (7th generation, iPadOS 18.6.2) was used for validation. Signed builds install and launch successfully. Bonjour discovery, connection, video mirroring, drawing synchronization, destructive drawing actions, and repeated display switching have been exercised. Display switching serializes capture lifecycle operations, coalesces rapid requests, confirms selection from the Mac, and rejects video frames from obsolete encoder generations. Protocol 7 retains bounded video recovery and sequenced, validated trackpad movement, scroll, click, drag, and accumulated pinch-zoom events, session-bound channels, and explicit Mac-side authorization before video or input. Background, Back-navigation, rejection, timeout, and disconnect paths release pointer and connection state idempotently. The current automated suite contains 48 tests; a final physical acceptance sweep of the release-candidate authorization flow remains open.
 
-Lecture (Read) mode is partially implemented and is not yet usable end to end.
-The Xcode 27 beta `simdiskimaged` blocker recorded on 2026-08-12 is resolved: the
-simulator service responds, `./scripts/test.sh` passes 48 tests in 14 suites, and
-`./scripts/build.sh` builds both SkeldriMac and SkeldriPad cleanly. Landed so far
-are the Lecture domain reducer with request-correlated source selection, the pure
-navigation-rail policy, the bounded protocol 7 messages, the three-state
-Draw/Trackpad/Read selector, and the iPad viewport and rail. The Mac half of
-Gate E is not written: `MacNetworkServer`, `ScreenCaptureManager`, and
-`SkeldriMacApp` do not yet answer `requestLectureSourceSelection`, so selecting
-Read on the iPad currently waits at its source-selection state. Gate B's physical
-regression sweep and Gate F's on-device measurements remain owner actions; see
-`docs/RECOVERY_AND_LECTURE_CHECKLIST.md`.
+Lecture (Read) mode is code-complete and unverified on hardware. The Xcode 27
+beta `simdiskimaged` blocker recorded on 2026-08-12 is resolved: the simulator
+service responds, `./scripts/test.sh` passes 58 tests in 16 suites,
+`./scripts/build.sh` builds both SkeldriMac and SkeldriPad cleanly, and
+`./scripts/release-audit.sh` passes with both unsigned App Store-shaped archives
+and their privacy manifests intact.
+
+Landed: the Lecture domain reducer with request-correlated source selection, the
+pure navigation-rail policy, the bounded protocol 7 messages, the three-state
+Draw/Trackpad/Read selector, the iPad viewport and rail, the Mac source catalog
+and enumerator, the Mac owner's approval picker, the generalized display-or-window
+capture target under the existing single reconciliation owner, and Mac-side
+read-only enforcement.
+
+Not yet verified: every Read behavior on physical hardware. No Read session has
+been exercised on a real Mac and iPad, so text legibility, frame pacing, decode
+memory, bitrate, end-to-end delay, thermal behavior, window minimize/hide/Space
+transitions, and reconnect recovery are all unmeasured. Gate B's regression sweep
+of existing Draw and Trackpad behavior after this change has also not been run.
+Both remain owner actions; see `docs/RECOVERY_AND_LECTURE_CHECKLIST.md`.
 
 For free Apple accounts, `scripts/install-personal.sh` produces optimized Release builds, packages the Mac app, and refreshes the physical iPad installation. Its project-local Team/device configuration is ignored by Git. Apple still limits Personal Team provisioning to 7 days, so permanent native iPad distribution remains dependent on paid-program signing.

@@ -4,6 +4,11 @@ All notable project changes will be documented here. Skeldri has not published a
 
 ## Unreleased
 
+- Added Read (Lecture) mode: a third, read-only experience that mirrors a Mac-approved window or display as a locally zoomable and pannable reading viewport, with a precision navigation rail. It is not a virtual display and adds no private virtual-display API.
+- The Mac owner chooses what may be read from a menu-bar picker. The iPad sends only a request identifier and can never name a source; Skeldri's own windows are never offered.
+- Read mode is enforced read-only by the Mac, not only hidden on the iPad: drawing mutations and pointer events are refused while the peer declares Read, with the trackpad release fail-safe still allowed.
+- Capture lifecycle generalized from a display identifier to a display-or-window capture target under the existing single serial owner, so display and Read streams can never overlap and leaving Read restores the previous display stream.
+- Bumped the modern protocol to version 7 for the Read message set. Skeldri Afi stays on its own version 1 and degrades explicitly rather than corrupting a legacy session.
 - Added the isolated `_skeldri-afi._tcp` compatibility listener for native iOS 10 clients without changing the modern protocol.
 - Hardened two-finger gesture arbitration so pinch zoom and scrolling remain mutually exclusive for the full gesture.
 - Replaced the initial rune artwork with Skeldri's flowing Ansuz–Kenaz ribbon identity across both app icons and the Mac menu bar.
