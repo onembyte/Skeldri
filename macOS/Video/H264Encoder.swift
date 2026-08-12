@@ -40,6 +40,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
     private var pendingFrame: PixelBufferTransfer?
     private var encodingInFlight = false
     private var forceNextKeyframe = true
+    private var profile: VideoStreamingProfile = .modern
     private var metricsStartedAt = ProcessInfo.processInfo.systemUptime
     private var metricsEncodedFrames = 0
     private var metricsSentFrames = 0
@@ -59,6 +60,13 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
 
     func invalidate() { queue.async { [weak self] in self?.invalidateCurrentSession() } }
     func requestKeyframe() { queue.async { [weak self] in self?.forceNextKeyframe = true } }
+    func setProfile(_ profile: VideoStreamingProfile) {
+        queue.async { [weak self] in
+            guard let self, self.profile != profile else { return }
+            self.profile = profile
+            self.invalidateCurrentSession()
+        }
+    }
 
     private func encodePendingFrameIfPossible() {
         guard !encodingInFlight, let frame = pendingFrame else { return }
@@ -81,7 +89,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
             session,
             imageBuffer: image,
             presentationTimeStamp: frame.presentationTime,
-            duration: CMTime(value: 1, timescale: 30),
+            duration: CMTime(value: 1, timescale: CMTimeScale(profile.framesPerSecond)),
             frameProperties: frameProperties,
             sourceFrameRefcon: context.toOpaque(),
             infoFlagsOut: &flags
@@ -111,10 +119,14 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
         guard status == noErr, let created else { SkeldriLogger.video.error("Encoder creation failed: \(status)"); return }
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_RealTime, value: kCFBooleanTrue)
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_AllowFrameReordering, value: kCFBooleanFalse)
-        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_ExpectedFrameRate, value: 30 as CFNumber)
-        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_AverageBitRate, value: 4_000_000 as CFNumber)
-        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_DataRateLimits, value: [625_000, 1] as CFArray)
-        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_MaxKeyFrameInterval, value: 30 as CFNumber)
+        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_ExpectedFrameRate,
+                             value: profile.framesPerSecond as CFNumber)
+        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_AverageBitRate,
+                             value: profile.averageBitRate as CFNumber)
+        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_DataRateLimits,
+                             value: [profile.averageBitRate / 8, 1] as CFArray)
+        VTSessionSetProperty(created, key: kVTCompressionPropertyKey_MaxKeyFrameInterval,
+                             value: profile.framesPerSecond as CFNumber)
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_MaxKeyFrameIntervalDuration, value: 1 as CFNumber)
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_PrioritizeEncodingSpeedOverQuality, value: kCFBooleanTrue)
         VTCompressionSessionPrepareToEncodeFrames(created)

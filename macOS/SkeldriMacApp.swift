@@ -55,6 +55,7 @@ final class MacAppModel: ObservableObject {
     private var modernVideoConnected = false
     private var afiVideoConnected = false
     private var streamingDisplayID: UInt32?
+    private var streamingProfile: VideoStreamingProfile?
     private var requestedDisplayID: UInt32?
     private var reconciliationIsRunning = false
 
@@ -168,7 +169,7 @@ final class MacAppModel: ObservableObject {
     func requestInputPermission() { input.requestPermission() }
     func refreshInputPermission() { inputPermission = input.hasPermission }
 
-    private func startStreaming(displayID: UInt32) async -> Bool {
+    private func startStreaming(displayID: UInt32, profile: VideoStreamingProfile) async -> Bool {
         guard capturePermission else {
             errorMessage = "Screen Recording permission is required."
             return false
@@ -180,7 +181,10 @@ final class MacAppModel: ObservableObject {
         do {
             let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
             let ownBundleID = Bundle.main.bundleIdentifier
-            try await capture.start(display: display, excluding: content.applications.filter { $0.bundleIdentifier == ownBundleID })
+            encoder.setProfile(profile)
+            try await capture.start(display: display,
+                                    excluding: content.applications.filter { $0.bundleIdentifier == ownBundleID },
+                                    profile: profile)
             return true
         } catch {
             errorMessage = "Capture failed: \(error.localizedDescription)"
@@ -233,6 +237,7 @@ final class MacAppModel: ObservableObject {
                 if streamingDisplayID != nil {
                     await stopStreaming()
                     streamingDisplayID = nil
+                    streamingProfile = nil
                     continue
                 }
 
@@ -248,17 +253,30 @@ final class MacAppModel: ObservableObject {
             if !videoConnected, streamingDisplayID != nil {
                 await stopStreaming()
                 streamingDisplayID = nil
+                streamingProfile = nil
+                continue
+            }
+
+            let desiredProfile: VideoStreamingProfile = modernVideoConnected ? .modern : .legacyAfi
+            if streamingDisplayID != nil, streamingProfile != desiredProfile {
+                await stopStreaming()
+                streamingDisplayID = nil
+                streamingProfile = nil
                 continue
             }
 
             if videoConnected, streamingDisplayID == nil, let target = selectedDisplayID {
-                let started = await startStreaming(displayID: target)
-                if started { streamingDisplayID = target }
+                let started = await startStreaming(displayID: target, profile: desiredProfile)
+                if started {
+                    streamingDisplayID = target
+                    streamingProfile = desiredProfile
+                }
 
                 // Connection or selection state may have changed while awaiting.
                 if !videoConnected || requestedDisplayID != nil || selectedDisplayID != target {
                     if started { await stopStreaming() }
                     streamingDisplayID = nil
+                    streamingProfile = nil
                     continue
                 }
             }

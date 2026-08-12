@@ -16,6 +16,7 @@
 		106A1DD2AA20A6524E10B9BD /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
 		10CA7BA8A4E3DF6068053C51 /* H264Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F87F5DD4CE62D4B8FDE054 /* H264Decoder.swift */; };
 		11E716BE6809971448C34E67 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
+		120410C123E7ABD3F08C6D01 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		1462371820EC68C0ADB0B7A3 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
 		155B7AAB4E3E19CE6A616B36 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */; };
@@ -46,6 +47,7 @@
 		5D4FCCFF501E2B66ABACBCBB /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */; };
 		60EDAC78ABC72FA4CED464C1 /* DrawingToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDB8E9602B4BD6AC7003A08 /* DrawingToolbar.swift */; };
 		61DE047D9B66C45403815B08 /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402801EB066BC5180232032E /* VideoFlowControl.swift */; };
+		63BE3580976B29430BB676C2 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		6426B776045D46D3CEEEEE3F /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */; };
 		68545A8EA9BF830B728B67BA /* TrackpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD374CA2E084D8C3F30818 /* TrackpadView.swift */; };
 		6E3A11323635501DA189D70B /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
@@ -76,9 +78,11 @@
 		B9C20C495CCEB9916DAFFF32 /* MacAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39F023D46C6E2FD96938B98 /* MacAnnotationView.swift */; };
 		BA03C146D42A0BE3759BDE2B /* TrackpadMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */; };
 		BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */; };
+		BBE382194A98AA20A6A32A79 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		BDFBAA930278CD747669AF7D /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
 		C44842D96AE9B1324B804E6E /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		C81A7BD1D8CEEF016408BAF4 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
+		CA12AA294ACCFD6B01EE06C3 /* VideoStreamingProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */; };
 		CB6DB25E10856A132B02B21E /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
 		CBFCF496FC826C3C7EA7DE2B /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
 		CE0DF0201B3EAFDA2E14CADA /* StrokeHitTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */; };
@@ -131,6 +135,7 @@
 		6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControlTests.swift; sourceTree = "<group>"; };
 		7039D25CFD791DB20693D0AB /* SkeldriMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkeldriMac.entitlements; sourceTree = "<group>"; };
 		78DD229B64EB0D530424A769 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
+		7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStreamingProfile.swift; sourceTree = "<group>"; };
 		7D4A965FD080A73549AD5FA5 /* DiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryView.swift; sourceTree = "<group>"; };
 		82264D3115D066E08A928202 /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
 		86553A4F09D4849FB27647AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,6 +143,7 @@
 		94979FA5662548E99A898454 /* TouchDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawingView.swift; sourceTree = "<group>"; };
 		95DB2256D96C304F58080362 /* SkeldriPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkeldriPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AF99AC17F713757D73C175 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
+		98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStreamingProfileTests.swift; sourceTree = "<group>"; };
 		9A8232CD785D3538ED944FC5 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
 		9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadMotion.swift; sourceTree = "<group>"; };
 		A1F87F5DD4CE62D4B8FDE054 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
@@ -179,6 +185,7 @@
 				167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */,
 				4F9750797A4B0811E0484C8F /* TrackpadMotionTests.swift */,
 				6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */,
+				98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -273,6 +280,7 @@
 				29DE6F21A4DF4DDC504AD850 /* Stroke.swift */,
 				BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */,
 				2F37D20EC3516E923AB574CD /* StrokeStyle.swift */,
+				7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -532,6 +540,7 @@
 				155B7AAB4E3E19CE6A616B36 /* TrackpadEvent.swift in Sources */,
 				E51E44E8434552E85809203F /* TrackpadMotion.swift in Sources */,
 				61DE047D9B66C45403815B08 /* VideoFlowControl.swift in Sources */,
+				120410C123E7ABD3F08C6D01 /* VideoStreamingProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +578,8 @@
 				B2A65E1D68CB5CF90E16E806 /* TrackpadMotionTests.swift in Sources */,
 				B017A205A9108314FD8F863F /* VideoFlowControl.swift in Sources */,
 				5426B69E85FA264917F16666 /* VideoFlowControlTests.swift in Sources */,
+				BBE382194A98AA20A6A32A79 /* VideoStreamingProfile.swift in Sources */,
+				CA12AA294ACCFD6B01EE06C3 /* VideoStreamingProfileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +617,7 @@
 				68545A8EA9BF830B728B67BA /* TrackpadView.swift in Sources */,
 				35A8E9CA2E5BD900B679DD43 /* VideoDisplayView.swift in Sources */,
 				3716E48B35E833E443474F23 /* VideoFlowControl.swift in Sources */,
+				63BE3580976B29430BB676C2 /* VideoStreamingProfile.swift in Sources */,
 				01BFF9E375AFCF2831FD0C99 /* iPadNetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

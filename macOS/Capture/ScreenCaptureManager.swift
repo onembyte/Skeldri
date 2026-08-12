@@ -12,14 +12,15 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
     private var fallbackTask: Task<Void, Never>?
     private var receivedStreamFrame = false
 
-    @MainActor func start(display: SCDisplay, excluding applications: [SCRunningApplication]) async throws {
+    @MainActor func start(display: SCDisplay, excluding applications: [SCRunningApplication],
+                          profile: VideoStreamingProfile = .modern) async throws {
         await stop()
         let filter = SCContentFilter(display: display, excludingApplications: applications, exceptingWindows: [])
         let configuration = SCStreamConfiguration()
-        let scale = min(1, 1600 / Double(max(display.width, display.height)))
+        let scale = min(1, Double(profile.maximumDimension) / Double(max(display.width, display.height)))
         configuration.width = Int(Double(display.width) * scale)
         configuration.height = Int(Double(display.height) * scale)
-        configuration.minimumFrameInterval = CMTime(value: 1, timescale: 30)
+        configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(profile.framesPerSecond))
         configuration.showsCursor = true
         configuration.capturesAudio = false
         // Two surfaces absorb normal scheduling jitter without allowing capture
@@ -34,7 +35,8 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
         fallbackTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(2))
             guard !Task.isCancelled else { return }
-            await self?.runScreenshotFallback(filter: filter, configuration: configuration)
+            await self?.runScreenshotFallback(filter: filter, configuration: configuration,
+                                              framesPerSecond: profile.framesPerSecond)
         }
         try await stream.startCapture()
         SkeldriLogger.capture.info("Capture started at \(configuration.width)x\(configuration.height)")
@@ -59,7 +61,8 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
     /// not deliver output. A bounded screenshot loop keeps mirroring functional
     /// until the primary stream emits its first frame, then exits automatically.
     @MainActor
-    private func runScreenshotFallback(filter: SCContentFilter, configuration: SCStreamConfiguration) async {
+    private func runScreenshotFallback(filter: SCContentFilter, configuration: SCStreamConfiguration,
+                                       framesPerSecond: Int) async {
         guard !stateLock.withLock({ receivedStreamFrame }) else { return }
         SkeldriLogger.capture.warning("No SCStream frames received; starting screenshot fallback")
         while !Task.isCancelled, !stateLock.withLock({ receivedStreamFrame }) {
@@ -70,7 +73,8 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
                 SkeldriLogger.capture.error("Screenshot fallback failed: \(error.localizedDescription)")
                 return
             }
-            try? await Task.sleep(for: .milliseconds(33))
+            let delay = max(1, 1_000 / framesPerSecond)
+            try? await Task.sleep(for: .milliseconds(delay))
         }
     }
 }
