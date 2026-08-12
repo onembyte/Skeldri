@@ -1,4 +1,4 @@
-# DrawPad Engineering Rules
+# Skeldri Engineering Rules
 
 - Work only in this repository. Keep DerivedData and temporary artifacts in `.build/`.
 - Use native Swift and Apple frameworks only; no third-party runtime dependencies.

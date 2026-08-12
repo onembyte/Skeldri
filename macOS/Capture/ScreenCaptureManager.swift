@@ -6,7 +6,7 @@ protocol ScreenFrameConsumer: AnyObject { func consume(_ sampleBuffer: CMSampleB
 /// ScreenCaptureKit adapter. Capture output is isolated on a dedicated serial queue.
 final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @unchecked Sendable {
     weak var consumer: ScreenFrameConsumer?
-    private let queue = DispatchQueue(label: "DrawPad.capture", qos: .userInteractive)
+    private let queue = DispatchQueue(label: "Skeldri.capture", qos: .userInteractive)
     private let stateLock = NSLock()
     private var stream: SCStream?
     private var fallbackTask: Task<Void, Never>?
@@ -37,18 +37,18 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
             await self?.runScreenshotFallback(filter: filter, configuration: configuration)
         }
         try await stream.startCapture()
-        DrawPadLogger.capture.info("Capture started at \(configuration.width)x\(configuration.height)")
+        SkeldriLogger.capture.info("Capture started at \(configuration.width)x\(configuration.height)")
     }
 
     @MainActor func stop() async {
         fallbackTask?.cancel()
         fallbackTask = nil
         guard let stream else { return }
-        do { try await stream.stopCapture() } catch { DrawPadLogger.capture.error("Capture stop failed: \(error.localizedDescription)") }
+        do { try await stream.stopCapture() } catch { SkeldriLogger.capture.error("Capture stop failed: \(error.localizedDescription)") }
         self.stream = nil
     }
 
-    func stream(_ stream: SCStream, didStopWithError error: any Error) { DrawPadLogger.capture.error("Capture stopped: \(error.localizedDescription)") }
+    func stream(_ stream: SCStream, didStopWithError error: any Error) { SkeldriLogger.capture.error("Capture stopped: \(error.localizedDescription)") }
     func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
         guard type == .screen, sampleBuffer.isValid else { return }
         stateLock.withLock { receivedStreamFrame = true }
@@ -61,13 +61,13 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
     @MainActor
     private func runScreenshotFallback(filter: SCContentFilter, configuration: SCStreamConfiguration) async {
         guard !stateLock.withLock({ receivedStreamFrame }) else { return }
-        DrawPadLogger.capture.warning("No SCStream frames received; starting screenshot fallback")
+        SkeldriLogger.capture.warning("No SCStream frames received; starting screenshot fallback")
         while !Task.isCancelled, !stateLock.withLock({ receivedStreamFrame }) {
             do {
                 let sample = try await SCScreenshotManager.captureSampleBuffer(contentFilter: filter, configuration: configuration)
                 consumer?.consume(sample)
             } catch {
-                DrawPadLogger.capture.error("Screenshot fallback failed: \(error.localizedDescription)")
+                SkeldriLogger.capture.error("Screenshot fallback failed: \(error.localizedDescription)")
                 return
             }
             try? await Task.sleep(for: .milliseconds(33))

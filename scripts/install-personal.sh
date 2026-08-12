@@ -7,14 +7,14 @@ DERIVED_DATA="$INSTALL_ROOT/DerivedData"
 TEAM_FILE="$ROOT/.build/personal-team-id"
 DEVICE_FILE="$ROOT/.build/personal-device-name"
 TEAM_ID="${DEVELOPMENT_TEAM:-}"
-DEVICE_NAME="${DRAWPAD_DEVICE:-}"
+DEVICE_NAME="${SKELDRI_DEVICE:-${DRAWPAD_DEVICE:-}}"
 
 usage() {
     cat <<'EOF'
 Usage: ./scripts/install-personal.sh [--team TEAM_ID] [--device "Device Name"]
 
-Builds Release versions of both apps, installs DrawPadiPad on a connected
-personal device, packages DrawPadMac, and launches both apps.
+Builds Release versions of both apps, installs SkeldriPad on a connected
+personal device, packages SkeldriMac, and launches both apps.
 
 The Team ID and device name are saved only under the ignored .build directory.
 Apple Personal Team provisioning expires after 7 days; rerun this command to
@@ -68,10 +68,10 @@ mkdir -p "$INSTALL_ROOT" "$(dirname "$TEAM_FILE")"
 printf '%s\n' "$TEAM_ID" > "$TEAM_FILE"
 printf '%s\n' "$DEVICE_NAME" > "$DEVICE_FILE"
 
-echo "Building DrawPadMac (Release)…"
+echo "Building SkeldriMac (Release)…"
 xcodebuild \
-    -project "$ROOT/DrawPad.xcodeproj" \
-    -scheme DrawPadMac \
+    -project "$ROOT/Skeldri.xcodeproj" \
+    -scheme SkeldriMac \
     -configuration Release \
     -destination 'platform=macOS' \
     -derivedDataPath "$DERIVED_DATA" \
@@ -79,10 +79,10 @@ xcodebuild \
     CODE_SIGN_STYLE=Automatic \
     build
 
-echo "Building DrawPadiPad (Release, Personal Team)…"
+echo "Building SkeldriPad (Release, Personal Team)…"
 xcodebuild \
-    -project "$ROOT/DrawPad.xcodeproj" \
-    -scheme DrawPadiPad \
+    -project "$ROOT/Skeldri.xcodeproj" \
+    -scheme SkeldriPad \
     -configuration Release \
     -destination 'generic/platform=iOS' \
     -derivedDataPath "$DERIVED_DATA" \
@@ -91,40 +91,41 @@ xcodebuild \
     CODE_SIGN_STYLE=Automatic \
     build
 
-MAC_APP="$DERIVED_DATA/Build/Products/Release/DrawPadMac.app"
-IPAD_APP="$DERIVED_DATA/Build/Products/Release-iphoneos/DrawPadiPad.app"
-MAC_ARCHIVE="$INSTALL_ROOT/DrawPadMac.zip"
+MAC_APP="$DERIVED_DATA/Build/Products/Release/SkeldriMac.app"
+IPAD_APP="$DERIVED_DATA/Build/Products/Release-iphoneos/SkeldriPad.app"
+MAC_ARCHIVE="$INSTALL_ROOT/SkeldriMac.zip"
 
 [[ -d "$MAC_APP" ]] || { echo "Mac build product was not found." >&2; exit 1; }
 [[ -d "$IPAD_APP" ]] || { echo "iPad build product was not found." >&2; exit 1; }
 
 ditto -c -k --sequesterRsrc --keepParent "$MAC_APP" "$MAC_ARCHIVE"
 
-echo "Installing DrawPadiPad on ${DEVICE_NAME}…"
+echo "Installing SkeldriPad on ${DEVICE_NAME}…"
 xcrun devicectl device install app --device "$DEVICE_NAME" "$IPAD_APP"
 
-echo "Launching DrawPadMac…"
+echo "Launching SkeldriMac…"
 # `open` reuses an existing application process even when its on-disk binary was
 # just replaced. That can leave the Mac and iPad speaking different protocol
-# versions after an upgrade, so terminate only DrawPadMac and wait for its clean
+# versions after an upgrade, so terminate only SkeldriMac and wait for its clean
 # shutdown before launching the newly built bundle.
-if pgrep -x DrawPadMac >/dev/null; then
-    killall DrawPadMac
+if pgrep -x SkeldriMac >/dev/null || pgrep -x DrawPadMac >/dev/null; then
+    killall SkeldriMac 2>/dev/null || true
+    killall DrawPadMac 2>/dev/null || true
     for _ in {1..50}; do
-        pgrep -x DrawPadMac >/dev/null || break
+        if ! pgrep -x SkeldriMac >/dev/null && ! pgrep -x DrawPadMac >/dev/null; then break; fi
         sleep 0.1
     done
 fi
-if pgrep -x DrawPadMac >/dev/null; then
-    echo "DrawPadMac did not stop; quit it from the menu bar and rerun this installer." >&2
+if pgrep -x SkeldriMac >/dev/null || pgrep -x DrawPadMac >/dev/null; then
+    echo "The previous Mac companion did not stop; quit it from the menu bar and rerun this installer." >&2
     exit 1
 fi
 open -n "$MAC_APP"
 
-echo "Launching DrawPadiPad…"
+echo "Launching SkeldriPad…"
 if ! xcrun devicectl device process launch --device "$DEVICE_NAME" com.example.drawpad.ipad; then
     echo "The app was installed, but iPadOS could not launch it automatically." >&2
-    echo "Unlock the iPad and open DrawPad manually." >&2
+    echo "Unlock the iPad and open Skeldri manually." >&2
 fi
 
 echo

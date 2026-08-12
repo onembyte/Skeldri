@@ -9,16 +9,16 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FEF478096BF11D7029197491"
-               BuildableName = "DrawPadTests.xctest"
-               BlueprintName = "DrawPadTests"
-               ReferencedContainer = "container:DrawPad.xcodeproj">
+               BlueprintIdentifier = "5F0CD8D966A4143A015D6BC1"
+               BuildableName = "SkeldriPad.app"
+               BlueprintName = "SkeldriPad"
+               ReferencedContainer = "container:Skeldri.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,27 +32,14 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FEF478096BF11D7029197491"
-            BuildableName = "DrawPadTests.xctest"
-            BlueprintName = "DrawPadTests"
-            ReferencedContainer = "container:DrawPad.xcodeproj">
+            BlueprintIdentifier = "5F0CD8D966A4143A015D6BC1"
+            BuildableName = "SkeldriPad.app"
+            BlueprintName = "SkeldriPad"
+            ReferencedContainer = "container:Skeldri.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FEF478096BF11D7029197491"
-               BuildableName = "DrawPadTests.xctest"
-               BlueprintName = "DrawPadTests"
-               ReferencedContainer = "container:DrawPad.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <CommandLineArguments>
-      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -64,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FEF478096BF11D7029197491"
-            BuildableName = "DrawPadTests.xctest"
-            BlueprintName = "DrawPadTests"
-            ReferencedContainer = "container:DrawPad.xcodeproj">
+            BlueprintIdentifier = "5F0CD8D966A4143A015D6BC1"
+            BuildableName = "SkeldriPad.app"
+            BlueprintName = "SkeldriPad"
+            ReferencedContainer = "container:Skeldri.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -80,15 +68,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FEF478096BF11D7029197491"
-            BuildableName = "DrawPadTests.xctest"
-            BlueprintName = "DrawPadTests"
-            ReferencedContainer = "container:DrawPad.xcodeproj">
+            BlueprintIdentifier = "5F0CD8D966A4143A015D6BC1"
+            BuildableName = "SkeldriPad.app"
+            BlueprintName = "SkeldriPad"
+            ReferencedContainer = "container:Skeldri.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

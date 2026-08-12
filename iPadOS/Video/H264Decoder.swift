@@ -12,7 +12,7 @@ struct VideoFrameReceipt: Sendable {
 final class H264Decoder: @unchecked Sendable {
     weak var displayLayer: AVSampleBufferDisplayLayer?
     var onFrameConsumed: (@Sendable (VideoFrameReceipt) -> Void)?
-    private let queue = DispatchQueue(label: "DrawPad.video.decoder", qos: .userInteractive)
+    private let queue = DispatchQueue(label: "Skeldri.video.decoder", qos: .userInteractive)
     private var formatDescription: CMVideoFormatDescription?
     private var activeStreamID: UUID?
     private var sequenceGate = VideoSequenceGate()
@@ -33,7 +33,7 @@ final class H264Decoder: @unchecked Sendable {
                 sequenceGate.configure(streamID: configuration.streamID)
                 DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
             } else {
-                DrawPadLogger.video.error("Decoder configuration failed: \(result)")
+                SkeldriLogger.video.error("Decoder configuration failed: \(result)")
             }
         }
     }
@@ -79,7 +79,7 @@ final class H264Decoder: @unchecked Sendable {
 
             // The Mac and iPad do not share a media clock. Asking the display layer
             // to honor the Mac's presentation timestamp can leave every frame queued
-            // in the future. Live DrawPad frames should be rendered as soon as they
+            // in the future. Live Skeldri frames should be rendered as soon as they
             // arrive; TCP ordering still preserves the encoded stream sequence.
             CMSetAttachment(sample, key: kCMSampleAttachmentKey_DisplayImmediately,
                             value: kCFBooleanTrue,

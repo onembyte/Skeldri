@@ -6,7 +6,7 @@ import CoreGraphics
 final class MacInputController: @unchecked Sendable {
     var onPermissionChanged: (@Sendable (Bool) -> Void)?
 
-    private let queue = DispatchQueue(label: "DrawPad.input", qos: .userInteractive)
+    private let queue = DispatchQueue(label: "Skeldri.input", qos: .userInteractive)
     private var sequenceGate = TrackpadSequenceGate()
     private var active = false
     private var leftButtonDown = false

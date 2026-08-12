@@ -32,7 +32,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
     /// Returns false when downstream backpressure dropped the access unit. The
     /// encoder then makes the next submitted frame independently decodable.
     var onFrame: (@Sendable (EncodedVideoFrame) -> Bool)?
-    private let queue = DispatchQueue(label: "DrawPad.video.encoder", qos: .userInteractive)
+    private let queue = DispatchQueue(label: "Skeldri.video.encoder", qos: .userInteractive)
     private var session: VTCompressionSession?
     private var dimensions: CMVideoDimensions?
     private var streamID = UUID()
@@ -90,7 +90,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
             context.release()
             encodingInFlight = false
             forceNextKeyframe = true
-            DrawPadLogger.video.error("Encode failed: \(status)")
+            SkeldriLogger.video.error("Encode failed: \(status)")
             encodePendingFrameIfPossible()
         }
     }
@@ -108,7 +108,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
                                                 imageBufferAttributes: nil, compressedDataAllocator: nil,
                                                 outputCallback: h264OutputCallback, refcon: context,
                                                 compressionSessionOut: &created)
-        guard status == noErr, let created else { DrawPadLogger.video.error("Encoder creation failed: \(status)"); return }
+        guard status == noErr, let created else { SkeldriLogger.video.error("Encoder creation failed: \(status)"); return }
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_RealTime, value: kCFBooleanTrue)
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_AllowFrameReordering, value: kCFBooleanFalse)
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_ExpectedFrameRate, value: 30 as CFNumber)
@@ -119,7 +119,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
         VTSessionSetProperty(created, key: kVTCompressionPropertyKey_PrioritizeEncodingSpeedOverQuality, value: kCFBooleanTrue)
         VTCompressionSessionPrepareToEncodeFrames(created)
         session = created; dimensions = CMVideoDimensions(width: width, height: height)
-        DrawPadLogger.video.info("Encoder started at \(width)x\(height)")
+        SkeldriLogger.video.info("Encoder started at \(width)x\(height)")
     }
 
     private func invalidateCurrentSession() {
@@ -199,7 +199,7 @@ final class H264Encoder: @unchecked Sendable, ScreenFrameConsumer {
         let encodedFPS = Double(metricsEncodedFrames) / elapsed
         let sentFPS = Double(metricsSentFrames) / elapsed
         let megabitsPerSecond = Double(metricsSentBytes * 8) / elapsed / 1_000_000
-        DrawPadLogger.video.info(
+        SkeldriLogger.video.info(
             "Video metrics encoded=\(encodedFPS, format: .fixed(precision: 1))fps sent=\(sentFPS, format: .fixed(precision: 1))fps bitrate=\(megabitsPerSecond, format: .fixed(precision: 2))Mbps"
         )
         resetMetrics()

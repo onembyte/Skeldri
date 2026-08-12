@@ -1,9 +1,9 @@
-# DrawPad
+# Skeldri
 
-DrawPad turns an iPad into a wireless finger-annotation surface and opt-in trackpad for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes or relative pointer gestures on a separate low-latency channel. It requires neither Apple Pencil nor a cloud service.
+Skeldri turns an iPad into a wireless finger-annotation surface and opt-in trackpad for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes or relative pointer gestures on a separate low-latency channel. It requires neither Apple Pencil nor a cloud service.
 
 > [!NOTE]
-> DrawPad is a development-stage native Apple project. It has been exercised with a physical iPad, but it is not distributed through the App Store and still requires local Xcode signing.
+> Skeldri is a development-stage native Apple project. It has been exercised with a physical iPad, but it is not distributed through the App Store and still requires local Xcode signing.
 
 ## Features
 
@@ -25,7 +25,7 @@ DrawPad turns an iPad into a wireless finger-annotation surface and opt-in track
 - iPadOS 18 or later.
 - Xcode 27 beta or later for the currently checked-in project (Swift 6 and the current Liquid Glass SDK APIs).
 - Mac and iPad connected to the same local network.
-- XcodeGen only when regenerating `DrawPad.xcodeproj`; it is not needed for normal builds.
+- XcodeGen only when regenerating `Skeldri.xcodeproj`; it is not needed for normal builds.
 
 The reference development environment is recorded in [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md).
 
@@ -51,21 +51,21 @@ All DerivedData produced by these scripts stays in `.build/DerivedData`.
 
 ## Run on a Mac
 
-1. Open `DrawPad.xcodeproj`.
-2. Select the `DrawPadMac` scheme and **My Mac** destination.
+1. Open `Skeldri.xcodeproj`.
+2. Select the `SkeldriMac` scheme and **My Mac** destination.
 3. Run the app.
 4. Grant Screen Recording access when prompted, then relaunch if macOS requests it.
 5. To use Trackpad mode, grant Pointer Control access from the menu-bar popover and follow the macOS prompt.
 
 ## Run on iPad Simulator
 
-Select the `DrawPadiPad` scheme, choose an installed iPad simulator, and run. Discovery and physical network behavior are best validated on a real iPad.
+Select the `SkeldriPad` scheme, choose an installed iPad simulator, and run. Discovery and physical network behavior are best validated on a real iPad.
 
 ## Run on a physical iPad
 
 1. Enable **Settings → Privacy & Security → Developer Mode** on iPad and complete its requested restart.
 2. Connect the iPad over USB and trust the Mac if prompted.
-3. In **DrawPadiPad → Signing & Capabilities**, enable automatic signing and choose your Apple Development Team. No Team ID is committed to this repository.
+3. In **SkeldriPad → Signing & Capabilities**, enable automatic signing and choose your Apple Development Team. No Team ID is committed to this repository.
 4. Select the connected iPad as the run destination and press Run.
 5. Permit Local Network access when prompted.
 6. If iPadOS blocks the first launch, trust the developer under **Settings → General → VPN & Device Management**.
@@ -88,7 +88,7 @@ The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall
 
 ## Privacy and security
 
-DrawPad advertises only `_drawpad._tcp` on the LAN. It has no internet relay, analytics, telemetry, authentication service, microphone access, camera access, or keyboard control. Trackpad mode uses macOS's permission-gated event-posting API; DrawPad cannot move the pointer until you explicitly approve it. V1 does not include pairing authentication, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
+Skeldri advertises only `_skeldri._tcp` on the LAN. It has no internet relay, analytics, telemetry, authentication service, microphone access, camera access, or keyboard control. Trackpad mode uses macOS's permission-gated event-posting API; Skeldri cannot move the pointer until you explicitly approve it. V1 does not include pairing authentication, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
 
 ## Project generation
 
@@ -98,7 +98,7 @@ DrawPad advertises only `_drawpad._tcp` on the LAN. It has no internet relay, an
 xcodegen generate
 ```
 
-Commit both `project.yml` and the regenerated `DrawPad.xcodeproj` when project structure changes.
+Commit both `project.yml` and the regenerated `Skeldri.xcodeproj` when project structure changes.
 
 ## Documentation
 

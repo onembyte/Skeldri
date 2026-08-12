@@ -25,7 +25,7 @@ struct DiscoveryView: View {
                         .padding(.horizontal, 32)
                 }
             }
-            .navigationTitle("DrawPad")
+            .navigationTitle("Skeldri")
         }
     }
 }

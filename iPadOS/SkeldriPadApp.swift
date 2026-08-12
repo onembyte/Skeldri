@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 @main
-struct DrawPadiPadApp: App {
+struct SkeldriPadApp: App {
     @StateObject private var model = iPadAppModel()
     @Environment(\.scenePhase) private var scenePhase
 
@@ -19,7 +19,7 @@ struct DrawPadiPadApp: App {
             .onChange(of: scenePhase) { _, phase in
                 if phase != .active { model.suspendPointerInput() }
             }
-            .alert("DrawPad", isPresented: $model.showingError) {
+            .alert("Skeldri", isPresented: $model.showingError) {
                 Button("OK") {}
             } message: {
                 Text(model.errorMessage ?? "Unknown error")
@@ -43,7 +43,7 @@ final class iPadAppModel: ObservableObject {
     @Published var selectedDisplayID: UInt32?
     @Published var pendingDisplayID: UInt32?
     @Published var clearsDrawingsWhenSwitchingDisplays = false
-    @Published var inputMode: DrawPadInputMode = .drawing
+    @Published var inputMode: SkeldriInputMode = .drawing
     @Published var trackpadSensitivity: Double {
         didSet { UserDefaults.standard.set(trackpadSensitivity, forKey: Self.trackpadSensitivityKey) }
     }

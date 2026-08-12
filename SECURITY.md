@@ -2,9 +2,9 @@
 
 ## Project status
 
-DrawPad is a local-development MVP, not a hardened remote-desktop product. It listens only through its Bonjour-advertised local-network service and accepts one iPad session. Protocol version compatibility is checked, but V1 does not authenticate or encrypt peers at the application layer. Optional pointer input is permission-gated by macOS, explicitly enabled from the iPad, sequence checked, value bounded, and reset whenever its session or mode ends. Use trackpad mode only on a trusted LAN until pairing is implemented.
+Skeldri is a local-development MVP, not a hardened remote-desktop product. It listens only through its Bonjour-advertised local-network service and accepts one iPad session. Protocol version compatibility is checked, but V1 does not authenticate or encrypt peers at the application layer. Optional pointer input is permission-gated by macOS, explicitly enabled from the iPad, sequence checked, value bounded, and reset whenever its session or mode ends. Use trackpad mode only on a trusted LAN until pairing is implemented.
 
-Use DrawPad only on a trusted LAN. Do not expose its listener through port forwarding, a public address, or an untrusted network.
+Use Skeldri only on a trusted LAN. Do not expose its listener through port forwarding, a public address, or an untrusted network.
 
 ## Reporting a vulnerability
 

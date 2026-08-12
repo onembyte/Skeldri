@@ -1,5 +1,7 @@
-name: DrawPad
+name: Skeldri
 options:
+  # Preserve the pre-rename identifiers so installed apps and macOS privacy
+  # grants upgrade in place. Migrate them only as a separately planned release.
   bundleIdPrefix: com.example.drawpad
   deploymentTarget:
     macOS: "15.0"
@@ -10,7 +12,7 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     ENABLE_USER_SCRIPT_SANDBOXING: YES
 targets:
-  DrawPadMac:
+  SkeldriMac:
     type: application
     platform: macOS
     sources:
@@ -20,15 +22,15 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.mac
         GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: DrawPad
+        INFOPLIST_KEY_CFBundleDisplayName: Skeldri
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
         INFOPLIST_KEY_LSUIElement: YES
         INFOPLIST_KEY_LSMultipleInstancesProhibited: YES
-        CODE_SIGN_ENTITLEMENTS: macOS/DrawPadMac.entitlements
+        CODE_SIGN_ENTITLEMENTS: macOS/SkeldriMac.entitlements
         CODE_SIGN_STYLE: Automatic
     entitlements:
-      path: macOS/DrawPadMac.entitlements
-  DrawPadiPad:
+      path: macOS/SkeldriMac.entitlements
+  SkeldriPad:
     type: application
     platform: iOS
     sources:
@@ -41,7 +43,7 @@ targets:
         INFOPLIST_FILE: iPadOS/Info.plist
         CODE_SIGN_STYLE: Automatic
         TARGETED_DEVICE_FAMILY: 2
-  DrawPadTests:
+  SkeldriTests:
     type: bundle.unit-test
     platform: macOS
     sources:
@@ -52,18 +54,18 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
-  DrawPadMac:
+  SkeldriMac:
     build:
       targets:
-        DrawPadMac: all
-  DrawPadiPad:
+        SkeldriMac: all
+  SkeldriPad:
     build:
       targets:
-        DrawPadiPad: all
-  DrawPadTests:
+        SkeldriPad: all
+  SkeldriTests:
     build:
       targets:
-        DrawPadTests: [test]
+        SkeldriTests: [test]
     test:
       targets:
-        - DrawPadTests
+        - SkeldriTests

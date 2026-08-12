@@ -7,9 +7,9 @@ final class MacNetworkServer: @unchecked Sendable {
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
     var onVideoChannelChanged: (@Sendable (Bool) -> Void)?
     var onVideoRecoveryRequested: (@Sendable () -> Void)?
-    var onInputModeChanged: (@Sendable (DrawPadInputMode) -> Void)?
+    var onInputModeChanged: (@Sendable (SkeldriInputMode) -> Void)?
     var onTrackpadEvent: (@Sendable (TrackpadEvent) -> Void)?
-    private let queue = DispatchQueue(label: "DrawPad.network.server")
+    private let queue = DispatchQueue(label: "Skeldri.network.server")
     private var listener: NWListener?
     /// Connections must be retained while waiting for their first hello packet.
     /// The channel-specific properties take ownership after classification.
@@ -22,7 +22,7 @@ final class MacNetworkServer: @unchecked Sendable {
     private let serviceID: String
 
     init(defaults: UserDefaults = .standard) {
-        let key = "DrawPadBonjourServiceID"
+        let key = "SkeldriBonjourServiceID"
         if let existing = defaults.string(forKey: key) {
             serviceID = existing
         } else {
@@ -39,11 +39,11 @@ final class MacNetworkServer: @unchecked Sendable {
         let record = NWTXTRecord(["id": serviceID, "protocol": String(ProtocolVersion.current)])
         listener.service = NWListener.Service(
             name: Host.current().localizedName ?? "Mac",
-            type: "_drawpad._tcp",
+            type: "_skeldri._tcp",
             txtRecord: record
         )
         listener.stateUpdateHandler = { state in
-            if case let .failed(error) = state { DrawPadLogger.network.error("Listener failed: \(error.localizedDescription)") }
+            if case let .failed(error) = state { SkeldriLogger.network.error("Listener failed: \(error.localizedDescription)") }
         }
         listener.newConnectionHandler = { [weak self] connection in self?.accept(connection) }
         self.listener = listener
@@ -125,7 +125,7 @@ final class MacNetworkServer: @unchecked Sendable {
                 control?.cancel()
                 control = peer
                 pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
-                DrawPadLogger.network.info("Control channel connected")
+                SkeldriLogger.network.info("Control channel connected")
                 onConnectionChanged?(true)
                 onControlPacket?(message)
             case .video:
@@ -136,7 +136,7 @@ final class MacNetworkServer: @unchecked Sendable {
                     videoConfigurationGate.reset()
                 }
                 pendingPeers.removeValue(forKey: ObjectIdentifier(peer))
-                DrawPadLogger.network.info("Video channel connected")
+                SkeldriLogger.network.info("Video channel connected")
                 onVideoChannelChanged?(true)
             }
         } else if peer === control {

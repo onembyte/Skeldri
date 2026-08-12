@@ -13,7 +13,7 @@ final class iPadNetworkClient: @unchecked Sendable {
     var onStateChanged: (@Sendable (Bool, String?) -> Void)?
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
     var onVideoPacket: (@Sendable (FramedPacket) -> Void)?
-    private let queue = DispatchQueue(label: "DrawPad.network.client")
+    private let queue = DispatchQueue(label: "Skeldri.network.client")
     private var browser: NWBrowser?
     private var browserGeneration = 0
     private var control: PeerConnection?
@@ -58,7 +58,7 @@ final class iPadNetworkClient: @unchecked Sendable {
         browser = nil
         onServicesChanged?([])
 
-        let browser = NWBrowser(for: .bonjourWithTXTRecord(type: "_drawpad._tcp", domain: nil), using: .tcp)
+        let browser = NWBrowser(for: .bonjourWithTXTRecord(type: "_skeldri._tcp", domain: nil), using: .tcp)
         browser.browseResultsChangedHandler = { [weak self] results, _ in
             guard let self, generation == browserGeneration else { return }
             onServicesChanged?(deduplicatedServices(from: results))

@@ -7,7 +7,7 @@ struct MacMainView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text("DrawPad").font(.title2).bold()
+                Text("Skeldri").font(.title2).bold()
                 Spacer()
                 Button {
                     NSApplication.shared.terminate(nil)
@@ -15,7 +15,7 @@ struct MacMainView: View {
                     Image(systemName: "power")
                 }
                 .buttonStyle(.plain)
-                .help("Quit DrawPad")
+                .help("Quit Skeldri")
             }
             ConnectionStatusView(title: "Screen Recording", ready: model.capturePermission, detail: model.capturePermission ? "Ready" : "Permission required")
             ConnectionStatusView(title: "Local Network", ready: model.listenerReady, detail: model.listenerReady ? "Ready" : "Starting")

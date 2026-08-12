@@ -1,6 +1,6 @@
-# Contributing to DrawPad
+# Contributing to Skeldri
 
-Thanks for improving DrawPad. Keep changes focused, native, and verifiable.
+Thanks for improving Skeldri. Keep changes focused, native, and verifiable.
 
 ## Development workflow
 

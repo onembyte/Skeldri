@@ -3,14 +3,14 @@ import ScreenCaptureKit
 import SwiftUI
 
 @main
-struct DrawPadMacApp: App {
-    @NSApplicationDelegateAdaptor(DrawPadMacAppDelegate.self) private var appDelegate
+struct SkeldriMacApp: App {
+    @NSApplicationDelegateAdaptor(SkeldriMacAppDelegate.self) private var appDelegate
 
     var body: some Scene {
         MenuBarExtra {
             MacMainView(model: appDelegate.model)
         } label: {
-            Label("DrawPad", systemImage: "pencil.and.outline")
+            Label("Skeldri", systemImage: "pencil.and.outline")
         }
         .menuBarExtraStyle(.window)
     }
@@ -19,7 +19,7 @@ struct DrawPadMacApp: App {
 /// Owns startup independently from presentation so Bonjour is available before
 /// the user opens the menu-bar popover.
 @MainActor
-final class DrawPadMacAppDelegate: NSObject, NSApplicationDelegate {
+final class SkeldriMacAppDelegate: NSObject, NSApplicationDelegate {
     let model = MacAppModel()
 
     func applicationDidFinishLaunching(_ notification: Notification) {

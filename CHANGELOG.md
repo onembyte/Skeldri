@@ -1,9 +1,10 @@
 # Changelog
 
-All notable project changes will be documented here. DrawPad has not published a stable release yet.
+All notable project changes will be documented here. Skeldri has not published a stable release yet.
 
 ## Unreleased
 
+- Renamed the product, Xcode project, targets, schemes, Bonjour service, source types, scripts, and documentation from DrawPad to Skeldri.
 - Added an explicit iPad Draw/Trackpad toggle with relative movement, clicking, dragging, two-finger scrolling, and secondary click.
 - Trackpad mode now uses a distraction-free gray surface and hides video, display selection, and drawing tools.
 - Added a collapsible left-side trackpad settings control for sensitivity, speed, and optional pointer acceleration; preferences persist locally.
@@ -27,7 +28,7 @@ All notable project changes will be documented here. DrawPad has not published a
 
 ### Reliability
 
-- Personal installation now restarts DrawPadMac after upgrades so the Mac and iPad cannot retain mismatched in-memory protocol versions.
+- Personal installation now restarts SkeldriMac after upgrades so the Mac and iPad cannot retain mismatched in-memory protocol versions.
 - End-to-end video acknowledgements cap TCP at two unconsumed frames.
 - Capture and encoding queues discard overload before H.264 compression, then force IDR recovery after congestion.
 - Sequence-aware decoding rejects broken reference chains, stale generations, and duplicate frames.

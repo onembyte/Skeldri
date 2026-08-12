@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>DrawPad</string>
+	<string>Skeldri</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,10 +20,10 @@
 	<string>1</string>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_drawpad._tcp</string>
+		<string>_skeldri._tcp</string>
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>DrawPad uses your local network to connect your iPad to your Mac and mirror the Mac display.</string>
+	<string>Skeldri uses your local network to connect your iPad to your Mac and mirror the Mac display.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchScreen</key>
