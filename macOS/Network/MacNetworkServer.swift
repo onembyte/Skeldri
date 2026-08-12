@@ -220,7 +220,14 @@ final class MacNetworkServer: @unchecked Sendable {
             }
             if case let .videoAcknowledgement(streamID, sequence, requiresKeyframe) = message {
                 acknowledgeVideoFrame(streamID: streamID, through: sequence)
-                if requiresKeyframe { onVideoRecoveryRequested?() }
+                if requiresKeyframe {
+                    // A keyframe alone cannot revive a peer that lost its
+                    // format description, and the gate otherwise suppresses
+                    // SPS/PPS for the rest of this encoder generation. Reopen
+                    // it so the forced keyframe is preceded by the format.
+                    videoFlowLock.withLock { videoConfigurationGate.reset() }
+                    onVideoRecoveryRequested?()
+                }
             } else if case let .inputMode(mode) = message {
                 peerInputMode = mode
                 onInputModeChanged?(mode)

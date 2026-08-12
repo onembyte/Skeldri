@@ -208,7 +208,12 @@ final class iPadAppModel: ObservableObject {
             // Read mode owns the viewport; a display announcement must not reset
             // its decoder or aspect ratio underneath the reader.
             guard inputMode != .lecture else { break }
-            if selectedDisplayID != display.id { decoder.reset() }
+            // Only a real switch invalidates decoder state. Resetting when the
+            // iPad merely learns its first display races the video channel:
+            // control packets hop to the main actor while video configuration
+            // is applied synchronously, so this reset could land after the
+            // decoder was configured and leave it with no format at all.
+            if let current = selectedDisplayID, current != display.id { decoder.reset() }
             selectedDisplayID = display.id
             if pendingDisplayID == display.id { pendingDisplayID = nil }
             videoAspectRatio = CGFloat(display.aspectRatio)

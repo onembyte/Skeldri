@@ -2,6 +2,9 @@ import Foundation
 import Testing
 
 struct VideoFlowControlTests {
+    /// The reset path is load-bearing for recovery: a peer that lost its format
+    /// description needs SPS/PPS again for the *same* encoder generation, which
+    /// the once-per-generation rule would otherwise suppress forever.
     @Test func configurationIsSentOncePerGenerationAndAgainAfterReset() {
         let firstStream = UUID(), secondStream = UUID()
         var gate = VideoConfigurationGate()

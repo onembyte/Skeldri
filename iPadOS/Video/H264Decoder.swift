@@ -40,8 +40,16 @@ final class H264Decoder: @unchecked Sendable {
 
     func decode(payload: Data) {
         queue.async { [weak self] in
-            guard let self, let (header, accessUnit) = try? VideoEnvelope.decode(payload),
-                  header.streamID == activeStreamID, let formatDescription else { return }
+            guard let self, let (header, accessUnit) = try? VideoEnvelope.decode(payload) else { return }
+            guard header.streamID == activeStreamID, let formatDescription else {
+                // This stream has no usable format — either its configuration
+                // never arrived or the decoder was reset after receiving it.
+                // Dropping silently strands the viewport black forever, because
+                // the Mac only sends SPS/PPS once per encoder generation. Ask
+                // for recovery so it sends the format again.
+                acknowledge(header, requiresKeyframe: true)
+                return
+            }
             switch sequenceGate.evaluate(
                 streamID: header.streamID,
                 sequence: header.sequence,
