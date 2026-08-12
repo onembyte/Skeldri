@@ -44,12 +44,31 @@ final class iPadAppModel: ObservableObject {
     @Published var pendingDisplayID: UInt32?
     @Published var clearsDrawingsWhenSwitchingDisplays = false
     @Published var inputMode: DrawPadInputMode = .drawing
+    @Published var trackpadSensitivity: Double {
+        didSet { UserDefaults.standard.set(trackpadSensitivity, forKey: Self.trackpadSensitivityKey) }
+    }
+    @Published var trackpadSpeed: Double {
+        didSet { UserDefaults.standard.set(trackpadSpeed, forKey: Self.trackpadSpeedKey) }
+    }
+    @Published var trackpadAccelerationEnabled: Bool {
+        didSet { UserDefaults.standard.set(trackpadAccelerationEnabled, forKey: Self.trackpadAccelerationKey) }
+    }
     let drawingState = DrawingState()
     let decoder = H264Decoder()
     private let network = iPadNetworkClient()
     private var trackpadSequence: UInt64 = 0
+    private static let trackpadSensitivityKey = "trackpad.sensitivity"
+    private static let trackpadSpeedKey = "trackpad.speed"
+    private static let trackpadAccelerationKey = "trackpad.acceleration"
 
     init() {
+        let defaults = UserDefaults.standard
+        trackpadSensitivity = defaults.object(forKey: Self.trackpadSensitivityKey) == nil
+            ? 1 : defaults.double(forKey: Self.trackpadSensitivityKey)
+        trackpadSpeed = defaults.object(forKey: Self.trackpadSpeedKey) == nil
+            ? 1.35 : defaults.double(forKey: Self.trackpadSpeedKey)
+        trackpadAccelerationEnabled = defaults.object(forKey: Self.trackpadAccelerationKey) == nil
+            ? true : defaults.bool(forKey: Self.trackpadAccelerationKey)
         network.onServicesChanged = { [weak self] values in Task { @MainActor in self?.macs = values } }
         network.onStateChanged = { [weak self] value, error in Task { @MainActor in
             guard let self else { return }
@@ -98,6 +117,13 @@ final class iPadAppModel: ObservableObject {
     }
     func sendTrackpadButton(_ button: TrackpadButton, isDown: Bool, clickCount: Int) {
         sendTrackpad(.button(sequence: nextTrackpadSequence(), button: button, isDown: isDown, clickCount: clickCount))
+    }
+    var trackpadMotionSettings: TrackpadMotionSettings {
+        TrackpadMotionSettings(
+            sensitivity: CGFloat(trackpadSensitivity),
+            speed: CGFloat(trackpadSpeed),
+            accelerationEnabled: trackpadAccelerationEnabled
+        )
     }
     func choosePen() { mode = .draw; style = StrokeStyle(tool: .pen, red: style.red, green: style.green, blue: style.blue, alpha: 1, normalizedWidth: Float(width)) }
     func chooseHighlighter() { mode = .draw; style = StrokeStyle(tool: .highlighter, red: style.red, green: style.green, blue: style.blue, alpha: 0.3, normalizedWidth: Float(max(width, 0.015))) }

@@ -21,6 +21,10 @@
 
 - [ ] Top-right control switches between Draw and Trackpad without leaking gestures between surfaces
 - [ ] One-finger movement, tap, double-tap, hold-and-drag, two-finger scroll, and two-finger secondary click work
+- [ ] Left settings button unfolds and collapses without generating pointer input underneath
+- [ ] Sensitivity and speed sliders update pointer response immediately
+- [ ] Acceleration toggle preserves precise slow motion and increases travel for fast gestures
+- [ ] Trackpad settings persist after closing and reopening the iPad app
 - [ ] Leaving Trackpad mode, backgrounding iPad, disconnecting, and tapping Back release any held button
 - [ ] Top-left Back returns to Mac discovery and the same Mac can reconnect
 

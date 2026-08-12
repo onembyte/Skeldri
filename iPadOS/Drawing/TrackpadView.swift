@@ -3,7 +3,7 @@ import UIKit
 /// Full-screen relative pointing surface. Drawing and pointer input use separate
 /// UIView instances so toolbar/navigation touches can never leak into either mode.
 final class TrackpadUIView: UIView {
-    var sensitivity: CGFloat = 1.35
+    var motionSettings = TrackpadMotionSettings()
     var onMove: ((CGFloat, CGFloat) -> Void)?
     var onScroll: ((CGFloat, CGFloat) -> Void)?
     var onButton: ((TrackpadButton, Bool, Int) -> Void)?
@@ -52,9 +52,10 @@ final class TrackpadUIView: UIView {
                 dragging = true
                 onButton?(.left, true, 1)
             }
-            onMove?(delta.x * sensitivity, delta.y * sensitivity)
+            let transformed = TrackpadMotionTransformer.transform(delta: delta, settings: motionSettings)
+            onMove?(transformed.x, transformed.y)
         case 2:
-            onScroll?(delta.x * sensitivity, delta.y * sensitivity)
+            onScroll?(delta.x, delta.y)
         default:
             break
         }

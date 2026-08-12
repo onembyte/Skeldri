@@ -19,7 +19,76 @@ struct TrackpadRepresentable: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: TrackpadUIView, context: Context) {}
+    func updateUIView(_ uiView: TrackpadUIView, context: Context) {
+        uiView.motionSettings = model.trackpadMotionSettings
+    }
+}
+
+/// Collapsible trackpad tuning controls. The compact button keeps the pointing
+/// surface unobstructed until the user explicitly asks for configuration.
+private struct TrackpadSettingsPanel: View {
+    @ObservedObject var model: iPadAppModel
+    @State private var expanded = false
+
+    var body: some View {
+        HStack(spacing: 8) {
+            GlassIconButton(
+                accessibilityLabel: expanded ? "Hide trackpad settings" : "Show trackpad settings",
+                selected: expanded,
+                action: { withAnimation(.snappy(duration: 0.24)) { expanded.toggle() } }
+            ) {
+                Image(systemName: "slider.horizontal.3")
+            }
+
+            if expanded {
+                VStack(spacing: 12) {
+                    settingSlider(
+                        symbol: "scope",
+                        accessibilityLabel: "Trackpad sensitivity",
+                        value: $model.trackpadSensitivity,
+                        range: 0.5...2.0
+                    )
+                    settingSlider(
+                        symbol: "speedometer",
+                        accessibilityLabel: "Trackpad speed",
+                        value: $model.trackpadSpeed,
+                        range: 0.5...2.5
+                    )
+                    Button {
+                        model.trackpadAccelerationEnabled.toggle()
+                    } label: {
+                        Image(systemName: "gauge.with.dots.needle.67percent")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(model.trackpadAccelerationEnabled ? Color.accentColor : Color.primary)
+                            .frame(width: 34, height: 34)
+                            .background(Color.white.opacity(0.055), in: Circle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Pointer acceleration")
+                    .accessibilityValue(model.trackpadAccelerationEnabled ? "On" : "Off")
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 12)
+                .liquidGlassPanel(in: Capsule())
+                .transition(.move(edge: .leading).combined(with: .opacity))
+            }
+        }
+    }
+
+    private func settingSlider(
+        symbol: String,
+        accessibilityLabel: String,
+        value: Binding<Double>,
+        range: ClosedRange<Double>
+    ) -> some View {
+        VStack(spacing: 5) {
+            Image(systemName: symbol)
+                .font(.system(size: 14, weight: .medium))
+            Slider(value: value, in: range)
+                .frame(width: 112)
+                .accessibilityLabel(accessibilityLabel)
+        }
+    }
 }
 
 struct DrawingScreen: View {
@@ -39,6 +108,9 @@ struct DrawingScreen: View {
             } else {
                 Color(uiColor: .systemGray4).ignoresSafeArea()
                 TrackpadRepresentable(model: model).ignoresSafeArea()
+                TrackpadSettingsPanel(model: model)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .padding(.leading, 14)
             }
 
             GlassIconButton(accessibilityLabel: "Back to Mac selection", action: model.disconnect) {

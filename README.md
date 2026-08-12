@@ -14,6 +14,7 @@ DrawPad turns an iPad into a wireless finger-annotation surface and opt-in track
 - Transparent, click-through Mac annotation overlay.
 - Low-latency H.264 mirroring with stale-frame protection during display changes.
 - Explicit Draw/Trackpad toggle, with pointer movement, tap, drag, two-finger scroll, and secondary click.
+- Collapsible trackpad sensitivity, speed, and acceleration controls with persistent preferences.
 - A top-left Back control that safely releases pointer state and returns to Mac discovery.
 - Native Liquid Glass controls on current systems, with a material fallback on older supported iPadOS releases.
 - Local-network-only operation with no accounts, telemetry, audio, or cloud backend.

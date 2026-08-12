@@ -6,6 +6,7 @@ All notable project changes will be documented here. DrawPad has not published a
 
 - Added an explicit iPad Draw/Trackpad toggle with relative movement, clicking, dragging, two-finger scrolling, and secondary click.
 - Trackpad mode now uses a distraction-free gray surface and hides video, display selection, and drawing tools.
+- Added a collapsible left-side trackpad settings control for sensitivity, speed, and optional pointer acceleration; preferences persist locally.
 - Added a top-left Back control that returns to discovery and safely resets pointer state.
 - Added permission-gated Mac pointer injection, protocol replay protection, bounded event validation, and disconnect/background fail-safes.
 
