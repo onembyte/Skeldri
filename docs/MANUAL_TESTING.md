@@ -15,6 +15,9 @@
 
 - [ ] Finger stroke appears immediately on iPad and aligns on Mac; no Pencil required
 - [ ] Pen, highlighter, color, thickness, stroke eraser, undo, and clear work
+- [ ] Colour 1, 2, and 3 swatches select their colour with one tap
+- [ ] The colour picker reconfigures whichever swatch is selected, not a fixed one
+- [ ] Reconfigured swatches persist after closing and reopening the iPad app
 - [ ] Hide/show restores Mac annotations
 - [ ] Two-finger pinch magnifies the Draw surface; one finger still draws
 - [ ] Strokes drawn while magnified land in the same place on the Mac as unmagnified ones

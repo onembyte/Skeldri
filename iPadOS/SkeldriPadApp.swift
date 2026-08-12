@@ -39,6 +39,10 @@ final class iPadAppModel: ObservableObject {
     @Published var style = StrokeStyle.defaultPen
     @Published var mode: DrawingInteractionMode = .draw
     @Published var color = Color.red
+    @Published private(set) var quickColors = QuickColorPalette.standard
+    /// The slot the colour picker edits. Choosing a colour both draws with it
+    /// and reconfigures this slot.
+    @Published private(set) var activeQuickColorIndex = 0
     @Published var width = 0.005
     @Published var videoAspectRatio: CGFloat = 16 / 10
     @Published var displays: [DisplayDescriptor] = []
@@ -63,6 +67,7 @@ final class iPadAppModel: ObservableObject {
     private static let trackpadSensitivityKey = "trackpad.sensitivity"
     private static let trackpadSpeedKey = "trackpad.speed"
     private static let trackpadAccelerationKey = "trackpad.acceleration"
+    private static let quickColorsKey = "drawing.quickColors"
 
     init() {
         let defaults = UserDefaults.standard
@@ -72,6 +77,19 @@ final class iPadAppModel: ObservableObject {
             ? 1.35 : defaults.double(forKey: Self.trackpadSpeedKey)
         trackpadAccelerationEnabled = defaults.object(forKey: Self.trackpadAccelerationKey) == nil
             ? true : defaults.bool(forKey: Self.trackpadAccelerationKey)
+        if let stored = defaults.data(forKey: Self.quickColorsKey),
+           let restored = try? JSONDecoder().decode(QuickColorPalette.self, from: stored) {
+            quickColors = restored
+        }
+        color = Self.swiftUIColor(quickColors.color(at: activeQuickColorIndex))
+        style = StrokeStyle(
+            tool: style.tool,
+            red: quickColors.color(at: activeQuickColorIndex)?.red ?? style.red,
+            green: quickColors.color(at: activeQuickColorIndex)?.green ?? style.green,
+            blue: quickColors.color(at: activeQuickColorIndex)?.blue ?? style.blue,
+            alpha: style.alpha,
+            normalizedWidth: style.normalizedWidth
+        )
         network.onServicesChanged = { [weak self] values in Task { @MainActor in self?.macs = values } }
         network.onStateChanged = { [weak self] value, error in Task { @MainActor in
             guard let self else { return }
@@ -160,7 +178,36 @@ final class iPadAppModel: ObservableObject {
     }
     func choosePen() { mode = .draw; style = StrokeStyle(tool: .pen, red: style.red, green: style.green, blue: style.blue, alpha: 1, normalizedWidth: Float(width)) }
     func chooseHighlighter() { mode = .draw; style = StrokeStyle(tool: .highlighter, red: style.red, green: style.green, blue: style.blue, alpha: 0.3, normalizedWidth: Float(max(width, 0.015))) }
-    func updateColor(_ color: Color) { let resolved = UIColor(color); var r: CGFloat=0,g: CGFloat=0,b: CGFloat=0,a: CGFloat=0; resolved.getRed(&r, green:&g, blue:&b, alpha:&a); style = StrokeStyle(tool: style.tool, red: Float(r), green: Float(g), blue: Float(b), alpha: style.alpha, normalizedWidth: style.normalizedWidth) }
+    func updateColor(_ color: Color) {
+        let resolved = UIColor(color)
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        resolved.getRed(&r, green: &g, blue: &b, alpha: &a)
+        style = StrokeStyle(tool: style.tool, red: Float(r), green: Float(g), blue: Float(b),
+                            alpha: style.alpha, normalizedWidth: style.normalizedWidth)
+        // The picker is also the editor for the selected quick slot.
+        quickColors.update(QuickColor(red: Float(r), green: Float(g), blue: Float(b)),
+                           at: activeQuickColorIndex)
+        persistQuickColors()
+    }
+
+    func selectQuickColor(at index: Int) {
+        guard let slot = quickColors.color(at: index) else { return }
+        activeQuickColorIndex = index
+        color = Self.swiftUIColor(slot)
+        style = StrokeStyle(tool: style.tool, red: slot.red, green: slot.green, blue: slot.blue,
+                            alpha: style.alpha, normalizedWidth: style.normalizedWidth)
+    }
+
+    private func persistQuickColors() {
+        guard let data = try? JSONEncoder().encode(quickColors) else { return }
+        UserDefaults.standard.set(data, forKey: Self.quickColorsKey)
+    }
+
+    static func swiftUIColor(_ quickColor: QuickColor?) -> Color {
+        guard let quickColor else { return .red }
+        return Color(red: Double(quickColor.red), green: Double(quickColor.green),
+                     blue: Double(quickColor.blue))
+    }
     func updateWidth(_ width: Double) { style = StrokeStyle(tool: style.tool, red: style.red, green: style.green, blue: style.blue, alpha: style.alpha, normalizedWidth: Float(width)) }
     func handleLocal(_ packet: ControlPacket) { apply(packet); network.send(packet) }
     func undo() { if let id = drawingState.undo() { network.send(.deleteStrokes(ids: [id])) } }

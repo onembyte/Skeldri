@@ -54,6 +54,7 @@
 		3FCF15E29F5A12AC00EECE7A /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
 		40FC432B7C705DE0C5AB8201 /* ExperienceModeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792BF47634DD95F210BC43D0 /* ExperienceModeTransition.swift */; };
 		43CC5094E3F717B0326E94C8 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */; };
+		4790753CC3B1B5E1A177F6D5 /* QuickColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */; };
 		48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		48E49DBC273E4DD4EBB58BB3 /* LectureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A9C826C45C47BB193C597 /* LectureSource.swift */; };
 		4C760B9741B256AF34EA3CFB /* DisplaySidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */; };
@@ -95,6 +96,7 @@
 		97F52AFD2BC04EEC84CFC173 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
 		9873DAEC1C5E82E985A0CC5F /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		9BAFEF7BF0DFDD97FAF8DD59 /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */; };
+		9E75769F61B2B99EE9344FC8 /* QuickColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */; };
 		9ECB1AB470A85CBBDDA198AA /* LectureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17138905D88DB558C1FBFC98 /* LectureScreen.swift */; };
 		9EFEAA1D1D0E177269240C59 /* TrackpadCursorTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */; };
 		A05E4528FABAD630BA22B551 /* TrackpadEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */; };
@@ -131,6 +133,7 @@
 		D650D00E95B76E8049506C74 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		DCA62D7A23240AD475AA0907 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A31CD6D684777117B51B6A10 /* Assets.xcassets */; };
+		E0B49AC8427A85C6AC78BF53 /* QuickColorPaletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE2A10A023CC54B97DA6A2 /* QuickColorPaletteTests.swift */; };
 		E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82264D3115D066E08A928202 /* H264Encoder.swift */; };
 		E321CB06C011F863B499CEDE /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		E419C7315AE654475CA0861E /* LectureViewportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01DBF31D8D90BB379B1DAE3 /* LectureViewportView.swift */; };
@@ -149,10 +152,12 @@
 		F594359B9E0D67EDE30A8974 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		FA49C45D91144A7A44795E8D /* DiscoveryIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */; };
 		FCF9EFD7FA00E47E1DFD6421 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
+		FE11E1A7B6A9F71BF92A7865 /* QuickColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInputPolicy.swift; sourceTree = "<group>"; };
+		09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickColorPalette.swift; sourceTree = "<group>"; };
 		0D394A0BB905F0E570400676 /* ControlPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacket.swift; sourceTree = "<group>"; };
 		11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSessionState.swift; sourceTree = "<group>"; };
 		167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEventTests.swift; sourceTree = "<group>"; };
@@ -182,6 +187,7 @@
 		4F9750797A4B0811E0484C8F /* TrackpadMotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadMotionTests.swift; sourceTree = "<group>"; };
 		50811F5EC5ADDA2AACC6EAEC /* SkeldriTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkeldriTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51D1185F4E308DB8678458AF /* DrawingViewportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewportTests.swift; sourceTree = "<group>"; };
+		56EE2A10A023CC54B97DA6A2 /* QuickColorPaletteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickColorPaletteTests.swift; sourceTree = "<group>"; };
 		576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingState.swift; sourceTree = "<group>"; };
 		5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriInputMode.swift; sourceTree = "<group>"; };
 		58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionLifecycle.swift; sourceTree = "<group>"; };
@@ -255,6 +261,7 @@
 				3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */,
 				430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */,
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
+				56EE2A10A023CC54B97DA6A2 /* QuickColorPaletteTests.swift */,
 				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
 				EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */,
 				18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */,
@@ -386,6 +393,7 @@
 			children = (
 				C1F1261228B49B8717685122 /* DisplayDescriptor.swift */,
 				9A8232CD785D3538ED944FC5 /* DrawingTool.swift */,
+				09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */,
 				5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */,
 				29DE6F21A4DF4DDC504AD850 /* Stroke.swift */,
 				BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */,
@@ -675,6 +683,7 @@
 				7291056A6727913F98010FDF /* PeerConnection.swift in Sources */,
 				240795D03C9279A5499B1DB5 /* PrivacyNoticeView.swift in Sources */,
 				CBFCF496FC826C3C7EA7DE2B /* ProtocolVersion.swift in Sources */,
+				FE11E1A7B6A9F71BF92A7865 /* QuickColorPalette.swift in Sources */,
 				96A77EAD18C908F3B1C76108 /* ScreenCaptureManager.swift in Sources */,
 				20B30AB8705894AC32A33167 /* SessionAuthorizationPolicy.swift in Sources */,
 				A69A0E0341DC7989E18426BA /* SkeldriInputMode.swift in Sources */,
@@ -726,6 +735,8 @@
 				BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */,
 				ED5EFFE1B34873B855A0459E /* PrivacyNoticeView.swift in Sources */,
 				396380A50ED64B3E6D927653 /* ProtocolVersion.swift in Sources */,
+				4790753CC3B1B5E1A177F6D5 /* QuickColorPalette.swift in Sources */,
+				E0B49AC8427A85C6AC78BF53 /* QuickColorPaletteTests.swift in Sources */,
 				E321CB06C011F863B499CEDE /* SessionAuthorizationPolicy.swift in Sources */,
 				F158D970C6EE0A411CD63B03 /* SessionAuthorizationPolicyTests.swift in Sources */,
 				A44CFC9EA8FCDE17E6462534 /* SkeldriInputMode.swift in Sources */,
@@ -781,6 +792,7 @@
 				0AD912A67B2EDDF07850246C /* PeerConnection.swift in Sources */,
 				5B23358F54208678F7C91569 /* PrivacyNoticeView.swift in Sources */,
 				2C0481E5B69FEC2AAA77D59C /* ProtocolVersion.swift in Sources */,
+				9E75769F61B2B99EE9344FC8 /* QuickColorPalette.swift in Sources */,
 				BF70639B4ADE1798FE409B7C /* SessionAuthorizationPolicy.swift in Sources */,
 				2A0530976DF5F67CFBA5C7E4 /* SkeldriInputMode.swift in Sources */,
 				7D45FD2E32463E9A2C80098D /* SkeldriLogger.swift in Sources */,
