@@ -8,7 +8,7 @@ Compatibility is additive and failure-isolated: inability to start the Afi liste
 
 Skeldri has native macOS and iPadOS apps plus shared models and protocol code. The Mac is authoritative for display and connection configuration.
 
-The rename preserves the existing `com.example.drawpad.mac` and `com.example.drawpad.ipad` bundle identifiers deliberately. This lets signed development installations upgrade in place and retains the operating system's privacy/signing association; changing identifiers is a future distribution migration, not a cosmetic rename.
+The shipping bundle identifiers are `com.onembyte.skeldri.mac` and `com.onembyte.skeldri.ipad`. An earlier stage of the rename kept the original `com.example.drawpad.*` identifiers so signed development installations could upgrade in place; that migration is done. Because the identifier changed, an upgrading device installs a new app rather than replacing the old one, and macOS treats the Mac app as a new subject for Screen Recording and pointer-control permission.
 
 The macOS target is a menu-bar-only application (`LSUIElement`). Its app delegate owns startup so Bonjour discovery and display enumeration begin when the process launches, independently of whether the menu-bar popover is open.
 

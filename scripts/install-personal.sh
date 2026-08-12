@@ -98,6 +98,12 @@ MAC_ARCHIVE="$INSTALL_ROOT/SkeldriMac.zip"
 [[ -d "$MAC_APP" ]] || { echo "Mac build product was not found." >&2; exit 1; }
 [[ -d "$IPAD_APP" ]] || { echo "iPad build product was not found." >&2; exit 1; }
 
+# Read the identifier from the bundle that was just built. Hard-coding it here
+# silently broke launching after the DrawPad rename: the install succeeded and
+# only the launch failed, reporting the app as "not installed".
+IPAD_BUNDLE_ID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$IPAD_APP/Info.plist")"
+[[ -n "$IPAD_BUNDLE_ID" ]] || { echo "The iPad bundle identifier could not be read." >&2; exit 1; }
+
 ditto -c -k --sequesterRsrc --keepParent "$MAC_APP" "$MAC_ARCHIVE"
 
 echo "Installing SkeldriPad on ${DEVICE_NAME}…"
@@ -123,7 +129,7 @@ fi
 open -n "$MAC_APP"
 
 echo "Launching SkeldriPad…"
-if ! xcrun devicectl device process launch --device "$DEVICE_NAME" com.example.drawpad.ipad; then
+if ! xcrun devicectl device process launch --device "$DEVICE_NAME" "$IPAD_BUNDLE_ID"; then
     echo "The app was installed, but iPadOS could not launch it automatically." >&2
     echo "Unlock the iPad and open Skeldri manually." >&2
 fi
