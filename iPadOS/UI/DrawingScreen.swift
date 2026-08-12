@@ -129,9 +129,25 @@ struct DrawingScreen: View {
                 DisplaySidebar(model: model)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(.leading, 14)
-                DrawingToolbar(model: model)
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-                    .padding(.bottom, 14)
+                HStack(spacing: 10) {
+                    DrawingToolbar(model: model)
+                    // Only offered while there is a magnification to clear. An
+                    // always-present control would claim width beside the
+                    // toolbar for a state the user is not usually in.
+                    if drawingViewport.isMagnified {
+                        GlassIconButton(accessibilityLabel: "Fit drawing to screen") {
+                            withAnimation(.snappy(duration: 0.2)) { drawingViewport.reset() }
+                        } icon: {
+                            Image(systemName: "arrow.down.right.and.arrow.up.left")
+                        }
+                        .padding(6)
+                        .liquidGlassPanel(in: Circle())
+                        .transition(.scale.combined(with: .opacity))
+                    }
+                }
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom, 14)
+                .animation(.snappy(duration: 0.2), value: drawingViewport.isMagnified)
             case .trackpad:
                 Color(uiColor: .systemGray4).ignoresSafeArea()
                 TrackpadRepresentable(model: model).ignoresSafeArea()

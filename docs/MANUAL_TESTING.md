@@ -24,6 +24,7 @@
 - [ ] Starting a pinch withdraws the mark the first finger began instead of leaving a scratch
 - [ ] Two-finger pan only moves within content that exists, never past the edge
 - [ ] Two-finger double-tap returns to the unzoomed surface
+- [ ] A fit-to-screen button appears beside the toolbar only while magnified, and clears the zoom
 - [ ] Pinching back out snaps cleanly to 1x and re-centres
 - [ ] Switching display or experience mode resets the magnification
 

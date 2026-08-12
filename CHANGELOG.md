@@ -6,6 +6,7 @@ All notable project changes will be documented here. Skeldri has not published a
 
 - Added three configurable quick colour swatches to the drawing toolbar. Each is a one-tap choice, the existing colour picker reconfigures whichever swatch is selected, and the palette persists locally. The toolbar was widened to carry them.
 
+- Added a fit-to-screen button beside the drawing toolbar that appears only while the Draw surface is magnified.
 - Added local two-finger pinch zoom and pan to Draw mode so a finger can write larger on screen than the stroke it produces. Magnification is presentation only: strokes stay in normalized coordinates and land on the Mac exactly where an unzoomed stroke would.
 
 - Added Read (Lecture) mode: a third, read-only experience that mirrors a Mac-approved window or display as a locally zoomable and pannable reading viewport, with a precision navigation rail. It is not a virtual display and adds no private virtual-display API.
