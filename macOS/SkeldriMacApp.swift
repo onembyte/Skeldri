@@ -66,7 +66,10 @@ final class MacAppModel: ObservableObject {
                 self.afiServer.setAcceptingClients(!value)
                 if value { self.afiServer.disconnectClient() }
                 self.connected = self.modernControlConnected || self.afiControlConnected
-                if value { self.publishDisplays() }
+                if value {
+                    self.publishDisplays()
+                    self.server.sendControl(.canvasSnapshot(self.drawingState.strokes))
+                }
             }
         }
         server.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
@@ -86,7 +89,10 @@ final class MacAppModel: ObservableObject {
                 guard let self else { return }
                 self.afiControlConnected = value
                 self.connected = self.modernControlConnected || self.afiControlConnected
-                if value { self.publishDisplays() }
+                if value {
+                    self.publishDisplays()
+                    self.afiServer.sendControl(.canvasSnapshot(self.drawingState.strokes))
+                }
             }
         }
         afiServer.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
