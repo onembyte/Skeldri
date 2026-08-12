@@ -7,7 +7,12 @@ enum LectureSourceKind: String, Codable, Sendable, Equatable {
 
 /// Safe, transportable metadata for a Mac-authoritative capture source.
 /// The numeric identifier is meaningful only within the current connection.
-struct LectureSourceDescriptor: Identifiable, Codable, Sendable, Equatable {
+///
+/// Deliberately not `Identifiable`: `id` is a `CGWindowID` or a
+/// `CGDirectDisplayID`, and those share no namespace, so a window and a display
+/// can carry the same number. Use `qualifiedIdentity` wherever a unique key is
+/// required — an `Identifiable` conformance on `id` alone silently collides.
+struct LectureSourceDescriptor: Codable, Sendable, Equatable {
     private static let maximumNameBytes = 256
     private static let maximumDimension = 16_384
 
@@ -29,6 +34,9 @@ struct LectureSourceDescriptor: Identifiable, Codable, Sendable, Equatable {
         guard width > 0, height > 0 else { return 1 }
         return Double(width) / Double(height)
     }
+
+    /// Unique across both source kinds, unlike `id` on its own.
+    var qualifiedIdentity: String { "\(kind.rawValue):\(id)" }
 
     private enum CodingKeys: String, CodingKey {
         case id, kind, name, width, height

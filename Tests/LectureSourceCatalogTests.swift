@@ -101,5 +101,10 @@ struct LectureSourceCatalogTests {
         #expect(window?.id == display.id)
         #expect(window != display)
         #expect(window?.kind != display.kind)
+        // Anything keying a collection on a source — a picker list, a lookup —
+        // must use the qualified identity or these two collapse into one.
+        #expect(window?.qualifiedIdentity != display.qualifiedIdentity)
+        #expect(display.qualifiedIdentity == "display:7")
+        #expect(window?.qualifiedIdentity == "window:7")
     }
 }
