@@ -205,6 +205,9 @@ final class iPadAppModel: ObservableObject {
         case let .canvasSnapshot(value): drawingState.replace(with:value)
         case let .displays(values): displays = values
         case let .display(display):
+            // Read mode owns the viewport; a display announcement must not reset
+            // its decoder or aspect ratio underneath the reader.
+            guard inputMode != .lecture else { break }
             if selectedDisplayID != display.id { decoder.reset() }
             selectedDisplayID = display.id
             if pendingDisplayID == display.id { pendingDisplayID = nil }

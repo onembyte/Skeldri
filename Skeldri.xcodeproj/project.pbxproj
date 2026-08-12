@@ -29,6 +29,7 @@
 		20B30AB8705894AC32A33167 /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		22D0009838045031ABBCD7B7 /* LectureNavigationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06C637285D6B26A96F0F57C /* LectureNavigationPolicy.swift */; };
+		2319BB3D28ACECEB64CC53AF /* LectureSourceEnumerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227E4EABBDB5B19184CA2E9C /* LectureSourceEnumerator.swift */; };
 		240795D03C9279A5499B1DB5 /* PrivacyNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */; };
 		24B48D939A95E3C9B457D20F /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		26D3E18200E4FADC4FF65F48 /* LectureSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */; };
@@ -147,6 +148,7 @@
 		167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEventTests.swift; sourceTree = "<group>"; };
 		17138905D88DB558C1FBFC98 /* LectureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureScreen.swift; sourceTree = "<group>"; };
 		1B030EB844F177D56A64312E /* LectureNavigationRail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureNavigationRail.swift; sourceTree = "<group>"; };
+		227E4EABBDB5B19184CA2E9C /* LectureSourceEnumerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSourceEnumerator.swift; sourceTree = "<group>"; };
 		2295F11A64BF6417E9DABD91 /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
 		29916ED673328B380123775B /* SkeldriLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriLogger.swift; sourceTree = "<group>"; };
 		29DE6F21A4DF4DDC504AD850 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				96AF99AC17F713757D73C175 /* DisplayManager.swift */,
+				227E4EABBDB5B19184CA2E9C /* LectureSourceEnumerator.swift */,
 				39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */,
 			);
 			path = Capture;
@@ -641,6 +644,7 @@
 				5D4B982DF2AC528CB23EF0F8 /* LectureSessionState.swift in Sources */,
 				2CD8BF89E418C076C498CAF1 /* LectureSource.swift in Sources */,
 				185EB9A8B9EA96C3FE924D3A /* LectureSourceCatalog.swift in Sources */,
+				2319BB3D28ACECEB64CC53AF /* LectureSourceEnumerator.swift in Sources */,
 				B9C20C495CCEB9916DAFFF32 /* MacAnnotationView.swift in Sources */,
 				F145C08EA422178E72EF9010 /* MacInputController.swift in Sources */,
 				E8762B69E13FDE196C9E7610 /* MacMainView.swift in Sources */,

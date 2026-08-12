@@ -80,6 +80,7 @@ struct LectureScreen: View {
         case .permissionRequired: "Screen Recording permission is required"
         case .captureFailed: "The selected source could not be captured"
         case .noLongerAvailable: "The selected source is no longer available"
+        case .declined: "The Mac declined the reading request"
         }
     }
 

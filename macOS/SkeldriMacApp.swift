@@ -35,8 +35,24 @@ final class SkeldriMacAppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+/// One outstanding iPad request for a reading source, awaiting the Mac owner's
+/// approval. The iPad never enumerates or names sources itself.
+struct PendingLectureRequest: Identifiable {
+    let requestID: UUID
+    let sources: [LectureSourceDescriptor]
+    var id: UUID { requestID }
+}
+
 @MainActor
 final class MacAppModel: ObservableObject {
+    /// What the capture lifecycle owner is streaming, or wants to stream.
+    /// Lecture targets carry the request they answer so a stream belonging to a
+    /// superseded selection is never mistaken for the current one.
+    private enum CaptureTarget: Equatable {
+        case display(UInt32)
+        case lecture(LectureSourceDescriptor, generation: UUID)
+    }
+
     @Published var displays: [DisplayDescriptor] = []
     @Published var selectedDisplayID: UInt32?
     @Published var capturePermission = CGPreflightScreenCaptureAccess()
@@ -62,10 +78,14 @@ final class MacAppModel: ObservableObject {
     private var afiVideoConnected = false
     private var modernAuthorized = false
     private var afiAuthorized = false
-    private var streamingDisplayID: UInt32?
+    private var streamingTarget: CaptureTarget?
     private var streamingProfile: VideoStreamingProfile?
     private var requestedDisplayID: UInt32?
     private var reconciliationIsRunning = false
+    @Published var pendingLectureRequest: PendingLectureRequest?
+    private var activeLectureSource: (descriptor: LectureSourceDescriptor, generation: UUID)?
+    private var lectureCatalog: LectureSourceEnumerator.Catalog?
+    private var outstandingLectureRequestID: UUID?
 
     init() {
         server.onListenerStateChanged = { [weak self] ready, detail in
@@ -84,7 +104,12 @@ final class MacAppModel: ObservableObject {
                 self.afiServer.setAcceptingClients(!value)
                 if value { self.afiServer.disconnectClient() }
                 if value { self.pendingConnectionName = "Skeldri iPad" }
-                else { self.modernAuthorized = false }
+                else {
+                    self.modernAuthorized = false
+                    // A Lecture source belongs to one authorized session and must
+                    // never outlive it into the next connection.
+                    self.endLectureSession()
+                }
                 self.updateAuthorizedConnectionState()
             }
         }
@@ -109,7 +134,12 @@ final class MacAppModel: ObservableObject {
             }
         }
         server.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
-        server.onInputModeChanged = { [weak input] mode in input?.setActive(mode == .trackpad) }
+        server.onInputModeChanged = { [weak self, weak input] mode in
+            input?.setActive(mode == .trackpad)
+            // Read-only mode owns capture; any other mode releases it, even if
+            // the explicit leaveLectureMode packet never arrives.
+            Task { @MainActor in if mode != .lecture { self?.endLectureSession() } }
+        }
         server.onTrackpadEvent = { [weak input] event in input?.handle(event) }
         afiServer.onConnectionChanged = { [weak self] value in
             Task { @MainActor in
@@ -241,32 +271,55 @@ final class MacAppModel: ObservableObject {
     private func updateAuthorizedConnectionState() {
         connected = (modernControlConnected && modernAuthorized) || (afiControlConnected && afiAuthorized)
         videoConnected = (modernVideoConnected && modernAuthorized) || (afiVideoConnected && afiAuthorized)
-        streamingActive = videoConnected && streamingDisplayID != nil
+        streamingActive = videoConnected && streamingTarget != nil
         if connected || (!modernControlConnected && !afiControlConnected) { pendingConnectionName = nil }
         scheduleReconciliation()
     }
 
-    private func startStreaming(displayID: UInt32, profile: VideoStreamingProfile) async -> Bool {
+    private func startStreaming(target: CaptureTarget, profile: VideoStreamingProfile) async -> Bool {
         guard capturePermission else {
             errorMessage = "Screen Recording permission is required."
-            return false
-        }
-        guard let display = screenPairs.first(where: { $0.1.id == displayID })?.0 else {
-            errorMessage = "The selected display is no longer available."
             return false
         }
         do {
             let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
             let ownBundleID = Bundle.main.bundleIdentifier
+            let excluded = content.applications.filter { $0.bundleIdentifier == ownBundleID }
+            guard let source = captureSource(for: target, excluding: excluded) else {
+                if case .display = target { errorMessage = "The selected display is no longer available." }
+                return false
+            }
             encoder.setProfile(profile)
-            try await capture.start(display: display,
-                                    excluding: content.applications.filter { $0.bundleIdentifier == ownBundleID },
-                                    profile: profile)
+            try await capture.start(source: source, profile: profile)
             return true
         } catch {
             errorMessage = "Capture failed: \(error.localizedDescription)"
             return false
         }
+    }
+
+    private func captureSource(for target: CaptureTarget,
+                               excluding excludedApplications: [SCRunningApplication]) -> CaptureSource? {
+        switch target {
+        case let .display(id):
+            guard let display = screenPairs.first(where: { $0.1.id == id })?.0 else { return nil }
+            return .display(display, excludingApplications: excludedApplications)
+        case let .lecture(descriptor, _):
+            // Only a source this Mac actually offered can be started, so a peer
+            // cannot name an arbitrary window identifier.
+            return lectureCatalog?.captureSource(for: descriptor, excludingApplications: excludedApplications)
+        }
+    }
+
+    /// Lecture ownership wins while it is active; leaving Lecture falls back to
+    /// the display the owner had selected, which is what restores the previous
+    /// stream without a second code path.
+    private var desiredTarget: CaptureTarget? {
+        if let active = activeLectureSource {
+            return .lecture(active.descriptor, generation: active.generation)
+        }
+        if let selectedDisplayID { return .display(selectedDisplayID) }
+        return nil
     }
 
     private func stopStreaming() async {
@@ -285,7 +338,10 @@ final class MacAppModel: ObservableObject {
         server.sendControl(.displays(displays))
         afiServer.sendControl(.displays(displays))
         if let id = selectedDisplayID, let descriptor = displays.first(where: { $0.id == id }) {
-            server.sendControl(.display(descriptor))
+            // A display descriptor resets the peer's decoder and aspect ratio, so
+            // it must not interrupt a Lecture source the owner already approved.
+            // Leaving Lecture clears the source first, then republishes here.
+            if activeLectureSource == nil { server.sendControl(.display(descriptor)) }
             afiServer.sendControl(.display(descriptor))
         }
     }
@@ -315,9 +371,9 @@ final class MacAppModel: ObservableObject {
     private func reconcileStreamingState() async {
         while true {
             if requestedDisplayID != nil {
-                if streamingDisplayID != nil {
+                if streamingTarget != nil {
                     await stopStreaming()
-                    streamingDisplayID = nil
+                    streamingTarget = nil
                     streamingProfile = nil
                     continue
                 }
@@ -331,34 +387,45 @@ final class MacAppModel: ObservableObject {
                 continue
             }
 
-            if !videoConnected, streamingDisplayID != nil {
+            let desired = videoConnected ? desiredTarget : nil
+
+            // One serial owner tears the previous SCStream down before the next
+            // one starts, so display and Lecture lifecycles never overlap.
+            if streamingTarget != nil, streamingTarget != desired {
                 await stopStreaming()
-                streamingDisplayID = nil
+                streamingTarget = nil
                 streamingProfile = nil
                 continue
             }
 
             let desiredProfile: VideoStreamingProfile = modernVideoConnected ? .modern : .legacyAfi
-            if streamingDisplayID != nil, streamingProfile != desiredProfile {
+            if streamingTarget != nil, streamingProfile != desiredProfile {
                 await stopStreaming()
-                streamingDisplayID = nil
+                streamingTarget = nil
                 streamingProfile = nil
                 continue
             }
 
-            if videoConnected, streamingDisplayID == nil, let target = selectedDisplayID {
-                let started = await startStreaming(displayID: target, profile: desiredProfile)
+            if let desired, streamingTarget == nil {
+                let started = await startStreaming(target: desired, profile: desiredProfile)
                 if started {
-                    streamingDisplayID = target
+                    streamingTarget = desired
                     streamingProfile = desiredProfile
                     streamingActive = true
                 }
 
                 // Connection or selection state may have changed while awaiting.
-                if !videoConnected || requestedDisplayID != nil || selectedDisplayID != target {
+                if !videoConnected || requestedDisplayID != nil || desiredTarget != desired {
                     if started { await stopStreaming() }
-                    streamingDisplayID = nil
+                    streamingTarget = nil
                     streamingProfile = nil
+                    continue
+                }
+
+                if !started, case let .lecture(descriptor, generation) = desired {
+                    // Report the failure instead of leaving the iPad waiting on a
+                    // source that will never produce frames.
+                    await reportLectureFailure(for: descriptor, generation: generation)
                     continue
                 }
             }
@@ -366,6 +433,21 @@ final class MacAppModel: ObservableObject {
             reconciliationIsRunning = false
             return
         }
+    }
+
+    /// Distinguishes a window that disappeared from a source that is present but
+    /// could not be captured, so the iPad can explain which one happened.
+    private func reportLectureFailure(for descriptor: LectureSourceDescriptor, generation: UUID) async {
+        activeLectureSource = nil
+        var reason = LectureSourceUnavailableReason.captureFailed
+        if let refreshed = try? await LectureSourceEnumerator()
+            .catalog(ownBundleIdentifier: Bundle.main.bundleIdentifier) {
+            lectureCatalog = refreshed
+            if !refreshed.contains(descriptor) {
+                reason = descriptor.kind == .window ? .closed : .noLongerAvailable
+            }
+        }
+        server.sendControl(.lectureSourceUnavailable(reason: reason, generation: generation))
     }
 
     private func apply(_ packet: ControlPacket) {
@@ -380,8 +462,70 @@ final class MacAppModel: ObservableObject {
             server.sendControl(.pong(id: id, sentAt: sentAt))
             afiServer.sendControl(.pong(id: id, sentAt: sentAt))
         case let .selectDisplay(id): requestDisplaySelection(id: id)
+        case let .requestLectureSourceSelection(requestID): beginLectureSourceSelection(requestID: requestID)
+        case .leaveLectureMode: endLectureSession()
         default: break
         }
         overlay.annotationView.strokes = drawingState.strokes
+    }
+
+    /// Enumerates candidate sources and hands the choice to the Mac's owner. The
+    /// iPad supplies only a request identifier; it never names a source.
+    private func beginLectureSourceSelection(requestID: UUID) {
+        pendingLectureRequest = nil
+        outstandingLectureRequestID = requestID
+        guard capturePermission else {
+            server.sendControl(.lectureSourceUnavailable(reason: .permissionRequired, generation: requestID))
+            return
+        }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let catalog = try await LectureSourceEnumerator()
+                    .catalog(ownBundleIdentifier: Bundle.main.bundleIdentifier)
+                // Enumeration is asynchronous, so a newer request may have
+                // superseded this one while the window list was being built.
+                guard self.outstandingLectureRequestID == requestID else { return }
+                self.lectureCatalog = catalog
+                guard !catalog.sources.isEmpty else {
+                    self.server.sendControl(
+                        .lectureSourceUnavailable(reason: .noLongerAvailable, generation: requestID)
+                    )
+                    return
+                }
+                self.pendingLectureRequest = PendingLectureRequest(requestID: requestID, sources: catalog.sources)
+            } catch {
+                SkeldriLogger.capture.error("Lecture enumeration failed: \(error.localizedDescription)")
+                guard self.outstandingLectureRequestID == requestID else { return }
+                self.server.sendControl(.lectureSourceUnavailable(reason: .captureFailed, generation: requestID))
+            }
+        }
+    }
+
+    func approveLectureSource(_ descriptor: LectureSourceDescriptor) {
+        guard let pending = pendingLectureRequest,
+              lectureCatalog?.contains(descriptor) == true else { return }
+        pendingLectureRequest = nil
+        activeLectureSource = (descriptor, pending.requestID)
+        server.sendControl(.lectureSourceSelected(descriptor, generation: pending.requestID))
+        scheduleReconciliation()
+    }
+
+    func declineLectureSourceSelection() {
+        guard let pending = pendingLectureRequest else { return }
+        pendingLectureRequest = nil
+        server.sendControl(.lectureSourceUnavailable(reason: .declined, generation: pending.requestID))
+    }
+
+    /// Returns capture to the owner's selected display. `desiredTarget` falls
+    /// back on its own once the Lecture source is cleared.
+    private func endLectureSession() {
+        pendingLectureRequest = nil
+        outstandingLectureRequestID = nil
+        guard activeLectureSource != nil else { return }
+        activeLectureSource = nil
+        lectureCatalog = nil
+        scheduleReconciliation()
+        publishDisplays()
     }
 }

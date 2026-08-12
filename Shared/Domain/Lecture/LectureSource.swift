@@ -63,4 +63,8 @@ enum LectureSourceUnavailableReason: String, Codable, Sendable, Equatable {
     case permissionRequired
     case captureFailed
     case noLongerAvailable
+    /// The Mac's owner dismissed the picker instead of approving a source.
+    /// Distinct from the failure cases so the iPad does not report a problem
+    /// the Mac never had.
+    case declined
 }

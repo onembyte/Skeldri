@@ -3,6 +3,35 @@ import ScreenCaptureKit
 
 protocol ScreenFrameConsumer: AnyObject { func consume(_ sampleBuffer: CMSampleBuffer) }
 
+/// The two things Skeldri knows how to capture. Display capture excludes
+/// Skeldri's own windows so the annotation overlay is never fed back into the
+/// stream; a Lecture window is already guaranteed not to be ours by
+/// `LectureSourceCatalog`.
+enum CaptureSource {
+    case display(SCDisplay, excludingApplications: [SCRunningApplication])
+    case window(SCWindow)
+
+    var contentFilter: SCContentFilter {
+        switch self {
+        case let .display(display, excluded):
+            SCContentFilter(display: display, excludingApplications: excluded, exceptingWindows: [])
+        case let .window(window):
+            SCContentFilter(desktopIndependentWindow: window)
+        }
+    }
+
+    /// Source dimensions before the profile's downscale, in the same units the
+    /// peer received in its descriptor so the viewport aspect ratio matches.
+    var pixelSize: (width: Int, height: Int) {
+        switch self {
+        case let .display(display, _):
+            (display.width, display.height)
+        case let .window(window):
+            (max(1, Int(window.frame.width.rounded())), max(1, Int(window.frame.height.rounded())))
+        }
+    }
+}
+
 /// ScreenCaptureKit adapter. Capture output is isolated on a dedicated serial queue.
 final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @unchecked Sendable {
     weak var consumer: ScreenFrameConsumer?
@@ -12,14 +41,17 @@ final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate, @u
     private var fallbackTask: Task<Void, Never>?
     private var receivedStreamFrame = false
 
-    @MainActor func start(display: SCDisplay, excluding applications: [SCRunningApplication],
+    @MainActor func start(source: CaptureSource,
                           profile: VideoStreamingProfile = .modern) async throws {
         await stop()
-        let filter = SCContentFilter(display: display, excludingApplications: applications, exceptingWindows: [])
+        let filter = source.contentFilter
+        let size = source.pixelSize
         let configuration = SCStreamConfiguration()
-        let scale = min(1, Double(profile.maximumDimension) / Double(max(display.width, display.height)))
-        configuration.width = Int(Double(display.width) * scale)
-        configuration.height = Int(Double(display.height) * scale)
+        let scale = min(1, Double(profile.maximumDimension) / Double(max(size.width, size.height)))
+        // The encoder requires even dimensions; an odd width silently distorts
+        // chroma on some VideoToolbox configurations.
+        configuration.width = max(2, Int(Double(size.width) * scale) & ~1)
+        configuration.height = max(2, Int(Double(size.height) * scale) & ~1)
         configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(profile.framesPerSecond))
         configuration.showsCursor = true
         configuration.capturesAudio = false
