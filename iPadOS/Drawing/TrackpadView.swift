@@ -68,7 +68,7 @@ final class TrackpadUIView: UIView {
             endDrag()
         } else if totalMovement < 10, duration < 0.35 {
             if gestureTouchCount == 1 {
-                let clickCount = min(2, max(1, touches.first?.tapCount ?? 1))
+                let clickCount = TrackpadGesturePolicy.clickCount(from: touches.first?.tapCount ?? 1)
                 click(.left, count: clickCount)
             } else if gestureTouchCount == 2 {
                 click(.right, count: 1)

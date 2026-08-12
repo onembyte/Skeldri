@@ -11,6 +11,7 @@ final class MacInputController: @unchecked Sendable {
     private var active = false
     private var leftButtonDown = false
     private var rightButtonDown = false
+    private var scrollAccumulator = TrackpadScrollAccumulator()
 
     var hasPermission: Bool { CGPreflightPostEventAccess() }
 
@@ -81,11 +82,11 @@ final class MacInputController: @unchecked Sendable {
     }
 
     private func scroll(deltaX: Float, deltaY: Float) {
-        let vertical = Int32((-deltaY).rounded()).clamped(to: -500...500)
-        let horizontal = Int32((-deltaX).rounded()).clamped(to: -500...500)
-        guard vertical != 0 || horizontal != 0 else { return }
+        let step = scrollAccumulator.consume(deltaX: deltaX, deltaY: deltaY)
+        guard step != .zero else { return }
+        // Negating produces macOS natural scrolling: content follows the fingers.
         CGEvent(scrollWheelEvent2Source: nil, units: .pixel, wheelCount: 2,
-                wheel1: vertical, wheel2: horizontal, wheel3: 0)?.post(tap: .cghidEventTap)
+                wheel1: -step.vertical, wheel2: -step.horizontal, wheel3: 0)?.post(tap: .cghidEventTap)
     }
 
     private func setButton(_ button: TrackpadButton, down: Bool, clickCount: Int) {
@@ -113,13 +114,8 @@ final class MacInputController: @unchecked Sendable {
     }
 
     private func releaseAllButtons() {
+        scrollAccumulator.reset()
         if leftButtonDown { leftButtonDown = false; postButton(.left, down: false, clickCount: 1) }
         if rightButtonDown { rightButtonDown = false; postButton(.right, down: false, clickCount: 1) }
-    }
-}
-
-private extension Comparable {
-    func clamped(to range: ClosedRange<Self>) -> Self {
-        min(max(self, range.lowerBound), range.upperBound)
     }
 }

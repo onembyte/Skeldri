@@ -43,4 +43,24 @@ struct TrackpadEventTests {
         #expect(next)
         #expect(afterReset)
     }
+
+    @Test func clickPolicySupportsNativeSingleDoubleAndTripleClickStates() {
+        #expect(TrackpadGesturePolicy.clickCount(from: 0) == 1)
+        #expect(TrackpadGesturePolicy.clickCount(from: 1) == 1)
+        #expect(TrackpadGesturePolicy.clickCount(from: 2) == 2)
+        #expect(TrackpadGesturePolicy.clickCount(from: 3) == 3)
+        #expect(TrackpadGesturePolicy.clickCount(from: 8) == 3)
+    }
+
+    @Test func scrollAccumulatorPreservesSubpixelTwoFingerMovement() {
+        var accumulator = TrackpadScrollAccumulator()
+        let first = accumulator.consume(deltaX: 0.2, deltaY: 0.2)
+        let second = accumulator.consume(deltaX: 0.2, deltaY: 0.2)
+        let third = accumulator.consume(deltaX: 0.2, deltaY: 0.2)
+
+        #expect(first == .zero)
+        #expect(second == .zero)
+        #expect(third.vertical == 1)
+        #expect(third.horizontal == 1)
+    }
 }

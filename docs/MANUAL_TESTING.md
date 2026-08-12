@@ -20,7 +20,9 @@
 ## Trackpad and navigation
 
 - [ ] Top-right control switches between Draw and Trackpad without leaking gestures between surfaces
-- [ ] One-finger movement, tap, double-tap, hold-and-drag, two-finger scroll, and two-finger secondary click work
+- [ ] One-finger movement, tap, hold-and-drag, natural two-finger vertical/horizontal scroll, and two-finger secondary click work
+- [ ] Double-tap selects a word and triple-tap selects the containing paragraph/line in standard Mac text fields
+- [ ] Very slow two-finger scrolling remains responsive without lost fractional movement
 - [ ] Left settings button unfolds and collapses without generating pointer input underneath
 - [ ] Sensitivity and speed sliders update pointer response immediately
 - [ ] Acceleration toggle preserves precise slow motion and increases travel for fast gestures

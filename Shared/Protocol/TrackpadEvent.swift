@@ -45,6 +45,42 @@ enum TrackpadInputValidator {
     }
 }
 
+/// Normalizes UIKit tap counters into the click states understood by macOS.
+enum TrackpadGesturePolicy {
+    static func clickCount(from tapCount: Int) -> Int {
+        min(3, max(1, tapCount))
+    }
+}
+
+struct TrackpadScrollStep: Sendable, Equatable {
+    static let zero = TrackpadScrollStep(vertical: 0, horizontal: 0)
+
+    let vertical: Int32
+    let horizontal: Int32
+}
+
+/// Retains fractional scroll movement between network events. Without this,
+/// slow two-finger gestures can disappear when each small delta is rounded.
+struct TrackpadScrollAccumulator: Sendable {
+    private var verticalRemainder: Float = 0
+    private var horizontalRemainder: Float = 0
+
+    mutating func consume(deltaX: Float, deltaY: Float) -> TrackpadScrollStep {
+        verticalRemainder += deltaY
+        horizontalRemainder += deltaX
+        let vertical = Int32(verticalRemainder.rounded()).clamped(to: -500...500)
+        let horizontal = Int32(horizontalRemainder.rounded()).clamped(to: -500...500)
+        verticalRemainder -= Float(vertical)
+        horizontalRemainder -= Float(horizontal)
+        return TrackpadScrollStep(vertical: vertical, horizontal: horizontal)
+    }
+
+    mutating func reset() {
+        verticalRemainder = 0
+        horizontalRemainder = 0
+    }
+}
+
 /// Rejects replayed and out-of-order remote input.
 struct TrackpadSequenceGate: Sendable {
     private var lastSequence: UInt64?
@@ -57,5 +93,11 @@ struct TrackpadSequenceGate: Sendable {
 
     mutating func reset() {
         lastSequence = nil
+    }
+}
+
+private extension Comparable {
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        min(max(self, range.lowerBound), range.upperBound)
     }
 }
