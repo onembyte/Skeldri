@@ -25,6 +25,7 @@
 		20B30AB8705894AC32A33167 /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		240795D03C9279A5499B1DB5 /* PrivacyNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */; };
+		24B48D939A95E3C9B457D20F /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		278EAAFA0AD11A3291258596 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		2A0530976DF5F67CFBA5C7E4 /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
 		2C0481E5B69FEC2AAA77D59C /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
@@ -38,6 +39,7 @@
 		3C00CB5ACC22A95B82C5F078 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		3E2CF2A43CFDD55C79AAD82E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEACF120D118B99DC35B70 /* DrawingScreen.swift */; };
 		43CC5094E3F717B0326E94C8 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */; };
+		48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		4C760B9741B256AF34EA3CFB /* DisplaySidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */; };
 		4C9156009243E84C52EB1D25 /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F37D20EC3516E923AB574CD /* StrokeStyle.swift */; };
 		53C79556296EA0EE7BCB56C3 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
@@ -85,7 +87,9 @@
 		BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */; };
 		BBE382194A98AA20A6A32A79 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		BDFBAA930278CD747669AF7D /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
+		BE9345119C907B6706937559 /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		BF70639B4ADE1798FE409B7C /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
+		C38797BB2E289494641DDE8B /* ConnectionLifecycleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0F9B458B8CD2F371977B5F /* ConnectionLifecycleTests.swift */; };
 		C44842D96AE9B1324B804E6E /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		C81A7BD1D8CEEF016408BAF4 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
 		CA12AA294ACCFD6B01EE06C3 /* VideoStreamingProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */; };
@@ -140,6 +144,7 @@
 		50811F5EC5ADDA2AACC6EAEC /* SkeldriTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkeldriTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingState.swift; sourceTree = "<group>"; };
 		5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriInputMode.swift; sourceTree = "<group>"; };
+		58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionLifecycle.swift; sourceTree = "<group>"; };
 		5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
 		6AAE396F4BD982194E894F00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramerTests.swift; sourceTree = "<group>"; };
@@ -162,6 +167,7 @@
 		A1F87F5DD4CE62D4B8FDE054 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
 		A31CD6D684777117B51B6A10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA5B78E6147D054FD4A9DC09 /* SkeldriMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkeldriMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF0F9B458B8CD2F371977B5F /* ConnectionLifecycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionLifecycleTests.swift; sourceTree = "<group>"; };
 		B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfiControlProtocolTests.swift; sourceTree = "<group>"; };
 		B4FC3678B953C0B5E6C6BD03 /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 		B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySidebar.swift; sourceTree = "<group>"; };
@@ -191,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */,
+				AF0F9B458B8CD2F371977B5F /* ConnectionLifecycleTests.swift */,
 				2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */,
 				4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */,
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
@@ -248,6 +255,7 @@
 			children = (
 				6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */,
 				C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */,
+				58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */,
 				0D394A0BB905F0E570400676 /* ControlPacket.swift */,
 				EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */,
 				46ED91F9E70F5EEEC277275A /* PacketFramer.swift */,
@@ -543,6 +551,7 @@
 				1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */,
 				9352081EB17EBD4351202943 /* AfiNetworkServer.swift in Sources */,
 				E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */,
+				48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */,
 				003F26311874A0C8940887C9 /* ConnectionStatusView.swift in Sources */,
 				F2F2A3C85ADCEF98B4C03E23 /* ControlPacket.swift in Sources */,
 				77E0B9383970B3F3275AB064 /* CoordinateMapper.swift in Sources */,
@@ -584,6 +593,8 @@
 				832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */,
 				1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */,
 				BDFBAA930278CD747669AF7D /* ConnectionChannel.swift in Sources */,
+				24B48D939A95E3C9B457D20F /* ConnectionLifecycle.swift in Sources */,
+				C38797BB2E289494641DDE8B /* ConnectionLifecycleTests.swift in Sources */,
 				1462371820EC68C0ADB0B7A3 /* ControlPacket.swift in Sources */,
 				97173A1CCDAA00ABFF32CB2C /* ControlPacketTests.swift in Sources */,
 				595790A47B6259EFFE99F0EB /* CoordinateMapper.swift in Sources */,
@@ -625,6 +636,7 @@
 			files = (
 				D650D00E95B76E8049506C74 /* AfiControlProtocol.swift in Sources */,
 				FCF9EFD7FA00E47E1DFD6421 /* ConnectionChannel.swift in Sources */,
+				BE9345119C907B6706937559 /* ConnectionLifecycle.swift in Sources */,
 				97F52AFD2BC04EEC84CFC173 /* ControlPacket.swift in Sources */,
 				6426B776045D46D3CEEEEE3F /* CoordinateMapper.swift in Sources */,
 				CB6DB25E10856A132B02B21E /* DiscoveryIdentity.swift in Sources */,

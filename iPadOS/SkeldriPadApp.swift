@@ -17,7 +17,8 @@ struct SkeldriPadApp: App {
             }
             .task { model.start() }
             .onChange(of: scenePhase) { _, phase in
-                if phase != .active { model.suspendPointerInput() }
+                if phase == .background { model.disconnect() }
+                else if phase != .active { model.suspendPointerInput() }
             }
             .alert("Skeldri", isPresented: $model.showingError) {
                 Button("OK") {}
@@ -74,7 +75,11 @@ final class iPadAppModel: ObservableObject {
         network.onStateChanged = { [weak self] value, error in Task { @MainActor in
             guard let self else { return }
             self.connected = value
-            if !value { self.inputMode = .drawing; self.decoder.reset() }
+            if !value {
+                self.inputMode = .drawing
+                self.awaitingMacApproval = false
+                self.decoder.reset()
+            }
             if let error { self.errorMessage = error; self.showingError = true }
         } }
         network.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }

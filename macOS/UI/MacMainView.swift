@@ -19,10 +19,13 @@ struct MacMainView: View {
                 .help("Quit Skeldri")
             }
             ConnectionStatusView(title: "Screen Recording", ready: model.capturePermission, detail: model.capturePermission ? "Ready" : "Permission required")
+            if !model.capturePermission {
+                Button("Grant Screen Recording") { model.requestCapturePermission() }
+            }
             ConnectionStatusView(title: "Local Network", ready: model.listenerReady, detail: model.listenerReady ? "Ready" : "Starting")
-            ConnectionStatusView(title: "Pointer Control", ready: model.inputPermission, detail: model.inputPermission ? "Ready" : "Permission required")
+            ConnectionStatusView(title: "Trackpad Control", ready: model.inputPermission, detail: model.inputPermission ? "Ready" : "Optional")
             if !model.inputPermission {
-                Button("Grant Pointer Permission") { model.requestInputPermission() }
+                Button("Enable Trackpad Control") { model.requestInputPermission() }
             }
             LabeledContent("Display", value: model.displays.first(where: { $0.id == model.selectedDisplayID })?.name ?? "Unavailable")
             if let pending = model.pendingConnectionName {
@@ -55,7 +58,7 @@ struct MacMainView: View {
         }
         .padding(18)
         .frame(width: 340)
-        .onAppear { model.refreshInputPermission() }
+        .onAppear { model.refreshPermissions() }
         .sheet(isPresented: $showingPrivacy) { PrivacyNoticeView() }
     }
 }

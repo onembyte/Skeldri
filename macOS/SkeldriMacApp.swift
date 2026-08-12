@@ -68,6 +68,15 @@ final class MacAppModel: ObservableObject {
     private var reconciliationIsRunning = false
 
     init() {
+        server.onListenerStateChanged = { [weak self] ready, detail in
+            Task { @MainActor in
+                guard let self else { return }
+                self.listenerReady = ready
+                if let detail {
+                    self.errorMessage = "Local network listener failed: \(detail)"
+                }
+            }
+        }
         server.onConnectionChanged = { [weak self] value in
             Task { @MainActor in
                 guard let self else { return }
@@ -163,7 +172,6 @@ final class MacAppModel: ObservableObject {
         // ScreenCaptureKit display enumeration is unavailable.
         do {
             try server.start()
-            listenerReady = true
         } catch {
             errorMessage = "Local network listener failed: \(error.localizedDescription)"
             return
@@ -177,6 +185,10 @@ final class MacAppModel: ObservableObject {
         }
         do {
             screenPairs = try await DisplayManager().availableDisplays(); displays = screenPairs.map(\.1)
+            guard !screenPairs.isEmpty else {
+                errorMessage = "No available Mac displays were found."
+                return
+            }
             selectedDisplayID = displays.first?.id; showOverlayForSelection()
             if connected { publishDisplays() }
         } catch {
@@ -193,7 +205,17 @@ final class MacAppModel: ObservableObject {
         afiServer.sendControl(.clear)
     }
     func requestInputPermission() { input.requestPermission() }
-    func refreshInputPermission() { inputPermission = input.hasPermission }
+    func requestCapturePermission() {
+        let granted = CGRequestScreenCaptureAccess()
+        capturePermission = granted || CGPreflightScreenCaptureAccess()
+        if !capturePermission {
+            errorMessage = "Grant Screen Recording access in System Settings, then quit and reopen Skeldri."
+        }
+    }
+    func refreshPermissions() {
+        capturePermission = CGPreflightScreenCaptureAccess()
+        inputPermission = input.hasPermission
+    }
     func shutdown() {
         input.reset()
         server.stop()
@@ -203,6 +225,10 @@ final class MacAppModel: ObservableObject {
         Task { await capture.stop() }
     }
     func approvePendingConnection() {
+        guard capturePermission else {
+            errorMessage = "Screen Recording access is required before an iPad can view this Mac."
+            return
+        }
         if modernControlConnected { server.authorizeCurrentClient(true) }
         else if afiControlConnected { afiServer.authorizeCurrentClient(true) }
     }
