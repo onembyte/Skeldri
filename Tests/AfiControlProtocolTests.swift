@@ -34,4 +34,24 @@ struct AfiControlProtocolTests {
         #expect(object["kind"] as? String == "displays")
         #expect((object["displays"] as? [[String: Any]])?.first?["id"] as? Int == 7)
     }
+
+    @Test func decodesExactLegacyTrackpadEnvelopes() throws {
+        let cases: [(String, [String: Any], TrackpadEvent)] = [
+            ("move", ["sequence": 1, "deltaX": 3.5, "deltaY": -2.0],
+             .move(sequence: 1, deltaX: 3.5, deltaY: -2)),
+            ("scroll", ["sequence": 2, "deltaX": 0.5, "deltaY": 7.0],
+             .scroll(sequence: 2, deltaX: 0.5, deltaY: 7)),
+            ("magnify", ["sequence": 3, "delta": 0.12],
+             .magnify(sequence: 3, delta: 0.12)),
+            ("button", ["sequence": 4, "button": "left", "isDown": true, "clickCount": 2],
+             .button(sequence: 4, button: .left, isDown: true, clickCount: 2)),
+            ("reset", ["sequence": 5], .reset(sequence: 5))
+        ]
+        for (kind, payload, expected) in cases {
+            let data = try JSONSerialization.data(withJSONObject: [
+                "protocolVersion": 1, "kind": "trackpad", "event": [kind: payload]
+            ])
+            #expect(try AfiControlCodec.decode(data) == .trackpad(expected))
+        }
+    }
 }
