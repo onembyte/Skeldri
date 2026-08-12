@@ -18,6 +18,7 @@ final class iPadNetworkClient: @unchecked Sendable {
     private var browserGeneration = 0
     private var control: PeerConnection?
     private var video: PeerConnection?
+    private var sessionID = UUID()
 
     func startBrowsing() {
         queue.async { [weak self] in self?.restartBrowser() }
@@ -27,14 +28,18 @@ final class iPadNetworkClient: @unchecked Sendable {
 
     func connect(to endpoint: NWEndpoint) {
         disconnect()
-        control = makeConnection(endpoint: endpoint, channel: .control, maximum: PacketFramer.controlLimit)
-        video = makeConnection(endpoint: endpoint, channel: .video, maximum: PacketFramer.videoLimit)
+        sessionID = UUID()
+        control = makeConnection(endpoint: endpoint, channel: .control, maximum: PacketFramer.controlLimit,
+                                 sessionID: sessionID)
+        video = makeConnection(endpoint: endpoint, channel: .video, maximum: PacketFramer.videoLimit,
+                               sessionID: sessionID)
     }
 
     func disconnect() { control?.cancel(); video?.cancel(); control = nil; video = nil; onStateChanged?(false, nil) }
     func send(_ packet: ControlPacket) { guard let data = try? JSONEncoder().encode(packet) else { return }; control?.send(PacketFramer.frame(type: .control, payload: data)) }
 
-    private func makeConnection(endpoint: NWEndpoint, channel: ConnectionChannel, maximum: Int) -> PeerConnection {
+    private func makeConnection(endpoint: NWEndpoint, channel: ConnectionChannel, maximum: Int,
+                                sessionID: UUID) -> PeerConnection {
         let peer = PeerConnection(connection: NWConnection(to: endpoint, using: .tcp), maximumPayload: maximum)
         peer.onPacket = { [weak self] packet in
             guard let self else { return }
@@ -43,9 +48,9 @@ final class iPadNetworkClient: @unchecked Sendable {
         }
         peer.onStopped = { [weak self] in self?.onStateChanged?(false, "Connection lost") }
         peer.start(queue: queue)
-        let hello = ControlPacket.hello(version: ProtocolVersion.current, channel: channel, client: "iPad")
+        let hello = ControlPacket.hello(version: ProtocolVersion.current, channel: channel, client: "iPad",
+                                        sessionID: sessionID)
         if let payload = try? JSONEncoder().encode(hello) { peer.send(PacketFramer.frame(type: .control, payload: payload)) }
-        if channel == .control { onStateChanged?(true, nil) }
         return peer
     }
 

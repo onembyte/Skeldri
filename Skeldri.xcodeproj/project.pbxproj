@@ -22,7 +22,9 @@
 		1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */; };
 		1CD199007DB8C7BE6346C6A5 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
+		20B30AB8705894AC32A33167 /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
+		240795D03C9279A5499B1DB5 /* PrivacyNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */; };
 		278EAAFA0AD11A3291258596 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		2A0530976DF5F67CFBA5C7E4 /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
 		2C0481E5B69FEC2AAA77D59C /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
@@ -41,17 +43,20 @@
 		53C79556296EA0EE7BCB56C3 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
 		5426B69E85FA264917F16666 /* VideoFlowControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */; };
 		595790A47B6259EFFE99F0EB /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */; };
+		5B23358F54208678F7C91569 /* PrivacyNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */; };
 		5B7F8290DEC551679D28762E /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		5C7828D9E194616F0DABD375 /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F37D20EC3516E923AB574CD /* StrokeStyle.swift */; };
 		5D377403FB18A9E3CC3A641C /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F1261228B49B8717685122 /* DisplayDescriptor.swift */; };
 		5D4FCCFF501E2B66ABACBCBB /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */; };
 		60EDAC78ABC72FA4CED464C1 /* DrawingToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDB8E9602B4BD6AC7003A08 /* DrawingToolbar.swift */; };
 		61DE047D9B66C45403815B08 /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402801EB066BC5180232032E /* VideoFlowControl.swift */; };
+		628EC62FBCCF5259B62FE236 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 36EDB74E53B1C6F06E75DB4F /* PrivacyInfo.xcprivacy */; };
 		63BE3580976B29430BB676C2 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		6426B776045D46D3CEEEEE3F /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */; };
 		68545A8EA9BF830B728B67BA /* TrackpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD374CA2E084D8C3F30818 /* TrackpadView.swift */; };
 		6E3A11323635501DA189D70B /* DiscoveryIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */; };
 		711CFBBE35AF11F37CB49282 /* PacketFramerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */; };
+		720DF0680404D369BC87AC8E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9C0CCF8D61225C76CFAAD010 /* PrivacyInfo.xcprivacy */; };
 		72353091E19E0E3A7F39AFF4 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		7291056A6727913F98010FDF /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */; };
 		77E0B9383970B3F3275AB064 /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */; };
@@ -80,6 +85,7 @@
 		BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */; };
 		BBE382194A98AA20A6A32A79 /* VideoStreamingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */; };
 		BDFBAA930278CD747669AF7D /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
+		BF70639B4ADE1798FE409B7C /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		C44842D96AE9B1324B804E6E /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		C81A7BD1D8CEEF016408BAF4 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
 		CA12AA294ACCFD6B01EE06C3 /* VideoStreamingProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */; };
@@ -93,14 +99,17 @@
 		DCA62D7A23240AD475AA0907 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A31CD6D684777117B51B6A10 /* Assets.xcassets */; };
 		E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82264D3115D066E08A928202 /* H264Encoder.swift */; };
+		E321CB06C011F863B499CEDE /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		E51E44E8434552E85809203F /* TrackpadMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */; };
 		E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
 		E86FB0DBC28C90B3BB4FBEC0 /* MacNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4E56FBBED3A57A999EE2DD /* MacNetworkServer.swift */; };
 		E8762B69E13FDE196C9E7610 /* MacMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3D33E0471CEDBD0AB084B9 /* MacMainView.swift */; };
 		E9AC7E61F4EFD1E71FA16CBC /* DisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AF99AC17F713757D73C175 /* DisplayManager.swift */; };
 		E9C900BC1CA4B495B9FA55AA /* StrokePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */; };
+		ED5EFFE1B34873B855A0459E /* PrivacyNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */; };
 		EE28562D5454F9AB0648A6F2 /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F37D20EC3516E923AB574CD /* StrokeStyle.swift */; };
 		F145C08EA422178E72EF9010 /* MacInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8FDB05E6E6C3734289DBDA /* MacInputController.swift */; };
+		F158D970C6EE0A411CD63B03 /* SessionAuthorizationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */; };
 		F2F2A3C85ADCEF98B4C03E23 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
 		F594359B9E0D67EDE30A8974 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		FA49C45D91144A7A44795E8D /* DiscoveryIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */; };
@@ -118,10 +127,12 @@
 		2F24883CDD41353EBC1304DC /* iPadNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadNetworkClient.swift; sourceTree = "<group>"; };
 		2F37D20EC3516E923AB574CD /* StrokeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeStyle.swift; sourceTree = "<group>"; };
 		35AD374CA2E084D8C3F30818 /* TrackpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadView.swift; sourceTree = "<group>"; };
+		36EDB74E53B1C6F06E75DB4F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
 		402801EB066BC5180232032E /* VideoFlowControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControl.swift; sourceTree = "<group>"; };
 		435373CD77B4DF23E7E4CAC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		46ED91F9E70F5EEEC277275A /* PacketFramer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramer.swift; sourceTree = "<group>"; };
+		47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyNoticeView.swift; sourceTree = "<group>"; };
 		486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolVersion.swift; sourceTree = "<group>"; };
 		4DDB8E9602B4BD6AC7003A08 /* DrawingToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingToolbar.swift; sourceTree = "<group>"; };
 		4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
@@ -130,6 +141,7 @@
 		576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingState.swift; sourceTree = "<group>"; };
 		5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriInputMode.swift; sourceTree = "<group>"; };
 		5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
+		6AAE396F4BD982194E894F00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramerTests.swift; sourceTree = "<group>"; };
 		6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfiControlProtocol.swift; sourceTree = "<group>"; };
 		6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControlTests.swift; sourceTree = "<group>"; };
@@ -146,6 +158,7 @@
 		98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStreamingProfileTests.swift; sourceTree = "<group>"; };
 		9A8232CD785D3538ED944FC5 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
 		9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadMotion.swift; sourceTree = "<group>"; };
+		9C0CCF8D61225C76CFAAD010 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A1F87F5DD4CE62D4B8FDE054 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
 		A31CD6D684777117B51B6A10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA5B78E6147D054FD4A9DC09 /* SkeldriMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkeldriMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +171,7 @@
 		C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEvent.swift; sourceTree = "<group>"; };
 		C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionChannel.swift; sourceTree = "<group>"; };
 		C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStateTests.swift; sourceTree = "<group>"; };
+		CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAuthorizationPolicy.swift; sourceTree = "<group>"; };
 		CF3D33E0471CEDBD0AB084B9 /* MacMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacMainView.swift; sourceTree = "<group>"; };
 		D9A5A6FBBD860F0F318138C0 /* VideoDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDisplayView.swift; sourceTree = "<group>"; };
 		DA61A00FD694A9DC350D1229 /* SkeldriMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriMacApp.swift; sourceTree = "<group>"; };
@@ -168,6 +182,7 @@
 		EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentity.swift; sourceTree = "<group>"; };
 		EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeHitTestingTests.swift; sourceTree = "<group>"; };
 		EF4E56FBBED3A57A999EE2DD /* MacNetworkServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacNetworkServer.swift; sourceTree = "<group>"; };
+		F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAuthorizationPolicyTests.swift; sourceTree = "<group>"; };
 		F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentityTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -181,6 +196,7 @@
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
 				C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */,
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
+				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
 				EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */,
 				167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */,
 				4F9750797A4B0811E0484C8F /* TrackpadMotionTests.swift */,
@@ -214,6 +230,7 @@
 				21F7669DA07584CD31ED60BB /* Logging */,
 				6880DC280423E8055D902124 /* Models */,
 				3DEBA10E417606DC1ACEA0B5 /* Protocol */,
+				5E105138D89A8F0F1DC40A5B /* UI */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -236,6 +253,7 @@
 				46ED91F9E70F5EEEC277275A /* PacketFramer.swift */,
 				C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */,
 				486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */,
+				CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */,
 				C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */,
 				402801EB066BC5180232032E /* VideoFlowControl.swift */,
 			);
@@ -260,6 +278,14 @@
 				78DD229B64EB0D530424A769 /* OverlayWindowController.swift */,
 			);
 			path = Overlay;
+			sourceTree = "<group>";
+		};
+		5E105138D89A8F0F1DC40A5B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		5EA5E3FE8EC439DC8FF4A4C0 /* UI */ = {
@@ -299,6 +325,7 @@
 			children = (
 				A31CD6D684777117B51B6A10 /* Assets.xcassets */,
 				435373CD77B4DF23E7E4CAC1 /* Info.plist */,
+				36EDB74E53B1C6F06E75DB4F /* PrivacyInfo.xcprivacy */,
 				907220C463BE2B6C233C4EAF /* SkeldriPadApp.swift */,
 				7F6A7A29FE6796D833267FB5 /* Drawing */,
 				86C1081300E813A46CE1C7AC /* Network */,
@@ -379,6 +406,8 @@
 			isa = PBXGroup;
 			children = (
 				86553A4F09D4849FB27647AD /* Assets.xcassets */,
+				6AAE396F4BD982194E894F00 /* Info.plist */,
+				9C0CCF8D61225C76CFAAD010 /* PrivacyInfo.xcprivacy */,
 				7039D25CFD791DB20693D0AB /* SkeldriMac.entitlements */,
 				DA61A00FD694A9DC350D1229 /* SkeldriMacApp.swift */,
 				8D09A3DD96E309B7F460266A /* Capture */,
@@ -491,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07F49493F740721E0A123424 /* Assets.xcassets in Resources */,
+				720DF0680404D369BC87AC8E /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +529,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */,
+				628EC62FBCCF5259B62FE236 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,8 +559,10 @@
 				78D3A727FD40A5E095494E0E /* OverlayWindowController.swift in Sources */,
 				C44842D96AE9B1324B804E6E /* PacketFramer.swift in Sources */,
 				7291056A6727913F98010FDF /* PeerConnection.swift in Sources */,
+				240795D03C9279A5499B1DB5 /* PrivacyNoticeView.swift in Sources */,
 				CBFCF496FC826C3C7EA7DE2B /* ProtocolVersion.swift in Sources */,
 				96A77EAD18C908F3B1C76108 /* ScreenCaptureManager.swift in Sources */,
+				20B30AB8705894AC32A33167 /* SessionAuthorizationPolicy.swift in Sources */,
 				A69A0E0341DC7989E18426BA /* SkeldriInputMode.swift in Sources */,
 				1CD199007DB8C7BE6346C6A5 /* SkeldriLogger.swift in Sources */,
 				3107E4ECF7BB87F000E9A02D /* SkeldriMacApp.swift in Sources */,
@@ -564,7 +597,10 @@
 				5B7F8290DEC551679D28762E /* PacketFramer.swift in Sources */,
 				711CFBBE35AF11F37CB49282 /* PacketFramerTests.swift in Sources */,
 				BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */,
+				ED5EFFE1B34873B855A0459E /* PrivacyNoticeView.swift in Sources */,
 				396380A50ED64B3E6D927653 /* ProtocolVersion.swift in Sources */,
+				E321CB06C011F863B499CEDE /* SessionAuthorizationPolicy.swift in Sources */,
+				F158D970C6EE0A411CD63B03 /* SessionAuthorizationPolicyTests.swift in Sources */,
 				A44CFC9EA8FCDE17E6462534 /* SkeldriInputMode.swift in Sources */,
 				11E716BE6809971448C34E67 /* SkeldriLogger.swift in Sources */,
 				278EAAFA0AD11A3291258596 /* Stroke.swift in Sources */,
@@ -603,7 +639,9 @@
 				2E4827EAE19E987A0B947D46 /* LiquidGlassStyle.swift in Sources */,
 				2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */,
 				0AD912A67B2EDDF07850246C /* PeerConnection.swift in Sources */,
+				5B23358F54208678F7C91569 /* PrivacyNoticeView.swift in Sources */,
 				2C0481E5B69FEC2AAA77D59C /* ProtocolVersion.swift in Sources */,
+				BF70639B4ADE1798FE409B7C /* SessionAuthorizationPolicy.swift in Sources */,
 				2A0530976DF5F67CFBA5C7E4 /* SkeldriInputMode.swift in Sources */,
 				7D45FD2E32463E9A2C80098D /* SkeldriLogger.swift in Sources */,
 				0BC01F2512710469CD7A2464 /* SkeldriPadApp.swift in Sources */,
@@ -632,16 +670,13 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/SkeldriMac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Skeldri;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
-				INFOPLIST_KEY_LSMultipleInstancesProhibited = YES;
-				INFOPLIST_KEY_LSUIElement = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.drawpad.mac;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.mac;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -657,7 +692,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.drawpad.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.tests;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -674,7 +709,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.drawpad.ipad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.ipad;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -687,16 +722,13 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/SkeldriMac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Skeldri;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
-				INFOPLIST_KEY_LSMultipleInstancesProhibited = YES;
-				INFOPLIST_KEY_LSUIElement = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.drawpad.mac;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.mac;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -713,7 +745,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.drawpad.ipad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.ipad;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -853,7 +885,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.drawpad.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.tests;
 				SDKROOT = macosx;
 			};
 			name = Debug;

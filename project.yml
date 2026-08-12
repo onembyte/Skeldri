@@ -1,8 +1,6 @@
 name: Skeldri
 options:
-  # Preserve the pre-rename identifiers so installed apps and macOS privacy
-  # grants upgrade in place. Migrate them only as a separately planned release.
-  bundleIdPrefix: com.example.drawpad
+  bundleIdPrefix: com.onembyte.skeldri
   deploymentTarget:
     macOS: "15.0"
     iOS: "18.0"
@@ -20,13 +18,10 @@ targets:
       - macOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.mac
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.mac
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Skeldri
-        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
-        INFOPLIST_KEY_LSUIElement: YES
-        INFOPLIST_KEY_LSMultipleInstancesProhibited: YES
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: macOS/Info.plist
         CODE_SIGN_ENTITLEMENTS: macOS/SkeldriMac.entitlements
         CODE_SIGN_STYLE: Automatic
     entitlements:
@@ -39,7 +34,7 @@ targets:
       - iPadOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.ipad
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.ipad
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: iPadOS/Info.plist
@@ -53,7 +48,7 @@ targets:
       - Tests
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
   SkeldriMac:

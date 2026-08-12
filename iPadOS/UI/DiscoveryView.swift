@@ -4,6 +4,7 @@ import SwiftUI
 /// app model; this view is deliberately presentation-only.
 struct DiscoveryView: View {
     @ObservedObject var model: iPadAppModel
+    @State private var showingPrivacy = false
 
     var body: some View {
         ZStack {
@@ -18,13 +19,26 @@ struct DiscoveryView: View {
                     } else {
                         LazyVStack(spacing: 12) {
                             ForEach(model.macs) { mac in
-                                MacConnectionCard(mac: mac) { model.connect(mac) }
+                                MacConnectionCard(mac: mac, waiting: model.awaitingMacApproval) { model.connect(mac) }
                             }
                         }
                         .frame(maxWidth: 620)
                     }
 
+                    if model.awaitingMacApproval {
+                        Label("Approve this connection from the Skeldri menu on your Mac", systemImage: "lock.shield")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundStyle(.white.opacity(0.78))
+                            .padding(.horizontal, 18)
+                            .frame(height: 44)
+                            .background(.ultraThinMaterial, in: Capsule())
+                    }
+
                     refreshHint
+
+                    Button("Privacy") { showingPrivacy = true }
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundStyle(.white.opacity(0.48))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 32)
@@ -34,6 +48,7 @@ struct DiscoveryView: View {
             .refreshable { model.refreshDiscovery() }
         }
         .preferredColorScheme(.dark)
+        .sheet(isPresented: $showingPrivacy) { PrivacyNoticeView() }
     }
 
     private var header: some View {
@@ -84,6 +99,7 @@ struct DiscoveryView: View {
 
 private struct MacConnectionCard: View {
     let mac: DiscoveredMac
+    let waiting: Bool
     let connect: () -> Void
 
     var body: some View {
@@ -133,6 +149,8 @@ private struct MacConnectionCard: View {
                 .shadow(color: .blue.opacity(0.28), radius: 12, y: 5)
             }
             .buttonStyle(.plain)
+            .disabled(waiting)
+            .opacity(waiting ? 0.45 : 1)
             .accessibilityLabel("Connect to \(mac.name)")
         }
         .padding(14)

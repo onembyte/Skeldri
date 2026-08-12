@@ -32,6 +32,7 @@ struct SkeldriPadApp: App {
 final class iPadAppModel: ObservableObject {
     @Published var macs: [DiscoveredMac] = []
     @Published var connected = false { didSet { UIApplication.shared.isIdleTimerDisabled = connected } }
+    @Published var awaitingMacApproval = false
     @Published var errorMessage: String?
     @Published var showingError = false
     @Published var style = StrokeStyle.defaultPen
@@ -92,13 +93,17 @@ final class iPadAppModel: ObservableObject {
     }
     func start() { network.startBrowsing() }
     func refreshDiscovery() { network.refreshBrowsing() }
-    func connect(_ mac: DiscoveredMac) { network.connect(to: mac.endpoint) }
+    func connect(_ mac: DiscoveredMac) {
+        awaitingMacApproval = true
+        network.connect(to: mac.endpoint)
+    }
     func disconnect() {
         sendTrackpadReset()
         network.send(.inputMode(.drawing))
         network.disconnect()
         decoder.reset()
         inputMode = .drawing
+        awaitingMacApproval = false
     }
     func toggleInputMode() {
         if inputMode == .trackpad { sendTrackpadReset() }
@@ -156,6 +161,17 @@ final class iPadAppModel: ObservableObject {
     }
     private func apply(_ packet: ControlPacket) {
         switch packet {
+        case .authorizationRequired:
+            awaitingMacApproval = true
+        case let .authorizationResult(approved):
+            awaitingMacApproval = false
+            if approved {
+                connected = true
+            } else {
+                network.disconnect()
+                errorMessage = "The connection was not allowed on the Mac."
+                showingError = true
+            }
         case let .strokeBegin(id, style, point): drawingState.begin(id:id, style:style, point:point)
         case let .strokePoints(id, points): drawingState.append(id:id, points:points)
         case let .strokeEnd(id): drawingState.finish(id:id)

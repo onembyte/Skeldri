@@ -25,8 +25,10 @@ enum AfiControlCodec {
         case "hello":
             guard let rawChannel = object["channel"] as? String,
                   let channel = ConnectionChannel(rawValue: rawChannel),
-                  let client = object["client"] as? String else { throw AfiControlError.invalidPayload(kind) }
-            return .hello(version: version, channel: channel, client: client)
+                  let client = object["client"] as? String,
+                  let session = object["sessionID"] as? String,
+                  let sessionID = UUID(uuidString: session) else { throw AfiControlError.invalidPayload(kind) }
+            return .hello(version: version, channel: channel, client: client, sessionID: sessionID)
         case "ping":
             return .ping(id: try uuid(object, "id", kind), sentAt: try double(object, "sentAt", kind))
         case "pong":

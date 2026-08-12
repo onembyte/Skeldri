@@ -29,6 +29,10 @@ final class SkeldriMacAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         Task { await model.start() }
     }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        model.shutdown()
+    }
 }
 
 @MainActor
@@ -38,6 +42,8 @@ final class MacAppModel: ObservableObject {
     @Published var capturePermission = CGPreflightScreenCaptureAccess()
     @Published var listenerReady = false
     @Published var connected = false
+    @Published var pendingConnectionName: String?
+    @Published var streamingActive = false
     @Published var annotationsVisible = true
     @Published var inputPermission = CGPreflightPostEventAccess()
     @Published var errorMessage: String?
@@ -54,6 +60,8 @@ final class MacAppModel: ObservableObject {
     private var afiControlConnected = false
     private var modernVideoConnected = false
     private var afiVideoConnected = false
+    private var modernAuthorized = false
+    private var afiAuthorized = false
     private var streamingDisplayID: UInt32?
     private var streamingProfile: VideoStreamingProfile?
     private var requestedDisplayID: UInt32?
@@ -66,11 +74,9 @@ final class MacAppModel: ObservableObject {
                 self.modernControlConnected = value
                 self.afiServer.setAcceptingClients(!value)
                 if value { self.afiServer.disconnectClient() }
-                self.connected = self.modernControlConnected || self.afiControlConnected
-                if value {
-                    self.publishDisplays()
-                    self.server.sendControl(.canvasSnapshot(self.drawingState.strokes))
-                }
+                if value { self.pendingConnectionName = "Skeldri iPad" }
+                else { self.modernAuthorized = false }
+                self.updateAuthorizedConnectionState()
             }
         }
         server.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
@@ -78,8 +84,19 @@ final class MacAppModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.modernVideoConnected = connected
-                self.videoConnected = self.modernVideoConnected || self.afiVideoConnected
+                self.updateAuthorizedConnectionState()
                 self.scheduleReconciliation()
+            }
+        }
+        server.onAuthorizationChanged = { [weak self] approved in
+            Task { @MainActor in
+                guard let self else { return }
+                self.modernAuthorized = approved
+                self.updateAuthorizedConnectionState()
+                if approved {
+                    self.publishDisplays()
+                    self.server.sendControl(.canvasSnapshot(self.drawingState.strokes))
+                }
             }
         }
         server.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
@@ -89,11 +106,9 @@ final class MacAppModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.afiControlConnected = value
-                self.connected = self.modernControlConnected || self.afiControlConnected
-                if value {
-                    self.publishDisplays()
-                    self.afiServer.sendControl(.canvasSnapshot(self.drawingState.strokes))
-                }
+                if value { self.pendingConnectionName = "Skeldri Afi iPad" }
+                else { self.afiAuthorized = false }
+                self.updateAuthorizedConnectionState()
             }
         }
         afiServer.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
@@ -101,11 +116,22 @@ final class MacAppModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.afiVideoConnected = connected
-                self.videoConnected = self.modernVideoConnected || self.afiVideoConnected
+                self.updateAuthorizedConnectionState()
                 self.scheduleReconciliation()
             }
         }
         afiServer.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
+        afiServer.onAuthorizationChanged = { [weak self] approved in
+            Task { @MainActor in
+                guard let self else { return }
+                self.afiAuthorized = approved
+                self.updateAuthorizedConnectionState()
+                if approved {
+                    self.publishDisplays()
+                    self.afiServer.sendControl(.canvasSnapshot(self.drawingState.strokes))
+                }
+            }
+        }
         afiServer.onInputModeChanged = { [weak input] mode in input?.setActive(mode == .trackpad) }
         afiServer.onTrackpadEvent = { [weak input] event in input?.handle(event) }
         input.onPermissionChanged = { [weak self] granted in
@@ -168,6 +194,31 @@ final class MacAppModel: ObservableObject {
     }
     func requestInputPermission() { input.requestPermission() }
     func refreshInputPermission() { inputPermission = input.hasPermission }
+    func shutdown() {
+        input.reset()
+        server.stop()
+        afiServer.stop()
+        encoder.invalidate()
+        overlay.hide()
+        Task { await capture.stop() }
+    }
+    func approvePendingConnection() {
+        if modernControlConnected { server.authorizeCurrentClient(true) }
+        else if afiControlConnected { afiServer.authorizeCurrentClient(true) }
+    }
+    func rejectPendingConnection() {
+        if modernControlConnected { server.authorizeCurrentClient(false) }
+        else if afiControlConnected { afiServer.authorizeCurrentClient(false) }
+        pendingConnectionName = nil
+    }
+
+    private func updateAuthorizedConnectionState() {
+        connected = (modernControlConnected && modernAuthorized) || (afiControlConnected && afiAuthorized)
+        videoConnected = (modernVideoConnected && modernAuthorized) || (afiVideoConnected && afiAuthorized)
+        streamingActive = videoConnected && streamingDisplayID != nil
+        if connected || (!modernControlConnected && !afiControlConnected) { pendingConnectionName = nil }
+        scheduleReconciliation()
+    }
 
     private func startStreaming(displayID: UInt32, profile: VideoStreamingProfile) async -> Bool {
         guard capturePermission else {
@@ -192,7 +243,11 @@ final class MacAppModel: ObservableObject {
         }
     }
 
-    private func stopStreaming() async { await capture.stop(); encoder.invalidate() }
+    private func stopStreaming() async {
+        await capture.stop()
+        encoder.invalidate()
+        streamingActive = false
+    }
 
     private func showOverlayForSelection() {
         guard annotationsVisible, let id = selectedDisplayID,
@@ -270,6 +325,7 @@ final class MacAppModel: ObservableObject {
                 if started {
                     streamingDisplayID = target
                     streamingProfile = desiredProfile
+                    streamingActive = true
                 }
 
                 // Connection or selection state may have changed while awaiting.

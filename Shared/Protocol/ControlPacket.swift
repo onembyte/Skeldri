@@ -2,8 +2,10 @@ import Foundation
 
 /// Codable control-plane message. Explicit associated values keep mutations deterministic.
 enum ControlPacket: Codable, Sendable, Equatable {
-    case hello(version: Int, channel: ConnectionChannel, client: String)
+    case hello(version: Int, channel: ConnectionChannel, client: String, sessionID: UUID)
     case incompatibleVersion(expected: Int)
+    case authorizationRequired
+    case authorizationResult(approved: Bool)
     case ping(id: UUID, sentAt: Double)
     case pong(id: UUID, sentAt: Double)
     case videoAcknowledgement(streamID: UUID, sequence: UInt64, requiresKeyframe: Bool)

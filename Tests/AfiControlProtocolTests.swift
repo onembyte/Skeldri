@@ -3,10 +3,12 @@ import Testing
 
 struct AfiControlProtocolTests {
     @Test func decodesLegacyHelloAndDrawingPackets() throws {
+        let sessionID = UUID()
         let hello = try JSONSerialization.data(withJSONObject: [
-            "protocolVersion": 1, "kind": "hello", "channel": "control", "client": "SkeldriAfi"
+            "protocolVersion": 1, "kind": "hello", "channel": "control", "client": "SkeldriAfi",
+            "sessionID": sessionID.uuidString
         ])
-        #expect(try AfiControlCodec.decode(hello) == .hello(version: 1, channel: .control, client: "SkeldriAfi"))
+        #expect(try AfiControlCodec.decode(hello) == .hello(version: 1, channel: .control, client: "SkeldriAfi", sessionID: sessionID))
 
         let id = UUID()
         let points = [StrokePoint(x: 0.25, y: 0.75, timestamp: 4, pressure: nil)]
