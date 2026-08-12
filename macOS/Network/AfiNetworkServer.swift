@@ -146,8 +146,8 @@ final class AfiNetworkServer: @unchecked Sendable {
                 video = nil
                 videoSessionID = nil
                 videoFlowLock.withLock {
-                    videoSendWindow.reset()
-                    videoConfigurationGate.reset()
+                    self.videoSendWindow.reset()
+                    self.videoConfigurationGate.reset()
                 }
                 onVideoChannelChanged?(false)
             }
