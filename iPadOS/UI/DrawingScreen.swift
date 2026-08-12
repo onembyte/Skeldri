@@ -96,7 +96,8 @@ struct DrawingScreen: View {
     @ObservedObject var model: iPadAppModel
     var body: some View {
         ZStack {
-            if model.inputMode == .drawing {
+            switch model.inputMode {
+            case .drawing:
                 Color.black.ignoresSafeArea()
                 VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
                 DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
@@ -106,12 +107,21 @@ struct DrawingScreen: View {
                 DrawingToolbar(model: model)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .padding(.bottom, 14)
-            } else {
+            case .trackpad:
                 Color(uiColor: .systemGray4).ignoresSafeArea()
                 TrackpadRepresentable(model: model).ignoresSafeArea()
                 TrackpadSettingsPanel(model: model)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(.leading, 14)
+            case .lecture:
+                Color.black.ignoresSafeArea()
+                VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
+                if model.lectureSession.state == .selectingSource {
+                    ProgressView("Choose a window or display on your Mac")
+                        .padding(.horizontal, 18)
+                        .padding(.vertical, 14)
+                        .liquidGlassPanel(in: Capsule())
+                }
             }
 
             GlassIconButton(accessibilityLabel: "Back to Mac selection", action: model.disconnect) {
@@ -121,13 +131,10 @@ struct DrawingScreen: View {
             .padding(.leading, 14)
             .padding(.top, 14)
 
-            GlassIconButton(
-                accessibilityLabel: model.inputMode == .drawing ? "Switch to trackpad" : "Switch to drawing",
-                selected: model.inputMode == .trackpad,
-                action: model.toggleInputMode
-            ) {
-                Image(systemName: model.inputMode == .drawing ? "hand.point.up.left" : "pencil.tip")
-            }
+            ExperienceModeSelector(selection: Binding(
+                get: { model.inputMode },
+                set: model.setInputMode
+            ))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             .padding(.trailing, 14)
             .padding(.top, 14)

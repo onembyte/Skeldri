@@ -46,6 +46,7 @@ final class iPadAppModel: ObservableObject {
     @Published var pendingDisplayID: UInt32?
     @Published var clearsDrawingsWhenSwitchingDisplays = false
     @Published var inputMode: SkeldriInputMode = .drawing
+    @Published private(set) var lectureSession = LectureSession()
     @Published var trackpadSensitivity: Double {
         didSet { UserDefaults.standard.set(trackpadSensitivity, forKey: Self.trackpadSensitivityKey) }
     }
@@ -76,6 +77,9 @@ final class iPadAppModel: ObservableObject {
             guard let self else { return }
             self.connected = value
             if !value {
+                if self.lectureSession.state != .inactive {
+                    self.lectureSession.apply(.disconnected)
+                }
                 self.inputMode = .drawing
                 self.awaitingMacApproval = false
                 self.decoder.reset()
@@ -104,16 +108,29 @@ final class iPadAppModel: ObservableObject {
     }
     func disconnect() {
         sendTrackpadReset()
+        if inputMode == .lecture { network.send(.leaveLectureMode) }
         network.send(.inputMode(.drawing))
         network.disconnect()
         decoder.reset()
         inputMode = .drawing
+        lectureSession.apply(.leave)
         awaitingMacApproval = false
     }
-    func toggleInputMode() {
-        if inputMode == .trackpad { sendTrackpadReset() }
-        inputMode = inputMode == .drawing ? .trackpad : .drawing
-        network.send(.inputMode(inputMode))
+    func setInputMode(_ newMode: SkeldriInputMode) {
+        guard newMode != inputMode else { return }
+        let transition = ExperienceModeTransition(from: inputMode, to: newMode)
+        if transition.mustResetTrackpad { sendTrackpadReset() }
+        if inputMode == .lecture {
+            network.send(.leaveLectureMode)
+            lectureSession.apply(.leave)
+        }
+
+        inputMode = newMode
+        network.send(.inputMode(newMode))
+        if newMode == .lecture {
+            lectureSession.apply(.enter)
+            network.send(.requestLectureSourceSelection)
+        }
     }
     func suspendPointerInput() {
         guard inputMode == .trackpad else { return }
@@ -189,6 +206,12 @@ final class iPadAppModel: ObservableObject {
             selectedDisplayID = display.id
             if pendingDisplayID == display.id { pendingDisplayID = nil }
             videoAspectRatio = CGFloat(display.aspectRatio)
+        case let .lectureSourceSelected(source, generation):
+            decoder.reset()
+            videoAspectRatio = CGFloat(source.aspectRatio)
+            lectureSession.apply(.sourceSelected(source, generation: generation))
+        case let .lectureSourceUnavailable(reason, generation):
+            lectureSession.apply(.sourceUnavailable(reason, generation: generation))
         case let .incompatibleVersion(expected): errorMessage = "Incompatible protocol version. Mac expects \(expected)."; showingError = true
         default: break
         }
