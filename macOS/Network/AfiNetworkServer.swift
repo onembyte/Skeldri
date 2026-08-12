@@ -237,14 +237,27 @@ final class AfiNetworkServer: @unchecked Sendable {
     }
 
     private func disconnectCurrentClient() {
+        let hadControl = control != nil
+        let hadVideo = video != nil
+        let oldControl = control
+        let oldVideo = video
         authorizationGeneration += 1
         authorized = false
         controlSessionID = nil
         videoSessionID = nil
-        control?.cancel()
-        video?.cancel()
         control = nil
         video = nil
+        videoFlowLock.withLock {
+            videoSendWindow.reset()
+            videoConfigurationGate.reset()
+        }
+        oldControl?.cancel()
+        oldVideo?.cancel()
         onInputModeChanged?(.drawing)
+        if hadControl {
+            onAuthorizationChanged?(false)
+            onConnectionChanged?(false)
+        }
+        if hadVideo { onVideoChannelChanged?(false) }
     }
 }

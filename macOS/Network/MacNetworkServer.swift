@@ -10,6 +10,7 @@ final class MacNetworkServer: @unchecked Sendable {
     var onInputModeChanged: (@Sendable (SkeldriInputMode) -> Void)?
     var onTrackpadEvent: (@Sendable (TrackpadEvent) -> Void)?
     var onAuthorizationChanged: (@Sendable (Bool) -> Void)?
+    var onListenerStateChanged: (@Sendable (Bool, String?) -> Void)?
     private let queue = DispatchQueue(label: "Skeldri.network.server")
     private var listener: NWListener?
     /// Connections must be retained while waiting for their first hello packet.
@@ -47,8 +48,18 @@ final class MacNetworkServer: @unchecked Sendable {
             type: "_skeldri._tcp",
             txtRecord: record
         )
-        listener.stateUpdateHandler = { state in
-            if case let .failed(error) = state { SkeldriLogger.network.error("Listener failed: \(error.localizedDescription)") }
+        listener.stateUpdateHandler = { [weak self] state in
+            switch state {
+            case .ready:
+                self?.onListenerStateChanged?(true, nil)
+            case let .failed(error):
+                SkeldriLogger.network.error("Listener failed: \(error.localizedDescription)")
+                self?.onListenerStateChanged?(false, error.localizedDescription)
+            case .cancelled:
+                self?.onListenerStateChanged?(false, nil)
+            default:
+                break
+            }
         }
         listener.newConnectionHandler = { [weak self] connection in self?.accept(connection) }
         self.listener = listener
@@ -227,14 +238,27 @@ final class MacNetworkServer: @unchecked Sendable {
     }
 
     private func disconnectCurrentClient() {
+        let hadControl = control != nil
+        let hadVideo = video != nil
+        let oldControl = control
+        let oldVideo = video
         authorizationGeneration += 1
         authorized = false
         controlSessionID = nil
         videoSessionID = nil
-        control?.cancel()
-        video?.cancel()
         control = nil
         video = nil
+        videoFlowLock.withLock {
+            videoSendWindow.reset()
+            videoConfigurationGate.reset()
+        }
+        oldControl?.cancel()
+        oldVideo?.cancel()
         onInputModeChanged?(.drawing)
+        if hadControl {
+            onAuthorizationChanged?(false)
+            onConnectionChanged?(false)
+        }
+        if hadVideo { onVideoChannelChanged?(false) }
     }
 }
