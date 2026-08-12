@@ -114,14 +114,7 @@ struct DrawingScreen: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(.leading, 14)
             case .lecture:
-                Color.black.ignoresSafeArea()
-                VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
-                if model.lectureSession.state == .selectingSource {
-                    ProgressView("Choose a window or display on your Mac")
-                        .padding(.horizontal, 18)
-                        .padding(.vertical, 14)
-                        .liquidGlassPanel(in: Capsule())
-                }
+                LectureScreen(model: model)
             }
 
             GlassIconButton(accessibilityLabel: "Back to Mac selection", action: model.disconnect) {

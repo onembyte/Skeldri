@@ -132,6 +132,11 @@ final class iPadAppModel: ObservableObject {
             network.send(.requestLectureSourceSelection)
         }
     }
+    func requestLectureSourceSelection() {
+        guard inputMode == .lecture else { return }
+        lectureSession.apply(.enter)
+        network.send(.requestLectureSourceSelection)
+    }
     func suspendPointerInput() {
         guard inputMode == .trackpad else { return }
         sendTrackpadReset()
