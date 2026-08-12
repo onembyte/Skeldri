@@ -18,7 +18,9 @@
 		11E716BE6809971448C34E67 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		1462371820EC68C0ADB0B7A3 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
 		155B7AAB4E3E19CE6A616B36 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
+		1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */; };
 		1CD199007DB8C7BE6346C6A5 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
+		1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
 		278EAAFA0AD11A3291258596 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		2A0530976DF5F67CFBA5C7E4 /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
@@ -54,6 +56,7 @@
 		78D3A727FD40A5E095494E0E /* OverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DD229B64EB0D530424A769 /* OverlayWindowController.swift */; };
 		7C73550B84A2B943E07E1A6D /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		7D45FD2E32463E9A2C80098D /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
+		832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		9150384FB984A019CDFC97EA /* TouchDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94979FA5662548E99A898454 /* TouchDrawingView.swift */; };
 		96A77EAD18C908F3B1C76108 /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */; };
 		97173A1CCDAA00ABFF32CB2C /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */; };
@@ -81,6 +84,7 @@
 		CF1E46F243EFB52F38116355 /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */; };
 		D3F48AB5321D20851AE669B3 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		D4E609086940C15AAF83A952 /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F1261228B49B8717685122 /* DisplayDescriptor.swift */; };
+		D650D00E95B76E8049506C74 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		DCA62D7A23240AD475AA0907 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A31CD6D684777117B51B6A10 /* Assets.xcassets */; };
 		E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82264D3115D066E08A928202 /* H264Encoder.swift */; };
@@ -122,6 +126,7 @@
 		5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriInputMode.swift; sourceTree = "<group>"; };
 		5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
 		6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramerTests.swift; sourceTree = "<group>"; };
+		6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfiControlProtocol.swift; sourceTree = "<group>"; };
 		6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControlTests.swift; sourceTree = "<group>"; };
 		7039D25CFD791DB20693D0AB /* SkeldriMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkeldriMac.entitlements; sourceTree = "<group>"; };
 		78DD229B64EB0D530424A769 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
@@ -137,6 +142,7 @@
 		A1F87F5DD4CE62D4B8FDE054 /* H264Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Decoder.swift; sourceTree = "<group>"; };
 		A31CD6D684777117B51B6A10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA5B78E6147D054FD4A9DC09 /* SkeldriMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkeldriMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfiControlProtocolTests.swift; sourceTree = "<group>"; };
 		B4FC3678B953C0B5E6C6BD03 /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 		B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySidebar.swift; sourceTree = "<group>"; };
 		BD1A89102814B0F04AA65AB7 /* StrokePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePoint.swift; sourceTree = "<group>"; };
@@ -161,6 +167,7 @@
 		05F323F20BE7AC2AD8FE1638 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */,
 				2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */,
 				4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */,
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
@@ -212,6 +219,7 @@
 		3DEBA10E417606DC1ACEA0B5 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */,
 				C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */,
 				0D394A0BB905F0E570400676 /* ControlPacket.swift */,
 				EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */,
@@ -490,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */,
 				E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */,
 				003F26311874A0C8940887C9 /* ConnectionStatusView.swift in Sources */,
 				F2F2A3C85ADCEF98B4C03E23 /* ControlPacket.swift in Sources */,
@@ -526,6 +535,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */,
+				1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */,
 				BDFBAA930278CD747669AF7D /* ConnectionChannel.swift in Sources */,
 				1462371820EC68C0ADB0B7A3 /* ControlPacket.swift in Sources */,
 				97173A1CCDAA00ABFF32CB2C /* ControlPacketTests.swift in Sources */,
@@ -561,6 +572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D650D00E95B76E8049506C74 /* AfiControlProtocol.swift in Sources */,
 				FCF9EFD7FA00E47E1DFD6421 /* ConnectionChannel.swift in Sources */,
 				97F52AFD2BC04EEC84CFC173 /* ControlPacket.swift in Sources */,
 				6426B776045D46D3CEEEEE3F /* CoordinateMapper.swift in Sources */,
