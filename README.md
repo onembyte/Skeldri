@@ -88,7 +88,7 @@ The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall
 
 ## Privacy and security
 
-Skeldri advertises only its modern and legacy-compatibility services on the LAN. It has no internet relay, analytics, telemetry, microphone access, camera access, or keyboard control. Each iPad session requires explicit approval from the Mac before screen content or input is allowed. Trackpad mode additionally uses macOS's permission-gated event-posting API. The transport is not end-to-end encrypted, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
+Skeldri advertises only its modern and legacy-compatibility services on the LAN. It has no internet relay, analytics, telemetry, microphone access, or camera access. It does not transmit arbitrary keyboard input; trackpad magnification uses only the focused app's standard Command-plus/Command-minus shortcut. Each iPad session requires explicit approval from the Mac before screen content or input is allowed. Trackpad mode additionally uses macOS's permission-gated event-posting API. The transport is not end-to-end encrypted, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
 
 ## Project generation
 

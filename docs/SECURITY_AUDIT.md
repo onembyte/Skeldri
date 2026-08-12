@@ -18,7 +18,7 @@ Audit date: August 12, 2026
 
 - TCP payloads are not end-to-end encrypted or cryptographically authenticated. Mac approval prevents accidental or drive-by use but does not defeat an active attacker on a hostile LAN.
 - Bonjour is not guaranteed to cross guest-network isolation, VLANs, or restrictive enterprise Wi-Fi.
-- Accessibility and Screen Recording grants must be re-approved when bundle identity or signing identity changes.
+- Accessibility and Screen Recording grants must be re-approved when bundle identity or signing identity changes. The Accessibility path is limited to validated pointer/button/scroll events and the standard Command-plus/Command-minus magnification shortcut; arbitrary keyboard text is never accepted by the protocol.
 - The compatibility listener deliberately supports one old iPad client. It is isolated by service type and codec, but carries the same trusted-LAN limitation.
 
 ## Release gate
