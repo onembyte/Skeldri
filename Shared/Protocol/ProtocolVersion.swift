@@ -1,4 +1,4 @@
 import Foundation
 
 /// Single source of truth for wire compatibility.
-enum ProtocolVersion { static let current = 6 }
+enum ProtocolVersion { static let current = 7 }

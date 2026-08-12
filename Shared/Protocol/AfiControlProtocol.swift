@@ -37,6 +37,7 @@ enum AfiControlCodec {
             guard let raw = object["mode"] as? String, let mode = SkeldriInputMode(rawValue: raw) else {
                 throw AfiControlError.invalidPayload(kind)
             }
+            guard mode != .lecture else { throw AfiControlError.invalidPayload(kind) }
             return .inputMode(mode)
         case "selectDisplay":
             guard let number = object["id"] as? NSNumber else { throw AfiControlError.invalidPayload(kind) }

@@ -26,6 +26,12 @@ struct AfiControlProtocolTests {
         let unknown = try JSONSerialization.data(withJSONObject: ["protocolVersion": 1, "kind": "shell"])
         #expect(throws: AfiControlError.unknownKind("shell")) { try AfiControlCodec.decode(unknown) }
         #expect(throws: AfiControlError.invalidEnvelope) { try AfiControlCodec.decode(Data("[]".utf8)) }
+        let unsupportedLecture = try JSONSerialization.data(withJSONObject: [
+            "protocolVersion": 1, "kind": "inputMode", "mode": "lecture"
+        ])
+        #expect(throws: AfiControlError.invalidPayload("inputMode")) {
+            try AfiControlCodec.decode(unsupportedLecture)
+        }
     }
 
     @Test func encodesMacAuthorityMessagesWithStableEnvelope() throws {

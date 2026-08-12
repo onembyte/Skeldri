@@ -14,6 +14,10 @@ enum ControlPacket: Codable, Sendable, Equatable {
     case displays([DisplayDescriptor])
     case display(DisplayDescriptor)
     case selectDisplay(id: UInt32)
+    case requestLectureSourceSelection
+    case lectureSourceSelected(LectureSourceDescriptor, generation: UUID)
+    case lectureSourceUnavailable(reason: LectureSourceUnavailableReason, generation: UUID)
+    case leaveLectureMode
     case strokeBegin(id: UUID, style: StrokeStyle, point: StrokePoint)
     case strokePoints(id: UUID, points: [StrokePoint])
     case strokeEnd(id: UUID)
