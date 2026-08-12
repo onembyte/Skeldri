@@ -20,8 +20,8 @@ struct LectureDomainTests {
         let generation = UUID()
         var session = LectureSession()
 
-        session.apply(.enter)
-        #expect(session.state == .selectingSource)
+        session.apply(.enter(requestID: generation))
+        #expect(session.state == .selectingSource(requestID: generation, previousSource: nil))
         session.apply(.sourceSelected(source, generation: generation))
         #expect(session.state == .active(source: source, generation: generation))
         session.apply(.disconnected)
@@ -36,14 +36,54 @@ struct LectureDomainTests {
         let currentGeneration = UUID()
         var session = LectureSession()
 
-        session.apply(.enter)
+        session.apply(.enter(requestID: oldGeneration))
         session.apply(.sourceSelected(source, generation: oldGeneration))
-        session.apply(.sourceSelected(source, generation: currentGeneration))
+        session.apply(.enter(requestID: currentGeneration))
         session.apply(.sourceUnavailable(.closed, generation: oldGeneration))
 
-        #expect(session.state == .active(source: source, generation: currentGeneration))
+        #expect(session.state == .selectingSource(requestID: currentGeneration, previousSource: source))
+        session.apply(.sourceSelected(source, generation: currentGeneration))
         session.apply(.sourceUnavailable(.closed, generation: currentGeneration))
         #expect(session.state == .sourceUnavailable(source: source, reason: .closed))
+    }
+
+    @Test func uncorrelatedResponsesCannotDisturbAnIdleOrAbandonedSession() {
+        let source = LectureSourceDescriptor(id: 3, kind: .window, name: "Slides", width: 1440, height: 900)
+        let request = UUID()
+        var session = LectureSession()
+
+        // A failure matching no outstanding request is ignored while inactive.
+        let strayFailure = session.apply(.sourceUnavailable(.captureFailed, generation: UUID()))
+        #expect(!strayFailure)
+        #expect(session.state == .inactive)
+
+        session.apply(.enter(requestID: request))
+
+        // A response carrying a foreign request cannot resolve the outstanding one.
+        let foreignResponse = session.apply(.sourceSelected(source, generation: UUID()))
+        #expect(!foreignResponse)
+        #expect(session.state == .selectingSource(requestID: request, previousSource: nil))
+
+        // Leaving Lecture invalidates the outstanding request, so a late Mac
+        // response can never silently resume presenting captured content.
+        session.apply(.leave)
+        let lateResponse = session.apply(.sourceSelected(source, generation: request))
+        #expect(!lateResponse)
+        #expect(session.state == .inactive)
+    }
+
+    @Test func repeatedIdenticalSelectionReportsNoChange() {
+        let source = LectureSourceDescriptor(id: 4, kind: .display, name: "Display 2", width: 2560, height: 1440)
+        let generation = UUID()
+        var session = LectureSession()
+
+        session.apply(.enter(requestID: generation))
+        let firstSelection = session.apply(.sourceSelected(source, generation: generation))
+        #expect(firstSelection)
+        // Re-announcing the same source must not restart the decoder or viewport.
+        let duplicateSelection = session.apply(.sourceSelected(source, generation: generation))
+        #expect(!duplicateSelection)
+        #expect(session.state == .active(source: source, generation: generation))
     }
 
     @Test func navigationPolicyCombinesDeadZoneAccelerationAndPrecision() {

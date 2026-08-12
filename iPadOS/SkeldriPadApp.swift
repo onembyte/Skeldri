@@ -128,14 +128,12 @@ final class iPadAppModel: ObservableObject {
         inputMode = newMode
         network.send(.inputMode(newMode))
         if newMode == .lecture {
-            lectureSession.apply(.enter)
-            network.send(.requestLectureSourceSelection)
+            beginLectureSourceSelection()
         }
     }
     func requestLectureSourceSelection() {
         guard inputMode == .lecture else { return }
-        lectureSession.apply(.enter)
-        network.send(.requestLectureSourceSelection)
+        beginLectureSourceSelection()
     }
     func suspendPointerInput() {
         guard inputMode == .trackpad else { return }
@@ -212,13 +210,19 @@ final class iPadAppModel: ObservableObject {
             if pendingDisplayID == display.id { pendingDisplayID = nil }
             videoAspectRatio = CGFloat(display.aspectRatio)
         case let .lectureSourceSelected(source, generation):
-            decoder.reset()
-            videoAspectRatio = CGFloat(source.aspectRatio)
-            lectureSession.apply(.sourceSelected(source, generation: generation))
+            if lectureSession.apply(.sourceSelected(source, generation: generation)) {
+                decoder.reset()
+                videoAspectRatio = CGFloat(source.aspectRatio)
+            }
         case let .lectureSourceUnavailable(reason, generation):
             lectureSession.apply(.sourceUnavailable(reason, generation: generation))
         case let .incompatibleVersion(expected): errorMessage = "Incompatible protocol version. Mac expects \(expected)."; showingError = true
         default: break
         }
+    }
+    private func beginLectureSourceSelection() {
+        let requestID = UUID()
+        lectureSession.apply(.enter(requestID: requestID))
+        network.send(.requestLectureSourceSelection(requestID: requestID))
     }
 }
