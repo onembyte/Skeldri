@@ -21,16 +21,23 @@ mode changes the protocol, capture lifecycle, or iPad presentation.
 
 ## Gate A — restore a trustworthy build environment
 
+Completed 2026-08-12. The blocker was the system service, not the repository.
+
 - [ ] Allow the current Xcode 9 extraction to finish or stop it deliberately.
-- [ ] Restart the Mac so the root-owned CoreSimulator disk-image service starts
+  Still expanding (`xip --expand Xcode_9.4.1.xip`) onto the TrueNAS-backed
+  volume. It is unrelated to this branch and does not gate the modern build.
+- [x] Restart the Mac so the root-owned CoreSimulator disk-image service starts
   cleanly. No repo change can repair that system service.
-- [ ] Run `./scripts/doctor.sh` and confirm the simulator-service preflight is
-  healthy.
-- [ ] Run `xcodebuild -list -project Skeldri.xcodeproj` successfully.
-- [ ] Run `./scripts/test.sh`; retain the 40-test baseline.
-- [ ] Run `./scripts/build.sh`; confirm both SkeldriMac and generic SkeldriPad
-  simulator builds succeed.
-- [ ] Do not begin Lecture implementation until every Gate A item is green.
+- [x] Run `./scripts/doctor.sh` and confirm the simulator-service preflight is
+  healthy. Reports `Healthy`; the physical iPad (7th generation, iPadOS 18.6.2)
+  is listed as available.
+- [x] Run `xcodebuild -list -project Skeldri.xcodeproj` successfully.
+- [x] Run `./scripts/test.sh`; retain the 40-test baseline. Now 48 tests in 14
+  suites, all passing.
+- [x] Run `./scripts/build.sh`; confirm both SkeldriMac and generic SkeldriPad
+  simulator builds succeed. This required fixing a Swift 6 strict-concurrency
+  error in the Lecture rail's `deinit`, which was also unreachable.
+- [x] Do not begin Lecture implementation until every Gate A item is green.
 
 ## Gate B — regression sweep of existing behavior
 
