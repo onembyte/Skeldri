@@ -3,7 +3,7 @@
 Skeldri turns an iPad into a wireless finger-annotation surface and opt-in trackpad for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes or relative pointer gestures on a separate low-latency channel. It requires neither Apple Pencil nor a cloud service.
 
 > [!NOTE]
-> Skeldri is a development-stage native Apple project. It has been exercised with a physical iPad, but it is not distributed through the App Store and still requires local Xcode signing.
+> Skeldri is prepared for local signing and App Store archival, but it has not been submitted or published. Final distribution signing, App Store Connect metadata, and review remain owner actions.
 
 ## Features
 
@@ -88,7 +88,7 @@ The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall
 
 ## Privacy and security
 
-Skeldri advertises only `_skeldri._tcp` on the LAN. It has no internet relay, analytics, telemetry, authentication service, microphone access, camera access, or keyboard control. Trackpad mode uses macOS's permission-gated event-posting API; Skeldri cannot move the pointer until you explicitly approve it. V1 does not include pairing authentication, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
+Skeldri advertises only its modern and legacy-compatibility services on the LAN. It has no internet relay, analytics, telemetry, microphone access, camera access, or keyboard control. Each iPad session requires explicit approval from the Mac before screen content or input is allowed. Trackpad mode additionally uses macOS's permission-gated event-posting API. The transport is not end-to-end encrypted, so use it only on a trusted local network. See [SECURITY.md](SECURITY.md).
 
 ## Project generation
 
@@ -105,6 +105,9 @@ Commit both `project.yml` and the regenerated `Skeldri.xcodeproj` when project s
 - [Manual acceptance testing](docs/MANUAL_TESTING.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Implementation status](docs/IMPLEMENTATION_STATUS.md)
+- [App Store release checklist](docs/APP_STORE_RELEASE.md)
+- [Privacy policy](docs/PRIVACY_POLICY.md)
+- [Security audit](docs/SECURITY_AUDIT.md)
 - [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 
