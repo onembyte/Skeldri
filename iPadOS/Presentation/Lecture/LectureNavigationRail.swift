@@ -35,8 +35,14 @@ final class LectureNavigationRailUIView: UIControl {
         nil
     }
 
-    deinit {
-        displayLink?.invalidate()
+    /// `CADisplayLink` retains its target and the main run loop retains the link,
+    /// so a scheduled link keeps this view alive and `deinit` can never observe a
+    /// non-nil `displayLink`. Leaving the window is the reachable teardown point:
+    /// it stops the link, breaks that retain cycle, and lets the view deallocate
+    /// even if a touch sequence never delivered an end or cancel event.
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        if newWindow == nil { stopInteraction() }
     }
 
     override func draw(_ rect: CGRect) {
