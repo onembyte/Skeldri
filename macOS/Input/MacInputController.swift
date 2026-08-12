@@ -13,6 +13,8 @@ final class MacInputController: @unchecked Sendable {
     private var rightButtonDown = false
     private var scrollAccumulator = TrackpadScrollAccumulator()
     private var magnifyAccumulator = TrackpadMagnifyAccumulator()
+    private var cursor = TrackpadCursorTracker()
+    private var desktopBounds = CGRect.null
 
     var hasPermission: Bool { CGPreflightPostEventAccess() }
 
@@ -28,6 +30,8 @@ final class MacInputController: @unchecked Sendable {
             guard let self else { return }
             active = value
             sequenceGate.reset()
+            cursor.invalidate()
+            desktopBounds = Self.activeDesktopBounds()
             if value {
                 if !CGPreflightPostEventAccess() { requestPermission() }
             } else {
@@ -50,7 +54,18 @@ final class MacInputController: @unchecked Sendable {
         queue.async { [weak self] in
             self?.releaseAllButtons()
             self?.sequenceGate.reset()
+            self?.cursor.invalidate()
         }
+    }
+
+    /// Global display bounds share the top-left origin that `CGEvent` locations
+    /// use. `NSScreen.frame` does not, so it must not be substituted here.
+    private static func activeDesktopBounds() -> CGRect {
+        var count: UInt32 = 0
+        guard CGGetActiveDisplayList(0, nil, &count) == .success, count > 0 else { return .null }
+        var identifiers = [CGDirectDisplayID](repeating: 0, count: Int(count))
+        guard CGGetActiveDisplayList(count, &identifiers, &count) == .success else { return .null }
+        return identifiers.prefix(Int(count)).reduce(CGRect.null) { $0.union(CGDisplayBounds($1)) }
     }
 
     private func apply(_ event: TrackpadEvent) {
@@ -70,7 +85,10 @@ final class MacInputController: @unchecked Sendable {
 
     private func move(deltaX: CGFloat, deltaY: CGFloat) {
         guard let current = CGEvent(source: nil)?.location else { return }
-        let destination = CGPoint(x: current.x + deltaX, y: current.y + deltaY)
+        let destination = cursor.nextLocation(
+            systemLocation: current, deltaX: deltaX, deltaY: deltaY,
+            bounds: desktopBounds, now: CFAbsoluteTimeGetCurrent()
+        )
         let type: CGEventType
         let button: CGMouseButton
         if leftButtonDown {
@@ -126,7 +144,12 @@ final class MacInputController: @unchecked Sendable {
     }
 
     private func postButton(_ button: CGMouseButton, down: Bool, clickCount: Int) {
-        guard let location = CGEvent(source: nil)?.location else { return }
+        guard let systemLocation = CGEvent(source: nil)?.location else { return }
+        // Post where the pointer was last commanded to go. The system location
+        // can still be the pre-move position when a tap follows movement.
+        let location = cursor.currentLocation(
+            systemLocation: systemLocation, now: CFAbsoluteTimeGetCurrent()
+        )
         let type: CGEventType = button == .left
             ? (down ? .leftMouseDown : .leftMouseUp)
             : (down ? .rightMouseDown : .rightMouseUp)

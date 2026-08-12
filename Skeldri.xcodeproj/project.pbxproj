@@ -94,6 +94,7 @@
 		9873DAEC1C5E82E985A0CC5F /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DE6F21A4DF4DDC504AD850 /* Stroke.swift */; };
 		9BAFEF7BF0DFDD97FAF8DD59 /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */; };
 		9ECB1AB470A85CBBDDA198AA /* LectureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17138905D88DB558C1FBFC98 /* LectureScreen.swift */; };
+		9EFEAA1D1D0E177269240C59 /* TrackpadCursorTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */; };
 		A05E4528FABAD630BA22B551 /* TrackpadEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */; };
 		A44CFC9EA8FCDE17E6462534 /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
 		A69A0E0341DC7989E18426BA /* SkeldriInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5843A62BDCB281B206DE66E1 /* SkeldriInputMode.swift */; };
@@ -152,6 +153,7 @@
 		11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSessionState.swift; sourceTree = "<group>"; };
 		167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEventTests.swift; sourceTree = "<group>"; };
 		17138905D88DB558C1FBFC98 /* LectureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureScreen.swift; sourceTree = "<group>"; };
+		18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadCursorTrackerTests.swift; sourceTree = "<group>"; };
 		1B030EB844F177D56A64312E /* LectureNavigationRail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureNavigationRail.swift; sourceTree = "<group>"; };
 		227E4EABBDB5B19184CA2E9C /* LectureSourceEnumerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSourceEnumerator.swift; sourceTree = "<group>"; };
 		2295F11A64BF6417E9DABD91 /* ConnectionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusView.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
 				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
 				EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */,
+				18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */,
 				167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */,
 				4F9750797A4B0811E0484C8F /* TrackpadMotionTests.swift */,
 				6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */,
@@ -721,6 +724,7 @@
 				CE0DF0201B3EAFDA2E14CADA /* StrokeHitTestingTests.swift in Sources */,
 				E9C900BC1CA4B495B9FA55AA /* StrokePoint.swift in Sources */,
 				EE28562D5454F9AB0648A6F2 /* StrokeStyle.swift in Sources */,
+				9EFEAA1D1D0E177269240C59 /* TrackpadCursorTrackerTests.swift in Sources */,
 				F594359B9E0D67EDE30A8974 /* TrackpadEvent.swift in Sources */,
 				A05E4528FABAD630BA22B551 /* TrackpadEventTests.swift in Sources */,
 				318B14CAA08D0E916E5D32F5 /* TrackpadMotion.swift in Sources */,
