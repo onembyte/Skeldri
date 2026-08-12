@@ -5,4 +5,7 @@ import Foundation
 enum SkeldriInputMode: String, Codable, Sendable, Equatable {
     case drawing
     case trackpad
+    /// Read-only, locally navigable video surface. This mode never authorizes
+    /// drawing or pointer packets.
+    case lecture
 }
