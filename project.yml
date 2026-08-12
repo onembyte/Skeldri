@@ -26,6 +26,10 @@ targets:
         CODE_SIGN_STYLE: Automatic
     entitlements:
       path: macOS/SkeldriMac.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
   SkeldriPad:
     type: application
     platform: iOS

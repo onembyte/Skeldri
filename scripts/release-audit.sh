@@ -11,6 +11,17 @@ PAD_ARCHIVE="$ARCHIVES/SkeldriPad.xcarchive"
 
 mkdir -p "$DERIVED_DATA" "$ARCHIVES"
 
+ENTITLEMENTS="$ROOT/macOS/SkeldriMac.entitlements"
+for key in \
+  com.apple.security.app-sandbox \
+  com.apple.security.network.client \
+  com.apple.security.network.server; do
+  if [[ "$(/usr/libexec/PlistBuddy -c "Print :$key" "$ENTITLEMENTS")" != "true" ]]; then
+    echo "Required Mac entitlement is missing or disabled: $key" >&2
+    exit 1
+  fi
+done
+
 xcodebuild -project "$ROOT/Skeldri.xcodeproj" -scheme SkeldriMac \
   -configuration Release -destination 'generic/platform=macOS' \
   -archivePath "$MAC_ARCHIVE" -derivedDataPath "$DERIVED_DATA" \
@@ -31,6 +42,15 @@ test -f "$MAC_APP/Contents/Resources/PrivacyInfo.xcprivacy"
 test -f "$PAD_APP/PrivacyInfo.xcprivacy"
 plutil -lint "$MAC_PLIST" "$PAD_PLIST" \
   "$MAC_APP/Contents/Resources/PrivacyInfo.xcprivacy" "$PAD_APP/PrivacyInfo.xcprivacy"
+
+for manifest in \
+  "$MAC_APP/Contents/Resources/PrivacyInfo.xcprivacy" \
+  "$PAD_APP/PrivacyInfo.xcprivacy"; do
+  grep -q 'NSPrivacyAccessedAPICategoryUserDefaults' "$manifest"
+  grep -q 'CA92.1' "$manifest"
+  grep -q 'NSPrivacyAccessedAPICategorySystemBootTime' "$manifest"
+  grep -q '35F9.1' "$manifest"
+done
 
 test "$(plutil -extract CFBundleIdentifier raw -o - "$MAC_PLIST")" = "com.onembyte.skeldri.mac"
 test "$(plutil -extract CFBundleIdentifier raw -o - "$PAD_PLIST")" = "com.onembyte.skeldri.ipad"
