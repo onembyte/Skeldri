@@ -15,6 +15,7 @@ struct TrackpadRepresentable: UIViewRepresentable {
         let view = TrackpadUIView()
         view.onMove = { [weak model] in model?.sendTrackpadMove(deltaX: $0, deltaY: $1) }
         view.onScroll = { [weak model] in model?.sendTrackpadScroll(deltaX: $0, deltaY: $1) }
+        view.onMagnify = { [weak model] in model?.sendTrackpadMagnify(delta: $0) }
         view.onButton = { [weak model] in model?.sendTrackpadButton($0, isDown: $1, clickCount: $2) }
         return view
     }

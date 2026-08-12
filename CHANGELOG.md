@@ -4,6 +4,7 @@ All notable project changes will be documented here. Skeldri has not published a
 
 ## Unreleased
 
+- Added two-finger pinch zoom in Trackpad mode using accumulated standard macOS application zoom shortcuts.
 - Added the shared Ansuz–Kenaz rune app icon to the macOS and iPadOS targets, plus an adaptive monochrome menu-bar mark.
 - Renamed the product, Xcode project, targets, schemes, Bonjour service, source types, scripts, and documentation from DrawPad to Skeldri.
 - Added an explicit iPad Draw/Trackpad toggle with relative movement, clicking, dragging, two-finger scrolling, and secondary click.

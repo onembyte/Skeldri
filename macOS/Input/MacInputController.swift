@@ -12,6 +12,7 @@ final class MacInputController: @unchecked Sendable {
     private var leftButtonDown = false
     private var rightButtonDown = false
     private var scrollAccumulator = TrackpadScrollAccumulator()
+    private var magnifyAccumulator = TrackpadMagnifyAccumulator()
 
     var hasPermission: Bool { CGPreflightPostEventAccess() }
 
@@ -58,6 +59,8 @@ final class MacInputController: @unchecked Sendable {
             move(deltaX: CGFloat(deltaX), deltaY: CGFloat(deltaY))
         case let .scroll(_, deltaX, deltaY):
             scroll(deltaX: deltaX, deltaY: deltaY)
+        case let .magnify(_, delta):
+            magnify(delta: delta)
         case let .button(_, button, isDown, clickCount):
             setButton(button, down: isDown, clickCount: clickCount)
         case .reset:
@@ -89,6 +92,26 @@ final class MacInputController: @unchecked Sendable {
                 wheel1: -step.vertical, wheel2: -step.horizontal, wheel3: 0)?.post(tap: .cghidEventTap)
     }
 
+    /// CoreGraphics has no supported system-wide synthetic magnify-event API.
+    /// Standard Command-Plus/Minus shortcuts provide a public, dependable zoom
+    /// path in Safari, Preview, editors, and most document applications.
+    private func magnify(delta: Float) {
+        let steps = magnifyAccumulator.consume(delta: delta)
+        guard steps != 0 else { return }
+        let zoomIn = steps > 0
+        for _ in 0..<abs(steps) { postZoomShortcut(zoomIn: zoomIn) }
+    }
+
+    private func postZoomShortcut(zoomIn: Bool) {
+        let keyCode: CGKeyCode = zoomIn ? 24 : 27 // ANSI '='/'+' and '-'.
+        let flags: CGEventFlags = zoomIn ? [.maskCommand, .maskShift] : [.maskCommand]
+        for isDown in [true, false] {
+            guard let event = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: isDown) else { continue }
+            event.flags = flags
+            event.post(tap: .cghidEventTap)
+        }
+    }
+
     private func setButton(_ button: TrackpadButton, down: Bool, clickCount: Int) {
         switch button {
         case .left:
@@ -115,6 +138,7 @@ final class MacInputController: @unchecked Sendable {
 
     private func releaseAllButtons() {
         scrollAccumulator.reset()
+        magnifyAccumulator.reset()
         if leftButtonDown { leftButtonDown = false; postButton(.left, down: false, clickCount: 1) }
         if rightButtonDown { rightButtonDown = false; postButton(.right, down: false, clickCount: 1) }
     }

@@ -115,6 +115,9 @@ final class iPadAppModel: ObservableObject {
     func sendTrackpadScroll(deltaX: CGFloat, deltaY: CGFloat) {
         sendTrackpad(.scroll(sequence: nextTrackpadSequence(), deltaX: Float(deltaX), deltaY: Float(deltaY)))
     }
+    func sendTrackpadMagnify(delta: CGFloat) {
+        sendTrackpad(.magnify(sequence: nextTrackpadSequence(), delta: Float(delta)))
+    }
     func sendTrackpadButton(_ button: TrackpadButton, isDown: Bool, clickCount: Int) {
         sendTrackpad(.button(sequence: nextTrackpadSequence(), button: button, isDown: isDown, clickCount: clickCount))
     }

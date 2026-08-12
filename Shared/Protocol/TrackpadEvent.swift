@@ -9,12 +9,13 @@ enum TrackpadButton: String, Codable, Sendable, Equatable {
 enum TrackpadEvent: Codable, Sendable, Equatable {
     case move(sequence: UInt64, deltaX: Float, deltaY: Float)
     case scroll(sequence: UInt64, deltaX: Float, deltaY: Float)
+    case magnify(sequence: UInt64, delta: Float)
     case button(sequence: UInt64, button: TrackpadButton, isDown: Bool, clickCount: Int)
     case reset(sequence: UInt64)
 
     var sequence: UInt64 {
         switch self {
-        case let .move(sequence, _, _), let .scroll(sequence, _, _),
+        case let .move(sequence, _, _), let .scroll(sequence, _, _), let .magnify(sequence, _),
              let .button(sequence, _, _, _), let .reset(sequence): sequence
         }
     }
@@ -32,6 +33,9 @@ enum TrackpadInputValidator {
         case let .scroll(sequence, deltaX, deltaY):
             guard deltaX.isFinite, deltaY.isFinite else { return nil }
             return .scroll(sequence: sequence, deltaX: clamp(deltaX), deltaY: clamp(deltaY))
+        case let .magnify(sequence, delta):
+            guard delta.isFinite else { return nil }
+            return .magnify(sequence: sequence, delta: min(1, max(-1, delta)))
         case let .button(sequence, button, isDown, clickCount):
             return .button(sequence: sequence, button: button, isDown: isDown,
                            clickCount: min(3, max(1, clickCount)))
@@ -78,6 +82,28 @@ struct TrackpadScrollAccumulator: Sendable {
     mutating func reset() {
         verticalRemainder = 0
         horizontalRemainder = 0
+    }
+}
+
+/// Converts small continuous pinch changes into conventional desktop zoom
+/// steps without losing sub-threshold movement between network packets.
+struct TrackpadMagnifyAccumulator: Sendable {
+    private let stepThreshold: Float
+    private var remainder: Float = 0
+
+    init(stepThreshold: Float = 0.08) {
+        self.stepThreshold = max(0.01, stepThreshold)
+    }
+
+    mutating func consume(delta: Float) -> Int {
+        remainder += delta
+        let steps = Int(remainder / stepThreshold).clamped(to: -8...8)
+        remainder -= Float(steps) * stepThreshold
+        return steps
+    }
+
+    mutating func reset() {
+        remainder = 0
     }
 }
 
