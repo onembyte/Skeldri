@@ -44,11 +44,16 @@ final class MacAppModel: ObservableObject {
     let drawingState = DrawingState()
     private let overlay = OverlayWindowController()
     private let server = MacNetworkServer()
+    private let afiServer = AfiNetworkServer()
     private let capture = ScreenCaptureManager()
     private let encoder = H264Encoder()
     private let input = MacInputController()
     private var screenPairs: [(SCDisplay, DisplayDescriptor)] = []
     private var videoConnected = false
+    private var modernControlConnected = false
+    private var afiControlConnected = false
+    private var modernVideoConnected = false
+    private var afiVideoConnected = false
     private var streamingDisplayID: UInt32?
     private var requestedDisplayID: UInt32?
     private var reconciliationIsRunning = false
@@ -57,7 +62,8 @@ final class MacAppModel: ObservableObject {
         server.onConnectionChanged = { [weak self] value in
             Task { @MainActor in
                 guard let self else { return }
-                self.connected = value
+                self.modernControlConnected = value
+                self.connected = self.modernControlConnected || self.afiControlConnected
                 if value { self.publishDisplays() }
             }
         }
@@ -65,28 +71,55 @@ final class MacAppModel: ObservableObject {
         server.onVideoChannelChanged = { [weak self] connected in
             Task { @MainActor in
                 guard let self else { return }
-                self.videoConnected = connected
+                self.modernVideoConnected = connected
+                self.videoConnected = self.modernVideoConnected || self.afiVideoConnected
                 self.scheduleReconciliation()
             }
         }
         server.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
         server.onInputModeChanged = { [weak input] mode in input?.setActive(mode == .trackpad) }
         server.onTrackpadEvent = { [weak input] event in input?.handle(event) }
+        afiServer.onConnectionChanged = { [weak self] value in
+            Task { @MainActor in
+                guard let self else { return }
+                self.afiControlConnected = value
+                self.connected = self.modernControlConnected || self.afiControlConnected
+                if value { self.publishDisplays() }
+            }
+        }
+        afiServer.onControlPacket = { [weak self] packet in Task { @MainActor in self?.apply(packet) } }
+        afiServer.onVideoChannelChanged = { [weak self] connected in
+            Task { @MainActor in
+                guard let self else { return }
+                self.afiVideoConnected = connected
+                self.videoConnected = self.modernVideoConnected || self.afiVideoConnected
+                self.scheduleReconciliation()
+            }
+        }
+        afiServer.onVideoRecoveryRequested = { [weak encoder] in encoder?.requestKeyframe() }
+        afiServer.onInputModeChanged = { [weak input] mode in input?.setActive(mode == .trackpad) }
+        afiServer.onTrackpadEvent = { [weak input] event in input?.handle(event) }
         input.onPermissionChanged = { [weak self] granted in
             Task { @MainActor in self?.inputPermission = granted }
         }
         capture.consumer = encoder
-        encoder.onConfiguration = { [weak server] configuration in server?.sendVideoConfiguration(configuration) }
-        encoder.onFrame = { [weak server] frame in
-            server?.sendVideoFrame(
+        encoder.onConfiguration = { [weak server, weak afiServer] configuration in
+            server?.sendVideoConfiguration(configuration)
+            afiServer?.sendVideoConfiguration(configuration)
+        }
+        encoder.onFrame = { [weak server, weak afiServer] frame in
+            let header = VideoFrameHeader(
+                streamID: frame.streamID,
+                sequence: frame.sequence,
+                presentationTime: frame.presentationTime,
+                isKeyframe: frame.isKeyframe
+            )
+            let modernAccepted = server?.sendVideoFrame(
                 frame.data,
-                header: VideoFrameHeader(
-                    streamID: frame.streamID,
-                    sequence: frame.sequence,
-                    presentationTime: frame.presentationTime,
-                    isKeyframe: frame.isKeyframe
-                )
+                header: header
             ) ?? false
+            let afiAccepted = afiServer?.sendVideoFrame(frame.data, header: header) ?? false
+            return modernAccepted || afiAccepted
         }
     }
 
@@ -94,7 +127,9 @@ final class MacAppModel: ObservableObject {
         // Discovery must remain available even when screen-recording permission or
         // ScreenCaptureKit display enumeration is unavailable.
         do {
-            try server.start(); listenerReady = true
+            try server.start()
+            try afiServer.start()
+            listenerReady = true
         } catch {
             errorMessage = "Local network listener failed: \(error.localizedDescription)"
             return
@@ -110,7 +145,12 @@ final class MacAppModel: ObservableObject {
 
     func selectDisplay(_ id: UInt32?) { showOverlayForSelection() }
     func toggleOverlay() { annotationsVisible.toggle(); annotationsVisible ? showOverlayForSelection() : overlay.hide() }
-    func clear() { drawingState.clear(); overlay.annotationView.strokes = []; server.sendControl(.clear) }
+    func clear() {
+        drawingState.clear()
+        overlay.annotationView.strokes = []
+        server.sendControl(.clear)
+        afiServer.sendControl(.clear)
+    }
     func requestInputPermission() { input.requestPermission() }
     func refreshInputPermission() { inputPermission = input.hasPermission }
 
@@ -144,8 +184,10 @@ final class MacAppModel: ObservableObject {
 
     private func publishDisplays() {
         server.sendControl(.displays(displays))
+        afiServer.sendControl(.displays(displays))
         if let id = selectedDisplayID, let descriptor = displays.first(where: { $0.id == id }) {
             server.sendControl(.display(descriptor))
+            afiServer.sendControl(.display(descriptor))
         }
     }
 
@@ -220,7 +262,9 @@ final class MacAppModel: ObservableObject {
         case let .deleteStrokes(ids): drawingState.delete(ids: ids)
         case .clear: drawingState.clear()
         case let .canvasSnapshot(strokes): drawingState.replace(with: strokes)
-        case let .ping(id, sentAt): server.sendControl(.pong(id: id, sentAt: sentAt))
+        case let .ping(id, sentAt):
+            server.sendControl(.pong(id: id, sentAt: sentAt))
+            afiServer.sendControl(.pong(id: id, sentAt: sentAt))
         case let .selectDisplay(id): requestDisplaySelection(id: id)
         default: break
         }

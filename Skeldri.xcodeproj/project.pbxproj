@@ -58,6 +58,7 @@
 		7D45FD2E32463E9A2C80098D /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		9150384FB984A019CDFC97EA /* TouchDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94979FA5662548E99A898454 /* TouchDrawingView.swift */; };
+		9352081EB17EBD4351202943 /* AfiNetworkServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40E428C72F00486C2E340EE /* AfiNetworkServer.swift */; };
 		96A77EAD18C908F3B1C76108 /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */; };
 		97173A1CCDAA00ABFF32CB2C /* ControlPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */; };
 		97F52AFD2BC04EEC84CFC173 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
@@ -155,6 +156,7 @@
 		D9A5A6FBBD860F0F318138C0 /* VideoDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDisplayView.swift; sourceTree = "<group>"; };
 		DA61A00FD694A9DC350D1229 /* SkeldriMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriMacApp.swift; sourceTree = "<group>"; };
 		E39F023D46C6E2FD96938B98 /* MacAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAnnotationView.swift; sourceTree = "<group>"; };
+		E40E428C72F00486C2E340EE /* AfiNetworkServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfiNetworkServer.swift; sourceTree = "<group>"; };
 		E5AEACF120D118B99DC35B70 /* DrawingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingScreen.swift; sourceTree = "<group>"; };
 		E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeHitTesting.swift; sourceTree = "<group>"; };
 		EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentity.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		07B57A1EBD750A9DC3435B13 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E40E428C72F00486C2E340EE /* AfiNetworkServer.swift */,
 				EF4E56FBBED3A57A999EE2DD /* MacNetworkServer.swift */,
 			);
 			path = Network;
@@ -499,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */,
+				9352081EB17EBD4351202943 /* AfiNetworkServer.swift in Sources */,
 				E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */,
 				003F26311874A0C8940887C9 /* ConnectionStatusView.swift in Sources */,
 				F2F2A3C85ADCEF98B4C03E23 /* ControlPacket.swift in Sources */,

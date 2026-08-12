@@ -1,5 +1,9 @@
 # Architecture
 
+## Legacy compatibility
+
+Skeldri Mac advertises a second `_skeldri-afi._tcp` Bonjour service for the separate Skeldri Afi product. Its listener uses an explicit versioned JSON envelope and translates accepted messages into the same `ControlPacket` domain actions used by the modern client. The modern `_skeldri._tcp` protocol is unchanged. Capture, encoding, display reconciliation, annotation state, and trackpad injection remain single-owner services shared at the application layer.
+
 Skeldri has native macOS and iPadOS apps plus shared models and protocol code. The Mac is authoritative for display and connection configuration.
 
 The rename preserves the existing `com.example.drawpad.mac` and `com.example.drawpad.ipad` bundle identifiers deliberately. This lets signed development installations upgrade in place and retains the operating system's privacy/signing association; changing identifiers is a future distribution migration, not a cosmetic rename.
