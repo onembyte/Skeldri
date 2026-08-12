@@ -4,6 +4,8 @@ All notable project changes will be documented here. Skeldri has not published a
 
 ## Unreleased
 
+- Replaced the initial rune artwork with Skeldri's flowing Ansuz–Kenaz ribbon identity across both app icons and the Mac menu bar.
+- Restyled the iPad Mac-selection screen with the same midnight, cyan-ribbon, and glass-card visual language.
 - Added two-finger pinch zoom in Trackpad mode using accumulated standard macOS application zoom shortcuts.
 - Added the shared Ansuz–Kenaz rune app icon to the macOS and iPadOS targets, plus an adaptive monochrome menu-bar mark.
 - Renamed the product, Xcode project, targets, schemes, Bonjour service, source types, scripts, and documentation from DrawPad to Skeldri.
