@@ -22,6 +22,7 @@
 		1462371820EC68C0ADB0B7A3 /* ControlPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D394A0BB905F0E570400676 /* ControlPacket.swift */; };
 		155B7AAB4E3E19CE6A616B36 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */; };
+		185EB9A8B9EA96C3FE924D3A /* LectureSourceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */; };
 		1C7225D3FD93774E43195A0C /* LectureNavigationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06C637285D6B26A96F0F57C /* LectureNavigationPolicy.swift */; };
 		1CD199007DB8C7BE6346C6A5 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
@@ -36,15 +37,18 @@
 		2C0481E5B69FEC2AAA77D59C /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
 		2CD8BF89E418C076C498CAF1 /* LectureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A9C826C45C47BB193C597 /* LectureSource.swift */; };
 		2E4827EAE19E987A0B947D46 /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FC3678B953C0B5E6C6BD03 /* LiquidGlassStyle.swift */; };
+		2EF3D688FE245B2A9C88BE9B /* LectureSourceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */; };
 		306D688A9BBCE4976725B164 /* CoordinateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */; };
 		3107E4ECF7BB87F000E9A02D /* SkeldriMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA61A00FD694A9DC350D1229 /* SkeldriMacApp.swift */; };
 		318B14CAA08D0E916E5D32F5 /* TrackpadMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */; };
 		35A8E9CA2E5BD900B679DD43 /* VideoDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A5A6FBBD860F0F318138C0 /* VideoDisplayView.swift */; };
 		360D6EED6F891BF16DA480FA /* LectureNavigationRail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B030EB844F177D56A64312E /* LectureNavigationRail.swift */; };
+		3712D1B4C7CB21E0EB7476AE /* LectureSourceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */; };
 		3716E48B35E833E443474F23 /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402801EB066BC5180232032E /* VideoFlowControl.swift */; };
 		396380A50ED64B3E6D927653 /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
 		3C00CB5ACC22A95B82C5F078 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		3E2CF2A43CFDD55C79AAD82E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEACF120D118B99DC35B70 /* DrawingScreen.swift */; };
+		3F0A0818EE62645DF09ACFA4 /* LectureSourceCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */; };
 		40FC432B7C705DE0C5AB8201 /* ExperienceModeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792BF47634DD95F210BC43D0 /* ExperienceModeTransition.swift */; };
 		43CC5094E3F717B0326E94C8 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */; };
 		48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
@@ -154,6 +158,7 @@
 		36EDB74E53B1C6F06E75DB4F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
 		402801EB066BC5180232032E /* VideoFlowControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFlowControl.swift; sourceTree = "<group>"; };
+		430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSourceCatalogTests.swift; sourceTree = "<group>"; };
 		435373CD77B4DF23E7E4CAC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		46ED91F9E70F5EEEC277275A /* PacketFramer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFramer.swift; sourceTree = "<group>"; };
 		47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyNoticeView.swift; sourceTree = "<group>"; };
@@ -214,6 +219,7 @@
 		EC357B8CEC80BAB0225B585A /* DiscoveryIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentity.swift; sourceTree = "<group>"; };
 		EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeHitTestingTests.swift; sourceTree = "<group>"; };
 		EF4E56FBBED3A57A999EE2DD /* MacNetworkServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacNetworkServer.swift; sourceTree = "<group>"; };
+		EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSourceCatalog.swift; sourceTree = "<group>"; };
 		F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAuthorizationPolicyTests.swift; sourceTree = "<group>"; };
 		F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryIdentityTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +235,7 @@
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
 				C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */,
 				CB24E921AE92B0B833A1A907 /* LectureDomainTests.swift */,
+				430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */,
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
 				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
 				EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */,
@@ -311,6 +318,7 @@
 				B06C637285D6B26A96F0F57C /* LectureNavigationPolicy.swift */,
 				11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */,
 				697A9C826C45C47BB193C597 /* LectureSource.swift */,
+				EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */,
 			);
 			path = Lecture;
 			sourceTree = "<group>";
@@ -632,6 +640,7 @@
 				22D0009838045031ABBCD7B7 /* LectureNavigationPolicy.swift in Sources */,
 				5D4B982DF2AC528CB23EF0F8 /* LectureSessionState.swift in Sources */,
 				2CD8BF89E418C076C498CAF1 /* LectureSource.swift in Sources */,
+				185EB9A8B9EA96C3FE924D3A /* LectureSourceCatalog.swift in Sources */,
 				B9C20C495CCEB9916DAFFF32 /* MacAnnotationView.swift in Sources */,
 				F145C08EA422178E72EF9010 /* MacInputController.swift in Sources */,
 				E8762B69E13FDE196C9E7610 /* MacMainView.swift in Sources */,
@@ -681,6 +690,8 @@
 				C94F6C99DD23842FBC192E1C /* LectureNavigationPolicy.swift in Sources */,
 				0A02895D4A830C0682C084C3 /* LectureSessionState.swift in Sources */,
 				48E49DBC273E4DD4EBB58BB3 /* LectureSource.swift in Sources */,
+				2EF3D688FE245B2A9C88BE9B /* LectureSourceCatalog.swift in Sources */,
+				3F0A0818EE62645DF09ACFA4 /* LectureSourceCatalogTests.swift in Sources */,
 				5B7F8290DEC551679D28762E /* PacketFramer.swift in Sources */,
 				711CFBBE35AF11F37CB49282 /* PacketFramerTests.swift in Sources */,
 				BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */,
@@ -731,6 +742,7 @@
 				9ECB1AB470A85CBBDDA198AA /* LectureScreen.swift in Sources */,
 				26D3E18200E4FADC4FF65F48 /* LectureSessionState.swift in Sources */,
 				C3A4218D858AD269D392E227 /* LectureSource.swift in Sources */,
+				3712D1B4C7CB21E0EB7476AE /* LectureSourceCatalog.swift in Sources */,
 				E419C7315AE654475CA0861E /* LectureViewportView.swift in Sources */,
 				2E4827EAE19E987A0B947D46 /* LiquidGlassStyle.swift in Sources */,
 				2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */,
