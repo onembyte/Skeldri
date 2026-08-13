@@ -49,7 +49,8 @@ final class iPadNetworkClient: @unchecked Sendable {
 
     private func makeConnection(endpoint: NWEndpoint, channel: ConnectionChannel, maximum: Int,
                                 sessionID: UUID, generation: UInt64) -> PeerConnection {
-        let peer = PeerConnection(connection: NWConnection(to: endpoint, using: .tcp), maximumPayload: maximum)
+        let peer = PeerConnection(connection: NWConnection(to: endpoint, using: SkeldriTransport.tcpParameters()),
+                                  maximumPayload: maximum)
         peer.onPacket = { [weak self] packet in
             guard let self else { return }
             if channel == .control, packet.type == .control, let message = try? JSONDecoder().decode(ControlPacket.self, from: packet.payload) { onControlPacket?(message) }

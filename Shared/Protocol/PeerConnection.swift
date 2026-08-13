@@ -1,6 +1,35 @@
 import Foundation
 import Network
 
+/// Shared transport configuration for both Skeldri peers.
+///
+/// A device that vanishes without closing its socket — an iPad powered off, a
+/// device carried off the network — leaves a half-open connection that never
+/// reports `.failed` or `.cancelled`. Nothing in Skeldri sends periodic
+/// traffic on an idle session, so without keepalive the Mac holds that dead
+/// session indefinitely and keeps presenting it as a live, authorized peer.
+enum SkeldriTransport {
+    /// Idle time before probing, then the spacing and number of probes. A dead
+    /// peer is detected in roughly 25 seconds, fast enough that the owner is
+    /// not left looking at a phantom connection, slow enough that a brief Wi-Fi
+    /// stall does not drop a working session.
+    static let keepaliveIdleSeconds = 10
+    static let keepaliveIntervalSeconds = 5
+    static let keepaliveProbeCount = 3
+
+    static func tcpParameters() -> NWParameters {
+        let parameters = NWParameters.tcp
+        parameters.allowLocalEndpointReuse = true
+        if let tcp = parameters.defaultProtocolStack.transportProtocol as? NWProtocolTCP.Options {
+            tcp.enableKeepalive = true
+            tcp.keepaliveIdle = keepaliveIdleSeconds
+            tcp.keepaliveInterval = keepaliveIntervalSeconds
+            tcp.keepaliveCount = keepaliveProbeCount
+        }
+        return parameters
+    }
+}
+
 /// Reusable framed TCP receive loop with one serial ownership queue.
 final class PeerConnection: @unchecked Sendable {
     var onPacket: (@Sendable (FramedPacket) -> Void)?

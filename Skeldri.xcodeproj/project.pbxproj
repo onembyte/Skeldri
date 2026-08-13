@@ -47,6 +47,7 @@
 		360D6EED6F891BF16DA480FA /* LectureNavigationRail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B030EB844F177D56A64312E /* LectureNavigationRail.swift */; };
 		3712D1B4C7CB21E0EB7476AE /* LectureSourceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */; };
 		3716E48B35E833E443474F23 /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402801EB066BC5180232032E /* VideoFlowControl.swift */; };
+		37409E5815AB8F21DE9CEAD1 /* SkeldriTransportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C5A6087A955FD72A9CF8B9 /* SkeldriTransportTests.swift */; };
 		396380A50ED64B3E6D927653 /* ProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486790B3F7C4D5F5A7AAD1E1 /* ProtocolVersion.swift */; };
 		3C00CB5ACC22A95B82C5F078 /* TrackpadEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ADBF417D91D3B9E959B57D /* TrackpadEvent.swift */; };
 		3E2CF2A43CFDD55C79AAD82E /* DrawingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEACF120D118B99DC35B70 /* DrawingScreen.swift */; };
@@ -209,6 +210,7 @@
 		94979FA5662548E99A898454 /* TouchDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawingView.swift; sourceTree = "<group>"; };
 		95DB2256D96C304F58080362 /* SkeldriPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkeldriPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AF99AC17F713757D73C175 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
+		96C5A6087A955FD72A9CF8B9 /* SkeldriTransportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriTransportTests.swift; sourceTree = "<group>"; };
 		98CC1E1A553C6AFA587DCB31 /* VideoStreamingProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStreamingProfileTests.swift; sourceTree = "<group>"; };
 		9A8232CD785D3538ED944FC5 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
 		9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadMotion.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
 				56EE2A10A023CC54B97DA6A2 /* QuickColorPaletteTests.swift */,
 				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
+				96C5A6087A955FD72A9CF8B9 /* SkeldriTransportTests.swift */,
 				EDCF77BC85F6A184B4B7EF0C /* StrokeHitTestingTests.swift */,
 				18B3AD795B95042A4A3AFF9A /* TrackpadCursorTrackerTests.swift */,
 				167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */,
@@ -741,6 +744,7 @@
 				F158D970C6EE0A411CD63B03 /* SessionAuthorizationPolicyTests.swift in Sources */,
 				A44CFC9EA8FCDE17E6462534 /* SkeldriInputMode.swift in Sources */,
 				11E716BE6809971448C34E67 /* SkeldriLogger.swift in Sources */,
+				37409E5815AB8F21DE9CEAD1 /* SkeldriTransportTests.swift in Sources */,
 				278EAAFA0AD11A3291258596 /* Stroke.swift in Sources */,
 				72353091E19E0E3A7F39AFF4 /* StrokeHitTesting.swift in Sources */,
 				CE0DF0201B3EAFDA2E14CADA /* StrokeHitTestingTests.swift in Sources */,

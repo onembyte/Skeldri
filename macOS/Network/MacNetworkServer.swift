@@ -42,9 +42,9 @@ final class MacNetworkServer: @unchecked Sendable {
     }
 
     func start() throws {
-        let parameters = NWParameters.tcp
-        parameters.allowLocalEndpointReuse = true
-        let listener = try NWListener(using: parameters)
+        // Accepted connections inherit these, so a peer that disappears without
+        // closing is eventually reaped instead of held as a live session.
+        let listener = try NWListener(using: SkeldriTransport.tcpParameters())
         let record = NWTXTRecord(["id": serviceID, "protocol": String(ProtocolVersion.current)])
         listener.service = NWListener.Service(
             name: Host.current().localizedName ?? "Mac",
@@ -183,7 +183,13 @@ final class MacNetworkServer: @unchecked Sendable {
             switch channel {
             case .control:
                 control?.cancel()
-                authorized = false
+                // A new session must re-earn approval, and the application
+                // layer has to hear the revocation. Clearing `authorized`
+                // silently leaves the Mac believing the previous session is
+                // still approved: it shows a connected state, suppresses the
+                // approval prompt, and meanwhile refuses to serve the peer
+                // that is actually waiting for it.
+                revokeAuthorization()
                 peerInputMode = .drawing
                 controlSessionID = sessionID
                 if let videoSessionID, videoSessionID != sessionID {
@@ -237,6 +243,14 @@ final class MacNetworkServer: @unchecked Sendable {
                 onControlPacket?(message)
             }
         }
+    }
+
+    /// Revokes approval and tells the application layer. Never clear
+    /// `authorized` without going through here: a silent revocation
+    /// desynchronizes the Mac's view of the session from the server's.
+    private func revokeAuthorization() {
+        authorized = false
+        onAuthorizationChanged?(false)
     }
 
     private func send(_ packet: ControlPacket, to peer: PeerConnection) {

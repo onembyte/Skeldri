@@ -4,6 +4,9 @@ All notable project changes will be documented here. Skeldri has not published a
 
 ## Unreleased
 
+- A peer that vanishes without closing its socket, such as an iPad powered off mid-session, is now detected by TCP keepalive instead of being held as a live authorized connection indefinitely.
+- Fixed a reconnection failure where the Mac showed a stale session as connected and never raised the approval prompt, leaving the iPad waiting for an approval it could not be given.
+
 - Added three configurable quick colour swatches to the drawing toolbar. Each is a one-tap choice, the existing colour picker reconfigures whichever swatch is selected, and the palette persists locally. The toolbar was widened to carry them.
 
 - Added a fit-to-screen button beside the drawing toolbar that appears only while the Draw surface is magnified.

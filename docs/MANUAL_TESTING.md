@@ -4,6 +4,9 @@
 
 - [ ] Mac app launches and advertises over Bonjour
 - [ ] iPad discovers, connects, and shows connected state
+- [ ] Power the iPad off mid-session: the Mac returns to Waiting on its own within about half a minute
+- [ ] Reconnecting after a peer vanished still raises the Allow/Don't Allow prompt
+- [ ] A reading source approved by a previous session is not resumed for the next one
 
 ## Screen
 

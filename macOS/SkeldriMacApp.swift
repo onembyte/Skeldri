@@ -130,6 +130,12 @@ final class MacAppModel: ObservableObject {
                 if approved {
                     self.publishDisplays()
                     self.server.sendControl(.canvasSnapshot(self.drawingState.strokes))
+                } else {
+                    // Losing approval ends any reading session with it. Otherwise
+                    // a source approved by the previous session would still be
+                    // the capture target when the next peer is approved, and it
+                    // would start streaming a window nobody chose.
+                    self.endLectureSession()
                 }
             }
         }
