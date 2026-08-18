@@ -85,6 +85,19 @@ The script remembers those two values only inside the ignored `.build` directory
 ./scripts/install-personal.sh
 ```
 
+To keep the Mac app permanently available, add `--applications` once:
+
+```bash
+./scripts/install-personal.sh --applications
+```
+
+That installs it to `/Applications/Skeldri.app` and refreshes it on every later
+run. The choice is remembered in the ignored `.build` directory, and
+`--no-applications` turns it off. Keeping it on matters: refreshing the iPad
+while a stale copy remains in `/Applications` leaves the two speaking different
+protocol versions, which surfaces only as a failed connection. This is the one
+thing Skeldri writes outside its repository, so it is opt-in.
+
 The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall`. The iPad app behaves like a normal installed app while its provisioning profile is valid. Apple free Personal Team profiles expire after 7 days, so rerun the command weekly. Xcode must remain installed for its compiler, signing, and device tools, but it does not need to be open during normal use or refreshes.
 
 ## Privacy and security

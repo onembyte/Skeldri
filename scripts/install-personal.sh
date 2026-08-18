@@ -6,6 +6,10 @@ INSTALL_ROOT="$ROOT/.build/PersonalInstall"
 DERIVED_DATA="$INSTALL_ROOT/DerivedData"
 TEAM_FILE="$ROOT/.build/personal-team-id"
 DEVICE_FILE="$ROOT/.build/personal-device-name"
+# Opt-in only: everything else this script writes stays inside the repository.
+APPLICATIONS_FILE="$ROOT/.build/personal-applications-install"
+APPLICATIONS_APP="/Applications/Skeldri.app"
+INSTALL_TO_APPLICATIONS=""
 TEAM_ID="${DEVELOPMENT_TEAM:-}"
 DEVICE_NAME="${SKELDRI_DEVICE:-${DRAWPAD_DEVICE:-}}"
 
@@ -15,6 +19,13 @@ Usage: ./scripts/install-personal.sh [--team TEAM_ID] [--device "Device Name"]
 
 Builds Release versions of both apps, installs SkeldriPad on a connected
 personal device, packages SkeldriMac, and launches both apps.
+
+  --applications      also install the Mac app to /Applications/Skeldri.app
+  --no-applications   stop doing so
+
+That choice is remembered. Keeping it on matters: refreshing the iPad while a
+stale copy remains in /Applications leaves the two speaking different protocol
+versions, which surfaces only as a failed connection.
 
 The Team ID and device name are saved only under the ignored .build directory.
 Apple Personal Team provisioning expires after 7 days; rerun this command to
@@ -34,6 +45,14 @@ while [[ $# -gt 0 ]]; do
             DEVICE_NAME="$2"
             shift 2
             ;;
+        --applications)
+            INSTALL_TO_APPLICATIONS="yes"
+            shift
+            ;;
+        --no-applications)
+            INSTALL_TO_APPLICATIONS="no"
+            shift
+            ;;
         --help|-h)
             usage
             exit 0
@@ -52,6 +71,10 @@ fi
 if [[ -z "$DEVICE_NAME" && -f "$DEVICE_FILE" ]]; then
     DEVICE_NAME="$(<"$DEVICE_FILE")"
 fi
+if [[ -z "$INSTALL_TO_APPLICATIONS" && -f "$APPLICATIONS_FILE" ]]; then
+    INSTALL_TO_APPLICATIONS="$(<"$APPLICATIONS_FILE")"
+fi
+INSTALL_TO_APPLICATIONS="${INSTALL_TO_APPLICATIONS:-no}"
 
 if [[ ! "$TEAM_ID" =~ ^[A-Z0-9]{10}$ ]]; then
     echo "A 10-character Apple Team ID is required." >&2
@@ -67,6 +90,7 @@ fi
 mkdir -p "$INSTALL_ROOT" "$(dirname "$TEAM_FILE")"
 printf '%s\n' "$TEAM_ID" > "$TEAM_FILE"
 printf '%s\n' "$DEVICE_NAME" > "$DEVICE_FILE"
+printf '%s\n' "$INSTALL_TO_APPLICATIONS" > "$APPLICATIONS_FILE"
 
 echo "Building SkeldriMac (Release)…"
 xcodebuild \
@@ -109,6 +133,14 @@ ditto -c -k --sequesterRsrc --keepParent "$MAC_APP" "$MAC_ARCHIVE"
 echo "Installing SkeldriPad on ${DEVICE_NAME}…"
 xcrun devicectl device install app --device "$DEVICE_NAME" "$IPAD_APP"
 
+LAUNCH_APP="$MAC_APP"
+if [[ "$INSTALL_TO_APPLICATIONS" == "yes" ]]; then
+    echo "Refreshing ${APPLICATIONS_APP}…"
+    rm -rf "$APPLICATIONS_APP"
+    ditto "$MAC_APP" "$APPLICATIONS_APP"
+    LAUNCH_APP="$APPLICATIONS_APP"
+fi
+
 echo "Launching SkeldriMac…"
 # `open` reuses an existing application process even when its on-disk binary was
 # just replaced. That can leave the Mac and iPad speaking different protocol
@@ -126,7 +158,7 @@ if pgrep -x SkeldriMac >/dev/null || pgrep -x DrawPadMac >/dev/null; then
     echo "The previous Mac companion did not stop; quit it from the menu bar and rerun this installer." >&2
     exit 1
 fi
-open -n "$MAC_APP"
+open -n "$LAUNCH_APP"
 
 echo "Launching SkeldriPad…"
 if ! xcrun devicectl device process launch --device "$DEVICE_NAME" "$IPAD_BUNDLE_ID"; then
@@ -136,6 +168,6 @@ fi
 
 echo
 echo "Personal installation complete."
-echo "Mac app: $MAC_APP"
+echo "Mac app: $LAUNCH_APP"
 echo "Mac archive: $MAC_ARCHIVE"
 echo "Rerun this script before the 7-day Personal Team profile expires."
