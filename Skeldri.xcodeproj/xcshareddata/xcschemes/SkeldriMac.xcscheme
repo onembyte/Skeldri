@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4880C774C3366B17D3D597D5"
-               BuildableName = "DrawPadMac.app"
-               BlueprintName = "DrawPadMac"
-               ReferencedContainer = "container:DrawPad.xcodeproj">
+               BlueprintIdentifier = "DD4C8470AF370C8370BAC12B"
+               BuildableName = "SkeldriMac.app"
+               BlueprintName = "SkeldriMac"
+               ReferencedContainer = "container:Skeldri.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4880C774C3366B17D3D597D5"
-            BuildableName = "DrawPadMac.app"
-            BlueprintName = "DrawPadMac"
-            ReferencedContainer = "container:DrawPad.xcodeproj">
+            BlueprintIdentifier = "DD4C8470AF370C8370BAC12B"
+            BuildableName = "SkeldriMac.app"
+            BlueprintName = "SkeldriMac"
+            ReferencedContainer = "container:Skeldri.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4880C774C3366B17D3D597D5"
-            BuildableName = "DrawPadMac.app"
-            BlueprintName = "DrawPadMac"
-            ReferencedContainer = "container:DrawPad.xcodeproj">
+            BlueprintIdentifier = "DD4C8470AF370C8370BAC12B"
+            BuildableName = "SkeldriMac.app"
+            BlueprintName = "SkeldriMac"
+            ReferencedContainer = "container:Skeldri.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,10 +72,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4880C774C3366B17D3D597D5"
-            BuildableName = "DrawPadMac.app"
-            BlueprintName = "DrawPadMac"
-            ReferencedContainer = "container:DrawPad.xcodeproj">
+            BlueprintIdentifier = "DD4C8470AF370C8370BAC12B"
+            BuildableName = "SkeldriMac.app"
+            BlueprintName = "SkeldriMac"
+            ReferencedContainer = "container:Skeldri.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

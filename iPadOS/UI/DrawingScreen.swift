@@ -3,25 +3,181 @@ import SwiftUI
 struct DrawingCanvasRepresentable: UIViewRepresentable {
     @ObservedObject var model: iPadAppModel
     @ObservedObject var drawingState: DrawingState
+    @Binding var viewport: DrawingViewport
 
-    func makeUIView(context: Context) -> TouchDrawingUIView { let view = TouchDrawingUIView(); view.onPacket = { model.handleLocal($0) }; return view }
-    func updateUIView(_ view: TouchDrawingUIView, context: Context) { view.strokes = drawingState.strokes; view.style = model.style; view.mode = model.mode; view.videoAspectRatio = model.videoAspectRatio }
+    func makeUIView(context: Context) -> TouchDrawingUIView {
+        let view = TouchDrawingUIView()
+        view.onPacket = { model.handleLocal($0) }
+        view.onViewportChanged = { viewport = $0 }
+        return view
+    }
+    func updateUIView(_ view: TouchDrawingUIView, context: Context) {
+        view.strokes = drawingState.strokes; view.style = model.style; view.mode = model.mode; view.videoAspectRatio = model.videoAspectRatio
+        // Only re-sync when something outside the gesture changed it, such as a
+        // display switch resetting the zoom.
+        if view.viewport != viewport { view.viewport = viewport }
+    }
+}
+
+struct TrackpadRepresentable: UIViewRepresentable {
+    @ObservedObject var model: iPadAppModel
+
+    func makeUIView(context: Context) -> TrackpadUIView {
+        let view = TrackpadUIView()
+        view.onMove = { [weak model] in model?.sendTrackpadMove(deltaX: $0, deltaY: $1) }
+        view.onScroll = { [weak model] in model?.sendTrackpadScroll(deltaX: $0, deltaY: $1) }
+        view.onMagnify = { [weak model] in model?.sendTrackpadMagnify(delta: $0) }
+        view.onButton = { [weak model] in model?.sendTrackpadButton($0, isDown: $1, clickCount: $2) }
+        return view
+    }
+
+    func updateUIView(_ uiView: TrackpadUIView, context: Context) {
+        uiView.motionSettings = model.trackpadMotionSettings
+    }
+}
+
+/// Collapsible trackpad tuning controls. The compact button keeps the pointing
+/// surface unobstructed until the user explicitly asks for configuration.
+private struct TrackpadSettingsPanel: View {
+    @ObservedObject var model: iPadAppModel
+    @State private var expanded = false
+
+    var body: some View {
+        HStack(spacing: 8) {
+            GlassIconButton(
+                accessibilityLabel: expanded ? "Hide trackpad settings" : "Show trackpad settings",
+                selected: expanded,
+                action: { withAnimation(.snappy(duration: 0.24)) { expanded.toggle() } }
+            ) {
+                Image(systemName: "slider.horizontal.3")
+            }
+
+            if expanded {
+                VStack(spacing: 12) {
+                    settingSlider(
+                        symbol: "scope",
+                        accessibilityLabel: "Trackpad sensitivity",
+                        value: $model.trackpadSensitivity,
+                        range: 0.5...2.0
+                    )
+                    settingSlider(
+                        symbol: "speedometer",
+                        accessibilityLabel: "Trackpad speed",
+                        value: $model.trackpadSpeed,
+                        range: 0.5...2.5
+                    )
+                    Button {
+                        model.trackpadAccelerationEnabled.toggle()
+                    } label: {
+                        Image(systemName: "gauge.with.dots.needle.67percent")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(model.trackpadAccelerationEnabled ? Color.accentColor : Color.primary)
+                            .frame(width: 34, height: 34)
+                            .background(Color.white.opacity(0.055), in: Circle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Pointer acceleration")
+                    .accessibilityValue(model.trackpadAccelerationEnabled ? "On" : "Off")
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 12)
+                .liquidGlassPanel(in: Capsule())
+                .transition(.move(edge: .leading).combined(with: .opacity))
+            }
+        }
+    }
+
+    private func settingSlider(
+        symbol: String,
+        accessibilityLabel: String,
+        value: Binding<Double>,
+        range: ClosedRange<Double>
+    ) -> some View {
+        VStack(spacing: 5) {
+            Image(systemName: symbol)
+                .font(.system(size: 14, weight: .medium))
+            Slider(value: value, in: range)
+                .frame(width: 112)
+                .accessibilityLabel(accessibilityLabel)
+        }
+    }
 }
 
 struct DrawingScreen: View {
     @ObservedObject var model: iPadAppModel
+    @State private var drawingViewport = DrawingViewport()
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            VideoDisplayView(decoder: model.decoder).ignoresSafeArea()
-            DrawingCanvasRepresentable(model: model, drawingState: model.drawingState).ignoresSafeArea()
-            DisplaySidebar(model: model)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                .padding(.leading, 14)
-            DrawingToolbar(model: model)
+            switch model.inputMode {
+            case .drawing:
+                Color.black.ignoresSafeArea()
+                // The video and the annotation layer take the identical
+                // transform, which is what keeps strokes registered to the
+                // pixels underneath them while magnified.
+                VideoDisplayView(decoder: model.decoder)
+                    .ignoresSafeArea()
+                    .scaleEffect(drawingViewport.scale)
+                    .offset(x: drawingViewport.offset.x, y: drawingViewport.offset.y)
+                DrawingCanvasRepresentable(
+                    model: model,
+                    drawingState: model.drawingState,
+                    viewport: $drawingViewport
+                )
+                .ignoresSafeArea()
+                .scaleEffect(drawingViewport.scale)
+                .offset(x: drawingViewport.offset.x, y: drawingViewport.offset.y)
+                DisplaySidebar(model: model)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .padding(.leading, 14)
+                HStack(spacing: 10) {
+                    DrawingToolbar(model: model)
+                    // Only offered while there is a magnification to clear. An
+                    // always-present control would claim width beside the
+                    // toolbar for a state the user is not usually in.
+                    if drawingViewport.isMagnified {
+                        GlassIconButton(accessibilityLabel: "Fit drawing to screen") {
+                            withAnimation(.snappy(duration: 0.2)) { drawingViewport.reset() }
+                        } icon: {
+                            Image(systemName: "arrow.down.right.and.arrow.up.left")
+                        }
+                        .padding(6)
+                        .liquidGlassPanel(in: Circle())
+                        .transition(.scale.combined(with: .opacity))
+                    }
+                }
                 .frame(maxHeight: .infinity, alignment: .bottom)
                 .padding(.bottom, 14)
+                .animation(.snappy(duration: 0.2), value: drawingViewport.isMagnified)
+            case .trackpad:
+                Color(uiColor: .systemGray4).ignoresSafeArea()
+                TrackpadRepresentable(model: model).ignoresSafeArea()
+                TrackpadSettingsPanel(model: model)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .padding(.leading, 14)
+            case .lecture:
+                LectureScreen(model: model)
+            }
+
+            GlassIconButton(accessibilityLabel: "Back to Mac selection", action: model.disconnect) {
+                Image(systemName: "chevron.left")
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding(.leading, 14)
+            .padding(.top, 14)
+
+            ExperienceModeSelector(selection: Binding(
+                get: { model.inputMode },
+                set: model.setInputMode
+            ))
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .padding(.trailing, 14)
+            .padding(.top, 14)
         }
         .ignoresSafeArea(edges: .vertical)
+        // A different display or experience is a different canvas; carrying a
+        // magnified region across would leave the user looking at a corner of
+        // something they did not zoom into.
+        .onChange(of: model.selectedDisplayID) { _, _ in drawingViewport.reset() }
+        .onChange(of: model.inputMode) { _, _ in drawingViewport.reset() }
     }
 }

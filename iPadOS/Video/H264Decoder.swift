@@ -2,15 +2,24 @@ import AVFoundation
 import CoreMedia
 import Foundation
 
+struct VideoFrameReceipt: Sendable {
+    let streamID: UUID
+    let sequence: UInt64
+    let requiresKeyframe: Bool
+}
+
 /// Reconstructs display-ready CoreMedia samples from H.264 configuration and AVCC access units.
 final class H264Decoder: @unchecked Sendable {
     weak var displayLayer: AVSampleBufferDisplayLayer?
-    private let queue = DispatchQueue(label: "DrawPad.video.decoder", qos: .userInteractive)
+    var onFrameConsumed: (@Sendable (VideoFrameReceipt) -> Void)?
+    private let queue = DispatchQueue(label: "Skeldri.video.decoder", qos: .userInteractive)
     private var formatDescription: CMVideoFormatDescription?
     private var activeStreamID: UUID?
+    private var sequenceGate = VideoSequenceGate()
 
     func configure(_ configuration: VideoConfiguration) {
         queue.async { [weak self] in
+            guard let self, configuration.streamID != activeStreamID || formatDescription == nil else { return }
             let sps = configuration.sps as NSData, pps = configuration.pps as NSData
             let pointers = [sps.bytes.assumingMemoryBound(to: UInt8.self), pps.bytes.assumingMemoryBound(to: UInt8.self)]
             let sizes = [sps.length, pps.length]
@@ -19,19 +28,41 @@ final class H264Decoder: @unchecked Sendable {
                 parameterSetCount: pointers.count, parameterSetPointers: pointers,
                 parameterSetSizes: sizes, nalUnitHeaderLength: 4, formatDescriptionOut: &format)
             if result == noErr {
-                self?.formatDescription = format
-                self?.activeStreamID = configuration.streamID
+                formatDescription = format
+                activeStreamID = configuration.streamID
+                sequenceGate.configure(streamID: configuration.streamID)
                 DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
             } else {
-                DrawPadLogger.video.error("Decoder configuration failed: \(result)")
+                SkeldriLogger.video.error("Decoder configuration failed: \(result)")
             }
         }
     }
 
     func decode(payload: Data) {
         queue.async { [weak self] in
-            guard let self, let (header, accessUnit) = try? VideoEnvelope.decode(payload),
-                  header.streamID == activeStreamID, let formatDescription else { return }
+            guard let self, let (header, accessUnit) = try? VideoEnvelope.decode(payload) else { return }
+            guard header.streamID == activeStreamID, let formatDescription else {
+                // This stream has no usable format — either its configuration
+                // never arrived or the decoder was reset after receiving it.
+                // Dropping silently strands the viewport black forever, because
+                // the Mac only sends SPS/PPS once per encoder generation. Ask
+                // for recovery so it sends the format again.
+                acknowledge(header, requiresKeyframe: true)
+                return
+            }
+            switch sequenceGate.evaluate(
+                streamID: header.streamID,
+                sequence: header.sequence,
+                isKeyframe: header.isKeyframe
+            ) {
+            case .discard:
+                return
+            case .requestKeyframe:
+                acknowledge(header, requiresKeyframe: true)
+                return
+            case .accept:
+                break
+            }
             var block: CMBlockBuffer?
             let blockStatus = accessUnit.withUnsafeBytes { bytes in
                 CMBlockBufferCreateWithMemoryBlock(allocator: kCFAllocatorDefault, memoryBlock: nil,
@@ -56,15 +87,28 @@ final class H264Decoder: @unchecked Sendable {
 
             // The Mac and iPad do not share a media clock. Asking the display layer
             // to honor the Mac's presentation timestamp can leave every frame queued
-            // in the future. Live DrawPad frames should be rendered as soon as they
+            // in the future. Live Skeldri frames should be rendered as soon as they
             // arrive; TCP ordering still preserves the encoded stream sequence.
             CMSetAttachment(sample, key: kCMSampleAttachmentKey_DisplayImmediately,
                             value: kCFBooleanTrue,
                             attachmentMode: kCMAttachmentMode_ShouldNotPropagate)
             DispatchQueue.main.async { [weak self] in
-                guard let layer = self?.displayLayer else { return }
-                if layer.sampleBufferRenderer.status == .failed { layer.flush() }
+                guard let self else { return }
+                guard let layer = displayLayer else { requestRecovery(for: header); return }
+                if layer.sampleBufferRenderer.status == .failed {
+                    layer.flush()
+                    requestRecovery(for: header)
+                    return
+                }
+                guard layer.sampleBufferRenderer.isReadyForMoreMediaData else {
+                    // Never let AVFoundation turn temporary decoder pressure into
+                    // seconds of stale presentation. Flush and resume at an IDR.
+                    layer.flush()
+                    requestRecovery(for: header)
+                    return
+                }
                 layer.enqueue(sample)
+                acknowledge(header, requiresKeyframe: false)
             }
         }
     }
@@ -73,7 +117,23 @@ final class H264Decoder: @unchecked Sendable {
         queue.async { [weak self] in
             self?.formatDescription = nil
             self?.activeStreamID = nil
+            self?.sequenceGate.reset()
             DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
         }
+    }
+
+    private func requestRecovery(for header: VideoFrameHeader) {
+        queue.async { [weak self] in
+            self?.sequenceGate.requireKeyframe()
+            self?.acknowledge(header, requiresKeyframe: true)
+        }
+    }
+
+    private func acknowledge(_ header: VideoFrameHeader, requiresKeyframe: Bool) {
+        onFrameConsumed?(VideoFrameReceipt(
+            streamID: header.streamID,
+            sequence: header.sequence,
+            requiresKeyframe: requiresKeyframe
+        ))
     }
 }

@@ -1,7 +1,7 @@
 import OSLog
 
-enum DrawPadLogger {
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "DrawPad"
+enum SkeldriLogger {
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "Skeldri"
     static let capture = Logger(subsystem: subsystem, category: "capture")
     static let video = Logger(subsystem: subsystem, category: "video")
     static let network = Logger(subsystem: subsystem, category: "network")

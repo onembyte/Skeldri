@@ -1,6 +1,6 @@
-name: DrawPad
+name: Skeldri
 options:
-  bundleIdPrefix: com.example.drawpad
+  bundleIdPrefix: com.onembyte.skeldri
   deploymentTarget:
     macOS: "15.0"
     iOS: "18.0"
@@ -10,7 +10,7 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     ENABLE_USER_SCRIPT_SANDBOXING: YES
 targets:
-  DrawPadMac:
+  SkeldriMac:
     type: application
     platform: macOS
     sources:
@@ -18,16 +18,20 @@ targets:
       - macOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.mac
-        GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: DrawPad
-        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
-        INFOPLIST_KEY_LSMultipleInstancesProhibited: YES
-        CODE_SIGN_ENTITLEMENTS: macOS/DrawPadMac.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.mac
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: macOS/Info.plist
+        CODE_SIGN_ENTITLEMENTS: macOS/SkeldriMac.entitlements
         CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
     entitlements:
-      path: macOS/DrawPadMac.entitlements
-  DrawPadiPad:
+      path: macOS/SkeldriMac.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
+  SkeldriPad:
     type: application
     platform: iOS
     sources:
@@ -35,12 +39,13 @@ targets:
       - iPadOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.ipad
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.ipad
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: iPadOS/Info.plist
         CODE_SIGN_STYLE: Automatic
         TARGETED_DEVICE_FAMILY: 2
-  DrawPadTests:
+  SkeldriTests:
     type: bundle.unit-test
     platform: macOS
     sources:
@@ -48,21 +53,21 @@ targets:
       - Tests
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
-  DrawPadMac:
+  SkeldriMac:
     build:
       targets:
-        DrawPadMac: all
-  DrawPadiPad:
+        SkeldriMac: all
+  SkeldriPad:
     build:
       targets:
-        DrawPadiPad: all
-  DrawPadTests:
+        SkeldriPad: all
+  SkeldriTests:
     build:
       targets:
-        DrawPadTests: [test]
+        SkeldriTests: [test]
     test:
       targets:
-        - DrawPadTests
+        - SkeldriTests

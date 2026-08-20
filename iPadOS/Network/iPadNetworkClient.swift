@@ -13,11 +13,13 @@ final class iPadNetworkClient: @unchecked Sendable {
     var onStateChanged: (@Sendable (Bool, String?) -> Void)?
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
     var onVideoPacket: (@Sendable (FramedPacket) -> Void)?
-    private let queue = DispatchQueue(label: "DrawPad.network.client")
+    private let queue = DispatchQueue(label: "Skeldri.network.client")
     private var browser: NWBrowser?
     private var browserGeneration = 0
     private var control: PeerConnection?
     private var video: PeerConnection?
+    private var sessionID = UUID()
+    private var connectionGenerations = ConnectionGenerationGate()
 
     func startBrowsing() {
         queue.async { [weak self] in self?.restartBrowser() }
@@ -26,27 +28,57 @@ final class iPadNetworkClient: @unchecked Sendable {
     func refreshBrowsing() { startBrowsing() }
 
     func connect(to endpoint: NWEndpoint) {
-        disconnect()
-        control = makeConnection(endpoint: endpoint, channel: .control, maximum: PacketFramer.controlLimit)
-        video = makeConnection(endpoint: endpoint, channel: .video, maximum: PacketFramer.videoLimit)
+        queue.async { [weak self] in
+            guard let self else { return }
+            disconnectCurrent(notify: false)
+            let generation = connectionGenerations.begin()
+            sessionID = UUID()
+            control = makeConnection(endpoint: endpoint, channel: .control, maximum: PacketFramer.controlLimit,
+                                     sessionID: sessionID, generation: generation)
+            video = makeConnection(endpoint: endpoint, channel: .video, maximum: PacketFramer.videoLimit,
+                                   sessionID: sessionID, generation: generation)
+        }
     }
 
-    func disconnect() { control?.cancel(); video?.cancel(); control = nil; video = nil; onStateChanged?(false, nil) }
-    func send(_ packet: ControlPacket) { guard let data = try? JSONEncoder().encode(packet) else { return }; control?.send(PacketFramer.frame(type: .control, payload: data)) }
+    func disconnect() { queue.async { [weak self] in self?.disconnectCurrent(notify: true) } }
+    func send(_ packet: ControlPacket) {
+        guard let data = try? JSONEncoder().encode(packet) else { return }
+        let framed = PacketFramer.frame(type: .control, payload: data)
+        queue.async { [weak self] in self?.control?.send(framed) }
+    }
 
-    private func makeConnection(endpoint: NWEndpoint, channel: ConnectionChannel, maximum: Int) -> PeerConnection {
-        let peer = PeerConnection(connection: NWConnection(to: endpoint, using: .tcp), maximumPayload: maximum)
+    private func makeConnection(endpoint: NWEndpoint, channel: ConnectionChannel, maximum: Int,
+                                sessionID: UUID, generation: UInt64) -> PeerConnection {
+        let peer = PeerConnection(connection: NWConnection(to: endpoint, using: SkeldriTransport.tcpParameters()),
+                                  maximumPayload: maximum)
         peer.onPacket = { [weak self] packet in
             guard let self else { return }
             if channel == .control, packet.type == .control, let message = try? JSONDecoder().decode(ControlPacket.self, from: packet.payload) { onControlPacket?(message) }
             if channel == .video { onVideoPacket?(packet) }
         }
-        peer.onStopped = { [weak self] in self?.onStateChanged?(false, "Connection lost") }
+        peer.onStopped = { [weak self] in self?.handleUnexpectedStop(generation: generation) }
         peer.start(queue: queue)
-        let hello = ControlPacket.hello(version: ProtocolVersion.current, channel: channel, client: "iPad")
+        let hello = ControlPacket.hello(version: ProtocolVersion.current, channel: channel, client: "iPad",
+                                        sessionID: sessionID)
         if let payload = try? JSONEncoder().encode(hello) { peer.send(PacketFramer.frame(type: .control, payload: payload)) }
-        if channel == .control { onStateChanged?(true, nil) }
         return peer
+    }
+
+    private func disconnectCurrent(notify: Bool) {
+        connectionGenerations.invalidate()
+        let oldControl = control
+        let oldVideo = video
+        control = nil
+        video = nil
+        oldControl?.cancel()
+        oldVideo?.cancel()
+        if notify { onStateChanged?(false, nil) }
+    }
+
+    private func handleUnexpectedStop(generation: UInt64) {
+        guard connectionGenerations.contains(generation) else { return }
+        disconnectCurrent(notify: false)
+        onStateChanged?(false, "Connection lost. Make sure both devices are on the same local network, then reconnect.")
     }
 
     private func restartBrowser() {
@@ -58,7 +90,7 @@ final class iPadNetworkClient: @unchecked Sendable {
         browser = nil
         onServicesChanged?([])
 
-        let browser = NWBrowser(for: .bonjourWithTXTRecord(type: "_drawpad._tcp", domain: nil), using: .tcp)
+        let browser = NWBrowser(for: .bonjourWithTXTRecord(type: "_skeldri._tcp", domain: nil), using: .tcp)
         browser.browseResultsChangedHandler = { [weak self] results, _ in
             guard let self, generation == browserGeneration else { return }
             onServicesChanged?(deduplicatedServices(from: results))
