@@ -104,11 +104,16 @@ xcodebuild \
     build
 
 echo "Building SkeldriPad (Release, Personal Team)…"
+# Build against the specific device, not 'generic/platform=iOS'. Automatic
+# signing only registers a device it is actually pointed at, so a generic
+# destination silently produces a profile that omits this iPad — and the
+# install then fails with ApplicationVerificationFailed, which says nothing
+# about the real cause.
 xcodebuild \
     -project "$ROOT/Skeldri.xcodeproj" \
     -scheme SkeldriPad \
     -configuration Release \
-    -destination 'generic/platform=iOS' \
+    -destination "platform=iOS,name=$DEVICE_NAME" \
     -derivedDataPath "$DERIVED_DATA" \
     -allowProvisioningUpdates \
     DEVELOPMENT_TEAM="$TEAM_ID" \
