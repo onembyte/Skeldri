@@ -127,6 +127,17 @@ MAC_ARCHIVE="$INSTALL_ROOT/SkeldriMac.zip"
 [[ -d "$MAC_APP" ]] || { echo "Mac build product was not found." >&2; exit 1; }
 [[ -d "$IPAD_APP" ]] || { echo "iPad build product was not found." >&2; exit 1; }
 
+# An ad-hoc signature has no stable identity, so macOS re-asks for Screen
+# Recording on every rebuild and the existing grant silently stops applying.
+# Signing has fallen back to ad-hoc before when the disk was nearly full, and
+# later builds then treated the unsigned product as up to date.
+if codesign -dvvv "$MAC_APP" 2>&1 | grep -q "Signature=adhoc"; then
+    echo "The Mac app was ad-hoc signed instead of Development signed." >&2
+    echo "Its Screen Recording permission will not persist. Check free disk space" >&2
+    echo "and that a valid signing identity exists, then rerun." >&2
+    exit 1
+fi
+
 # Read the identifier from the bundle that was just built. Hard-coding it here
 # silently broke launching after the DrawPad rename: the install succeeded and
 # only the launch failed, reporting the app as "not installed".
