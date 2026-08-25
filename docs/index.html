@@ -107,16 +107,22 @@
     </p>
 
     <!-- Quick Install Command Card -->
-    <div id="install" class="max-w-2xl mx-auto mb-16">
-      <div class="glass rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-3 shadow-2xl border border-white/10 glow-cyan">
-        <div class="flex items-center gap-3 pl-3 overflow-x-auto text-left font-mono text-sm sm:text-base text-slate-300 scrollbar-none py-1">
-          <span class="text-emerald-400 font-bold select-none">$</span>
-          <span id="installCmd" class="whitespace-nowrap">curl -fsSL https://onembyte.github.io/Skeldri/install.sh | bash</span>
+    <div id="install" class="max-w-3xl mx-auto mb-16">
+      <div class="glass rounded-2xl p-3 sm:p-3.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-2xl border border-white/10 glow-cyan">
+        <div class="flex items-center gap-2.5 px-3 py-1.5 text-left font-mono text-xs sm:text-sm md:text-[14.5px] text-slate-200 select-all min-w-0">
+          <span class="text-emerald-400 font-bold select-none flex-shrink-0">$</span>
+          <span id="installCmd" class="truncate sm:text-clip tracking-tight">curl -fsSL https://onembyte.github.io/Skeldri/install.sh | bash</span>
         </div>
-        <button onclick="copyCommand()" id="copyBtn" class="flex-shrink-0 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center gap-2">
-          <svg id="copyIcon" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-          <span id="copyText">Copy</span>
-        </button>
+        <div class="flex items-center gap-2 flex-shrink-0 justify-end">
+          <a href="install.sh" download="install.sh" class="px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-semibold text-xs transition flex items-center gap-1.5" title="Download install.sh script directly">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+            <span>Script</span>
+          </a>
+          <button onclick="copyCommand()" id="copyBtn" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center gap-2">
+            <svg id="copyIcon" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            <span id="copyText">Copy</span>
+          </button>
+        </div>
       </div>
       <p class="text-xs text-slate-500 mt-3">
         Installs the <code class="text-slate-400 font-mono">skeldri</code> binary, systemd user daemon, and Omarchy QuickShell bar plugin.
