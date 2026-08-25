@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Skeldri Universal One-Line Installer for Linux & Omarchy
-# Usage: curl -fsSL https://raw.githubusercontent.com/onembyte/Skeldri/main/scripts/install.sh | bash
+# Usage: curl -fsSL https://onembyte.github.io/Skeldri/install.sh | bash
 set -e
 
 BOLD="\033[1m"
@@ -105,6 +105,8 @@ mkdir -p "$DESKTOP_DIR"
 
 if [ -f "$SCRIPT_DIR/../skeldri.desktop" ]; then
     cp "$SCRIPT_DIR/../skeldri.desktop" "$DESKTOP_DIR/skeldri.desktop"
+elif [ -f "$TMP_DIR/skeldri.desktop" ]; then
+    cp "$TMP_DIR/skeldri.desktop" "$DESKTOP_DIR/skeldri.desktop"
 else
     cat << 'EOF' > "$DESKTOP_DIR/skeldri.desktop"
 [Desktop Entry]
@@ -124,7 +126,12 @@ echo -e "  ${GREEN}✔ Installed desktop entry:${RESET} ${DESKTOP_DIR}/skeldri.d
 SYSTEMD_DIR="$HOME/.config/systemd/user"
 mkdir -p "$SYSTEMD_DIR"
 
-cat << EOF > "$SYSTEMD_DIR/skeldri.service"
+if [ -f "$SCRIPT_DIR/../skeldri.service" ]; then
+    cp "$SCRIPT_DIR/../skeldri.service" "$SYSTEMD_DIR/skeldri.service"
+elif [ -f "$TMP_DIR/skeldri.service" ]; then
+    cp "$TMP_DIR/skeldri.service" "$SYSTEMD_DIR/skeldri.service"
+else
+    cat << EOF > "$SYSTEMD_DIR/skeldri.service"
 [Unit]
 Description=Skeldri DrawPad - iPad Screen Mirroring & Annotation Daemon
 After=graphical-session.target
@@ -139,6 +146,7 @@ RestartSec=3
 [Install]
 WantedBy=graphical-session.target
 EOF
+fi
 
 systemctl --user daemon-reload 2>/dev/null || true
 echo -e "  ${GREEN}✔ Installed systemd service:${RESET} ${SYSTEMD_DIR}/skeldri.service"
@@ -150,6 +158,9 @@ if [ -d "$HOME/.config/omarchy" ] || [ -d "/usr/share/omarchy" ]; then
     if [ -f "$SCRIPT_DIR/../plugins/skeldri/manifest.json" ]; then
         cp "$SCRIPT_DIR/../plugins/skeldri/manifest.json" "$OMARCHY_PLUGIN_DIR/manifest.json"
         cp "$SCRIPT_DIR/../plugins/skeldri/Panel.qml" "$OMARCHY_PLUGIN_DIR/Panel.qml"
+    elif [ -f "$TMP_DIR/plugins/skeldri/manifest.json" ]; then
+        cp "$TMP_DIR/plugins/skeldri/manifest.json" "$OMARCHY_PLUGIN_DIR/manifest.json"
+        cp "$TMP_DIR/plugins/skeldri/Panel.qml" "$OMARCHY_PLUGIN_DIR/Panel.qml"
     else
         curl -fsSL "${GITHUB_RAW}/plugins/skeldri/manifest.json" -o "$OMARCHY_PLUGIN_DIR/manifest.json" 2>/dev/null || true
         curl -fsSL "${GITHUB_RAW}/plugins/skeldri/Panel.qml" -o "$OMARCHY_PLUGIN_DIR/Panel.qml" 2>/dev/null || true
