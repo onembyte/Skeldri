@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Skeldri DrawPad
+Comment=iPad wireless screen mirroring and live annotation overlay
+Exec=skeldri
+Icon=input-tablet
+Terminal=false
+Type=Application
+Categories=Utility;Graphics;
+Keywords=ipad;mirror;drawing;tablet;annotation;drawpad;

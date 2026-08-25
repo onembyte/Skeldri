@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skeldri (DrawPad) — Wireless iPad Screen Mirroring & Annotation for Linux and macOS</title>
+  <meta name="description" content="Turn an iPad into a wireless annotation tablet for Linux (Omarchy / Hyprland) and macOS with low-latency H.264 video and 100% click-through Wayland overlay." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass {
+      background: rgba(18, 24, 38, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 50px -10px rgba(14, 165, 233, 0.3);
+    }
+    .glow-green {
+      box-shadow: 0 0 50px -10px rgba(34, 197, 94, 0.3);
+    }
+    .grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-[#0b0f19] text-slate-200 font-sans antialiased min-h-screen selection:bg-accent-500 selection:text-white">
+
+  <!-- Background Gradients -->
+  <div class="fixed inset-0 grid-pattern pointer-events-none -z-10"></div>
+  <div class="fixed -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-cyan-600/20 via-emerald-600/20 to-blue-600/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 border-b border-white/5 bg-[#0b0f19]/80 backdrop-blur-lg">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-emerald-500/20">
+          ✏️
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="font-bold text-xl tracking-tight text-white">Skeldri</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">DrawPad</span>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+        <a href="#install" class="hover:text-white transition">Installation</a>
+        <a href="#features" class="hover:text-white transition">Features</a>
+        <a href="#interactive-demo" class="hover:text-white transition">Live Canvas</a>
+        <a href="#architecture" class="hover:text-white transition">Architecture</a>
+        <a href="#cli" class="hover:text-white transition">CLI Reference</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/onembyte/Skeldri" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium transition flex items-center gap-2">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-6">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      Linux (Omarchy / Hyprland) & macOS Native
+    </div>
+    
+    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
+      Turn your iPad into a <br class="hidden sm:block" />
+      <span class="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">Wireless Drawing Tablet</span> for Linux
+    </h1>
+
+    <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      Mirror any Linux or Mac display over your local network with low-latency H.264 video. Annotate with Apple Pencil or finger strokes on a transparent, 100% click-through desktop overlay.
+    </p>
+
+    <!-- Quick Install Command Card -->
+    <div id="install" class="max-w-2xl mx-auto mb-16">
+      <div class="glass rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-3 shadow-2xl border border-white/10 glow-cyan">
+        <div class="flex items-center gap-3 pl-3 overflow-x-auto text-left font-mono text-sm sm:text-base text-slate-300 scrollbar-none py-1">
+          <span class="text-emerald-400 font-bold select-none">$</span>
+          <span id="installCmd" class="whitespace-nowrap">curl -fsSL https://onembyte.github.io/Skeldri/install.sh | bash</span>
+        </div>
+        <button onclick="copyCommand()" id="copyBtn" class="flex-shrink-0 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center gap-2">
+          <svg id="copyIcon" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          <span id="copyText">Copy</span>
+        </button>
+      </div>
+      <p class="text-xs text-slate-500 mt-3">
+        Installs the <code class="text-slate-400 font-mono">skeldri</code> binary, systemd user daemon, and Omarchy QuickShell bar plugin.
+      </p>
+    </div>
+
+    <!-- Platform Badges -->
+    <div class="flex flex-wrap justify-center items-center gap-3 text-xs text-slate-400">
+      <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 flex items-center gap-2">
+        <span class="text-emerald-400">●</span> Arch Linux / Omarchy
+      </span>
+      <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 flex items-center gap-2">
+        <span class="text-cyan-400">●</span> Wayland & Hyprland
+      </span>
+      <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 flex items-center gap-2">
+        <span class="text-blue-400">●</span> macOS 15+ Native
+      </span>
+      <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 flex items-center gap-2">
+        <span class="text-purple-400">●</span> iPadOS 18+ App
+      </span>
+    </div>
+  </section>
+
+  <!-- Interactive Live Canvas Demo -->
+  <section id="interactive-demo" class="max-w-5xl mx-auto px-6 py-12">
+    <div class="glass rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+            <span>Live Interactive Canvas</span>
+            <span class="text-xs px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">In-Browser Demo</span>
+          </h2>
+          <p class="text-sm text-slate-400 mt-1">
+            Test the vector inking engine right in your browser. Draw with mouse or touch:
+          </p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center bg-black/40 rounded-xl p-1 border border-white/5">
+            <button id="toolPen" onclick="setTool('pen')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-emerald-500 text-slate-950">Pen</button>
+            <button id="toolHighlighter" onclick="setTool('highlighter')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white">Highlighter</button>
+          </div>
+          <div class="flex items-center gap-1.5 bg-black/40 rounded-xl p-1 border border-white/5">
+            <button onclick="setColor('#ef4444')" class="w-6 h-6 rounded-full bg-red-500 hover:scale-110 transition"></button>
+            <button onclick="setColor('#22c55e')" class="w-6 h-6 rounded-full bg-emerald-500 hover:scale-110 transition ring-2 ring-white"></button>
+            <button onclick="setColor('#0ea5e9')" class="w-6 h-6 rounded-full bg-sky-500 hover:scale-110 transition"></button>
+            <button onclick="setColor('#eab308')" class="w-6 h-6 rounded-full bg-yellow-500 hover:scale-110 transition"></button>
+          </div>
+          <button onclick="clearDemoCanvas()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-300 border border-white/10 transition">Clear</button>
+        </div>
+      </div>
+
+      <div class="relative bg-slate-950/80 rounded-2xl border border-white/10 overflow-hidden shadow-inner h-80 sm:h-96 cursor-crosshair">
+        <!-- Mock Desktop Background -->
+        <div class="absolute inset-0 flex flex-col justify-between p-6 opacity-30 pointer-events-none select-none font-mono text-xs">
+          <div class="flex justify-between items-center text-slate-500 border-b border-white/5 pb-2">
+            <span>[omarchy-shell] workspace 1 : LVDS-1 (1280x800)</span>
+            <span>skeldri-daemon: active (port 52143)</span>
+          </div>
+          <div class="space-y-1 text-slate-600">
+            <p>// Real desktop applications remain 100% click-through</p>
+            <p>$ hyprctl monitors -j</p>
+            <p>[ { "id": 0, "name": "LVDS-1", "width": 1280, "height": 800 } ]</p>
+          </div>
+          <div class="text-right text-slate-500 text-[10px]">
+            Wayland wlr-layer-shell Overlay
+          </div>
+        </div>
+
+        <canvas id="demoCanvas" class="relative z-10 w-full h-full touch-none"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Grid -->
+  <section id="features" class="max-w-6xl mx-auto px-6 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Engineered for Latency & Precision</h2>
+      <p class="text-slate-400 max-w-xl mx-auto">
+        Built with native system components in Rust, Wayland, PipeWire, Swift, and QuickShell.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Feature 1 -->
+      <div class="glass rounded-2xl p-6 border border-white/10 hover:border-emerald-500/30 transition">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-5">
+          ⚡
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Real-Time H.264 Video</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Screen capture encoded at 30 FPS (~4 Mbps) with zero B-frames and length-prefixed AVCC access units, keeping video latency sub-50ms.
+        </p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="glass rounded-2xl p-6 border border-white/10 hover:border-cyan-500/30 transition">
+        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl mb-5">
+          🖱️
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">100% Click-Through Overlay</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Wayland <code class="text-cyan-300 font-mono text-xs">wlr-layer-shell</code> surface with an empty input region. Draw over live browsers and code editors without blocking any clicks.
+        </p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="glass rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition">
+        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-2xl mb-5">
+          📡
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Zero-Config Bonjour Discovery</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Advertises <code class="text-blue-300 font-mono text-xs">_drawpad._tcp</code> over Avahi mDNS with persistent machine UUIDs. The iPad discovers and connects automatically.
+        </p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="glass rounded-2xl p-6 border border-white/10 hover:border-purple-500/30 transition">
+        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-2xl mb-5">
+          🖥️
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Omarchy Shell Integration</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Native QuickShell bar widget and dropdown panel in Omarchy for live iPad status, active display switching, and canvas clearing.
+        </p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="glass rounded-2xl p-6 border border-white/10 hover:border-yellow-500/30 transition">
+        <div class="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center text-2xl mb-5">
+          ✏️
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Normalized Vector Inking</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Normalized top-left vector coordinates keep pen strokes sharp across different monitor resolutions and aspect ratios.
+        </p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="glass rounded-2xl p-6 border border-white/10 hover:border-pink-500/30 transition">
+        <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 text-pink-400 flex items-center justify-center text-2xl mb-5">
+          🔒
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">100% Local & Private</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Operates strictly over your local Wi-Fi network. No cloud relays, accounts, telemetry, tracking, or remote control permissions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Diagram Section -->
+  <section id="architecture" class="max-w-5xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-white mb-3">Protocol Architecture</h2>
+      <p class="text-slate-400">Two dedicated TCP streams guarantee responsive drawing even under heavy network load.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-6 sm:p-8 border border-white/10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">1</span>
+            <div>
+              <h4 class="font-bold text-white">mDNS Discovery</h4>
+              <p class="text-xs text-slate-400 mt-0.5">Avahi publishes <code class="text-emerald-300 font-mono">_drawpad._tcp</code> with protocol version 2 and host UUID.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">2</span>
+            <div>
+              <h4 class="font-bold text-white">Control Plane (TCP)</h4>
+              <p class="text-xs text-slate-400 mt-0.5">Bidirectional JSON packets for stroke vectors, display descriptors, ping/pong, and canvas clearing.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">3</span>
+            <div>
+              <h4 class="font-bold text-white">Video Plane (TCP)</h4>
+              <p class="text-xs text-slate-400 mt-0.5">H.264 stream with SPS/PPS parameter set packets and AVCC length-prefixed video envelopes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-black/50 rounded-xl p-5 border border-white/10 font-mono text-xs text-slate-300 space-y-2">
+          <div class="text-emerald-400 font-bold">// Linux / Omarchy Host Architecture</div>
+          <div class="text-slate-400">Hyprland Output -> FFmpeg (libx264) -> AVCC Parser</div>
+          <div class="text-cyan-400">  └─ Video TCP -> iPad AVSampleBufferDisplayLayer</div>
+          <div class="text-slate-400">iPad Touch Vectors -> Control TCP -> DrawingState</div>
+          <div class="text-emerald-400">  └─ tiny-skia -> Wayland wlr-layer-shell Overlay</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI Reference Section -->
+  <section id="cli" class="max-w-5xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-white mb-3">CLI Reference</h2>
+      <p class="text-slate-400">Manage the background daemon directly from your terminal or scripts.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-6 border border-white/10 overflow-x-auto">
+      <table class="w-full text-left text-sm font-mono">
+        <thead class="border-b border-white/10 text-slate-400">
+          <tr>
+            <th class="pb-3 pr-6 font-semibold">Command</th>
+            <th class="pb-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5 text-slate-300">
+          <tr>
+            <td class="py-3 pr-6 text-emerald-400">skeldri</td>
+            <td class="py-3 text-slate-400">Run the Skeldri daemon interactively in foreground</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-6 text-cyan-400">skeldri status</td>
+            <td class="py-3 text-slate-400">Show live connection status, active monitor, and stroke count</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-6 text-cyan-400">skeldri status --json</td>
+            <td class="py-3 text-slate-400">Output machine-readable JSON status (for bar plugins & scripts)</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-6 text-emerald-400">skeldri clear</td>
+            <td class="py-3 text-slate-400">Clear all annotations from host overlay and iPad screen</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-6 text-emerald-400">skeldri toggle</td>
+            <td class="py-3 text-slate-400">Toggle annotation overlay visibility without erasing strokes</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-6 text-cyan-400">skeldri select-display &lt;id&gt;</td>
+            <td class="py-3 text-slate-400">Switch mirrored video output to the specified display ID</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-6 text-red-400">skeldri stop</td>
+            <td class="py-3 text-slate-400">Gracefully stop the background daemon</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-12 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-slate-400">
+        <span class="font-bold text-white">Skeldri</span> — Created by <a href="https://github.com/onembyte" class="text-emerald-400 hover:underline">Franco Michetti</a>
+      </div>
+      <div>
+        Licensed under default copyright terms. Native companion to <a href="https://omarchy.org" class="text-cyan-400 hover:underline">Omarchy Linux</a>.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Canvas Demo Script & Copy Script -->
+  <script>
+    function copyCommand() {
+      const cmd = document.getElementById('installCmd').innerText;
+      navigator.clipboard.writeText(cmd).then(() => {
+        const btn = document.getElementById('copyBtn');
+        const text = document.getElementById('copyText');
+        const origBg = btn.className;
+        text.innerText = 'Copied!';
+        btn.classList.add('glow-green');
+        setTimeout(() => {
+          text.innerText = 'Copy';
+          btn.classList.remove('glow-green');
+        }, 2000);
+      });
+    }
+
+    // Demo Canvas Drawing Logic
+    const canvas = document.getElementById('demoCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let currentColor = '#22c55e';
+    let currentTool = 'pen';
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 50);
+
+    function setTool(tool) {
+      currentTool = tool;
+      document.getElementById('toolPen').className = tool === 'pen' ? 'px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-emerald-500 text-slate-950' : 'px-3 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white';
+      document.getElementById('toolHighlighter').className = tool === 'highlighter' ? 'px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-cyan-500 text-slate-950' : 'px-3 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white';
+    }
+
+    function setColor(color) {
+      currentColor = color;
+    }
+
+    function clearDemoCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDraw(e) {
+      isDrawing = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      if (currentTool === 'pen') {
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 4;
+        ctx.globalAlpha = 1.0;
+      } else {
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 14;
+        ctx.globalAlpha = 0.35;
+      }
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function stopDraw() {
+      isDrawing = false;
+      ctx.closePath();
+    }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDraw);
+
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
+    window.addEventListener('touchend', stopDraw);
+  </script>
+</body>
+</html>

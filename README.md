@@ -1,28 +1,43 @@
-# DrawPad
+# DrawPad (Skeldri)
 
-DrawPad turns an iPad into a wireless finger-annotation surface for a Mac. It mirrors one selected Mac display over the local network while sending normalized vector strokes on a separate low-latency channel, so annotations appear immediately on both devices. It requires neither Apple Pencil nor a cloud service and never controls mouse or keyboard input.
+DrawPad turns an iPad into a wireless drawing and finger-annotation surface for **Linux (Omarchy / Hyprland)** and **macOS**. It mirrors one selected display over the local network while sending normalized vector strokes on a separate low-latency channel, so annotations appear immediately on both devices. It requires neither Apple Pencil nor a cloud service and never controls mouse or keyboard input.
 
-> [!NOTE]
-> DrawPad is a development-stage native Apple project. It has been exercised with a physical iPad, but it is not distributed through the App Store and still requires local Xcode signing.
+---
+
+## ⚡ Quick Install (Linux / Omarchy)
+
+Install the `skeldri` daemon, systemd user service, and Omarchy QuickShell bar plugin with one command:
+
+```bash
+curl -fsSL https://onembyte.github.io/Skeldri/install.sh | bash
+```
+
+> *(Fallback via raw GitHub)*:
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/onembyte/Skeldri/main/scripts/install.sh | bash
+> ```
+
+🌐 **Landing Page & Live Demo**: [https://onembyte.github.io/Skeldri](https://onembyte.github.io/Skeldri)
+🐧 **Linux & Omarchy Guide**: [docs/LINUX.md](docs/LINUX.md)
+
+---
 
 ## Features
 
-- Automatic Mac discovery with Bonjour; no IP address configuration.
-- Finger-first pen, highlighter, stroke eraser, color, thickness, undo, and clear.
-- iPad-owned switching between attached Mac displays.
-- Optional clearing of annotations when switching displays.
-- Transparent, click-through Mac annotation overlay.
-- Low-latency H.264 mirroring with stale-frame protection during display changes.
-- Native Liquid Glass controls on current systems, with a material fallback on older supported iPadOS releases.
-- Local-network-only operation with no accounts, telemetry, audio, or cloud backend.
+- **Automatic Discovery**: Bonjour / Avahi mDNS discovery (`_drawpad._tcp`); zero IP configuration.
+- **100% Click-Through Overlay**: Native Wayland (`wlr-layer-shell`) and macOS transparent overlays with empty input regions so you can interact with desktop windows underneath.
+- **Low-Latency H.264 Mirroring**: Real-time 30 FPS video streaming with stale-frame drop protection.
+- **Finger & Stylus Inking**: Pen, highlighter, stroke eraser, custom colors, normalized stroke thickness, undo, and clear.
+- **Multi-Monitor Switching**: iPad-owned or desktop-owned switching between attached displays.
+- **Omarchy Shell Integration**: Native QuickShell top-bar widget and control panel.
+- **Local & Private**: Pure local-network operation with zero cloud relays, accounts, telemetry, or tracking.
 
 ## Requirements
 
-- macOS 15 or later.
-- iPadOS 18 or later.
-- Xcode 27 beta or later for the currently checked-in project (Swift 6 and the current Liquid Glass SDK APIs).
-- Mac and iPad connected to the same local network.
-- XcodeGen only when regenerating `DrawPad.xcodeproj`; it is not needed for normal builds.
+- **Linux**: Arch Linux / Omarchy with Hyprland or Wayland (supports `wlr-layer-shell`), `ffmpeg`, and `avahi`.
+- **macOS**: macOS 15 or later.
+- **iPadOS**: iPadOS 18 or later.
+- **Local Network**: Host and iPad connected to the same local Wi-Fi / subnet.
 
 The reference development environment is recorded in [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md).
 
@@ -97,6 +112,7 @@ Commit both `project.yml` and the regenerated `DrawPad.xcodeproj` when project s
 
 ## Documentation
 
+- [Linux / Omarchy Guide](docs/LINUX.md)
 - [Manual acceptance testing](docs/MANUAL_TESTING.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Implementation status](docs/IMPLEMENTATION_STATUS.md)
