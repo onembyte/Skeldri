@@ -190,8 +190,14 @@ Config changes; script changes get a dry run.
 
 ### 0.F Build and upload (Claude runs it; Franco says go before each upload)
 
-- [ ] [C] Run `scripts/release.sh` for the Mac, then the iPad: archive, validate,
-      then upload build 1.0 (1).
+- [x] [C] Run `scripts/release.sh` for the Mac, then the iPad: archive and check.
+      Done 2026-10-10. Both are signed `Apple Distribution: FRANCO MICHETTI
+      (M3A5V2ZKZ4)`. The signing registered `com.onembyte.skeldri` under the
+      paid team with no identifier clash. Entitlements are minimal: Mac sandbox +
+      network client/server; iPad distribution only. Packages are 2.6 MB (Mac)
+      and 1.5 MB (iPad).
+- [ ] [C] Upload build 1.0 (1) with `./scripts/release.sh --build 1 --upload`.
+      This needs the App Store Connect record from 0.E.
 - [ ] [F] Wait for processing. Export compliance is answered by the plist key.
       Create an internal TestFlight group containing Franco, and fill in "What to
       Test".

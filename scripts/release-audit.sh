@@ -26,7 +26,7 @@ done
 setting() {
   xcodebuild -project "$ROOT/Skeldri.xcodeproj" -scheme "$1" \
     -configuration Release -showBuildSettings 2>/dev/null | \
-    awk -F ' = ' -v key="$2" '$1 ~ "^ +" key "$" { print $2; exit }'
+    awk -F ' = ' -v key="$2" '!found && $1 ~ "^ +" key "$" { print $2; found = 1 }'
 }
 
 if [[ "$(setting SkeldriMac ENABLE_HARDENED_RUNTIME)" != "YES" ]]; then

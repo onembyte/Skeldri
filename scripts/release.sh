@@ -67,11 +67,15 @@ printf '%s\n' "$TEAM_ID" > "$TEAM_FILE"
 
 fail() { echo "Release check failed: $*" >&2; exit 1; }
 
+# Note for edits: with pipefail, a reader that stops early (awk `exit`, `head`)
+# kills the writer with SIGPIPE and the whole script dies with status 141.
+# Readers below consume all input; finds stop with -quit.
+
 # Prints one Release build setting of a scheme, e.g. `setting SkeldriMac PRODUCT_NAME`.
 setting() {
     xcodebuild -project "$PROJECT" -scheme "$1" -configuration Release \
         -showBuildSettings 2>/dev/null | \
-        awk -F ' = ' -v key="$2" '$1 ~ "^ +" key "$" { print $2; exit }'
+        awk -F ' = ' -v key="$2" '!found && $1 ~ "^ +" key "$" { print $2; found = 1 }'
 }
 
 MARKETING_VERSION="$(setting SkeldriMac MARKETING_VERSION)"
@@ -116,7 +120,7 @@ audit_signed_app() {
     if [[ "$kind" == mac ]]; then info="$app/Contents/Info.plist"; else info="$app/Info.plist"; fi
 
     codesign --verify --deep --strict "$app" || fail "$scheme signature does not verify"
-    authority="$(codesign -dvv "$app" 2>&1 | awk -F= '/^Authority=/ { print $2; exit }')"
+    authority="$(codesign -dvv "$app" 2>&1 | awk -F= '!found && /^Authority=/ { print $2; found = 1 }')"
     [[ "$authority" == "Apple Distribution:"* || \
        "$authority" == "3rd Party Mac Developer Application:"* ]] || \
         fail "$scheme is signed by '$authority', not a distribution certificate"
@@ -125,7 +129,8 @@ audit_signed_app() {
     codesign -d --entitlements - --xml "$app" > "$entitlements" 2>/dev/null || \
         fail "$scheme entitlements could not be read"
     plutil -lint "$entitlements" >/dev/null || fail "$scheme entitlements are not a valid plist"
-    entitlement() { plutil -extract "$1" raw -o - "$entitlements" 2>/dev/null || true; }
+    # PlistBuddy, not plutil: plutil reads the dots in entitlement names as key paths.
+    entitlement() { /usr/libexec/PlistBuddy -c "Print :$1" "$entitlements" 2>/dev/null || true; }
 
     [[ "$(entitlement com.apple.developer.team-identifier)" == "$TEAM_ID" ]] || \
         fail "$scheme is not signed for team $TEAM_ID"
@@ -179,18 +184,18 @@ release_platform() {
 
     mkdir -p "$unpacked"
     if [[ "$kind" == mac ]]; then
-        package="$(find "$export_dir" -maxdepth 1 -name '*.pkg' | head -n 1)"
+        package="$(find "$export_dir" -maxdepth 1 -name '*.pkg' -print -quit)"
         [[ -n "$package" ]] || fail "no .pkg was exported for $scheme"
         pkgutil --check-signature "$package" | grep -q 'Status: signed' || \
             fail "$scheme installer package is not signed"
         rmdir "$unpacked"
         pkgutil --expand-full "$package" "$unpacked"
     else
-        package="$(find "$export_dir" -maxdepth 1 -name '*.ipa' | head -n 1)"
+        package="$(find "$export_dir" -maxdepth 1 -name '*.ipa' -print -quit)"
         [[ -n "$package" ]] || fail "no .ipa was exported for $scheme"
         ditto -x -k "$package" "$unpacked"
     fi
-    app="$(find "$unpacked" -maxdepth 4 -type d -name '*.app' | head -n 1)"
+    app="$(find "$unpacked" -type d -path '*/Payload/*.app' -prune -print -quit)"
     [[ -n "$app" ]] || fail "no app bundle inside $package"
     audit_signed_app "$app" "$scheme" "$kind"
     touch "$OUT/$scheme.checked"
