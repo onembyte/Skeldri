@@ -301,13 +301,19 @@ tests). Fixed while there: a race in `AfiNetworkServer` where a stop queued just
 before a start could cancel the new listener. The review notes (R1) still need
 to disclose the setting.
 
+S2 and S3 were done 2026-10-10. Both listeners pass `name: nil`, so Bonjour uses
+the computer name without a blocking lookup. The Mac app now requests only App
+Sandbox + `network.server`, and both release scripts fail if `network.client`
+returns. To verify in 1.C: the Mac is still discovered and accepts the iPad
+under the sandbox.
+
 Should-fix:
 
 | ID | App | Problem | Fix |
 |---|---|---|---|
 | S1 | Mac | Opaque full-bleed square icon looks wrong next to macOS rounded icons | Rebuild with the macOS template or Icon Composer |
-| S2 | Mac | `Host.current().localizedName` can stall the main thread at launch (`MacNetworkServer.swift:50`) | `NWListener.Service(name: nil)` |
-| S3 | Mac | `network.client` entitlement may be unnecessary | Remove it if Phase 1 shows the Mac never connects out |
+| S2 ✅ | Mac | `Host.current().localizedName` can stall the main thread at launch (`MacNetworkServer.swift:50`) | `NWListener.Service(name: nil)` |
+| S3 ✅ | Mac | `network.client` entitlement may be unnecessary | Remove it if Phase 1 shows the Mac never connects out |
 | S4 ✅ | iPad | Jargon errors such as "Incompatible protocol version", plus "Unknown error" (`SkeldriPadApp.swift:26,274`) | "Update Skeldri on both devices." |
 | S5 ✅ | iPad | Discovery is not refreshed when the app returns to the foreground (`SkeldriPadApp.swift:19-22`) | Refresh on `.active` |
 | S6 | iPad | White flash at launch; "Pull to refresh" text at about 2.5:1 contrast; "Colour" and "Color" both used | Set `UIColorName` on the launch screen; raise the contrast; use one spelling |

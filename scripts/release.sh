@@ -141,6 +141,8 @@ audit_signed_app() {
         [[ "$(entitlement com.apple.security.app-sandbox)" == true ]] || fail "SkeldriMac is not sandboxed"
         [[ "$(entitlement com.apple.security.network.server)" == true ]] || \
             fail "SkeldriMac lacks the network server entitlement it needs to listen"
+        [[ -z "$(entitlement com.apple.security.network.client)" ]] || \
+            fail "SkeldriMac requests outgoing network access it does not need"
         test -f "$app/Contents/Resources/PrivacyInfo.xcprivacy" || fail "SkeldriMac privacy manifest missing"
     else
         test -f "$app/PrivacyInfo.xcprivacy" || fail "SkeldriPad privacy manifest missing"

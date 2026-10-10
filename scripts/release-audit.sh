@@ -14,13 +14,17 @@ mkdir -p "$DERIVED_DATA" "$ARCHIVES"
 ENTITLEMENTS="$ROOT/macOS/SkeldriMac.entitlements"
 for key in \
   com.apple.security.app-sandbox \
-  com.apple.security.network.client \
   com.apple.security.network.server; do
   if [[ "$(/usr/libexec/PlistBuddy -c "Print :$key" "$ENTITLEMENTS")" != "true" ]]; then
     echo "Required Mac entitlement is missing or disabled: $key" >&2
     exit 1
   fi
 done
+# Least privilege: the Mac only listens, so outgoing connections stay denied.
+if /usr/libexec/PlistBuddy -c "Print :com.apple.security.network.client" "$ENTITLEMENTS" >/dev/null 2>&1; then
+  echo "The Mac app must not request com.apple.security.network.client" >&2
+  exit 1
+fi
 
 # Prints one Release build setting of a scheme, e.g. `setting SkeldriMac PRODUCT_NAME`.
 setting() {

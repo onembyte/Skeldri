@@ -47,7 +47,9 @@ final class MacNetworkServer: @unchecked Sendable {
         let listener = try NWListener(using: SkeldriTransport.tcpParameters())
         let record = NWTXTRecord(["id": serviceID, "protocol": String(ProtocolVersion.current)])
         listener.service = NWListener.Service(
-            name: Host.current().localizedName ?? "Mac",
+            // nil lets Bonjour use the computer name. Host.current() resolved
+            // every address synchronously and could stall the main thread at launch.
+            name: nil,
             type: "_skeldri._tcp",
             txtRecord: record
         )

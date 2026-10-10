@@ -39,7 +39,7 @@ targets:
       path: macOS/SkeldriMac.entitlements
       properties:
         com.apple.security.app-sandbox: true
-        com.apple.security.network.client: true
+        # Server only: the Mac listens for iPads and never opens a connection out.
         com.apple.security.network.server: true
   SkeldriPad:
     type: application

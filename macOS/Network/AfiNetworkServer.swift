@@ -41,7 +41,9 @@ final class AfiNetworkServer: @unchecked Sendable {
         parameters.allowLocalEndpointReuse = true
         let listener = try NWListener(using: parameters)
         listener.service = NWListener.Service(
-            name: Host.current().localizedName ?? "Mac",
+            // nil lets Bonjour use the computer name. Host.current() resolved
+            // every address synchronously and could stall the main thread at launch.
+            name: nil,
             type: AfiProtocol.serviceType,
             txtRecord: NWTXTRecord(["id": serviceID, "protocol": String(AfiProtocol.version)])
         )
