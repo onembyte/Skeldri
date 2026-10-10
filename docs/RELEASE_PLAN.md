@@ -123,7 +123,7 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 
 ### 0.C Repo baseline (merges need Franco's yes)
 
-- [ ] [C] Merge `origin/main` into `release/1.0`. Main can't fast-forward: it
+- [x] [C] Merge `origin/main` into `release/1.0`. Main can't fast-forward: it
       gained the Linux host, installer and landing page on 2026-08-25. The merge
       conflicts only in `README.md`, whose wording depends on D9. **GATE: D9.**
 - [ ] [C] Review and refresh Skeldri PR #2. **[F]** approves before `main` moves.
@@ -141,7 +141,7 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 
 Config changes; script changes get a dry run.
 
-- [ ] Add the paid `DEVELOPMENT_TEAM` to both app targets in `project.yml`. A team
+- [x] Add the paid `DEVELOPMENT_TEAM` to both app targets in `project.yml` (M3A5V2ZKZ4, Individual). A team
       ID is not secret, and the setting survives `xcodegen generate`.
 - [x] Set the bundle IDs according to D2. With (a), both targets use
       `com.onembyte.skeldri`.
@@ -171,7 +171,7 @@ Config changes; script changes get a dry run.
       project file. XcodeGen 2.46.0 reproduces the committed project exactly.
 - [x] [C] After 0.B: compile and run every script on the released Xcode. The
       0.D changes compile, test and archive. `release.sh` is first run in 0.F.
-- [ ] Switch `install-personal.sh` to the paid team. Development profiles then
+- [x] Switch `install-personal.sh` to the paid team. Development profiles then
       last 1 year instead of 7 days, and that also covers the Afi sideload on the
       iPad 4.
 

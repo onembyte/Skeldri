@@ -13,6 +13,9 @@ settings:
     # scripts/release.sh passes it explicitly. Info.plists read both values.
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
+    # The paid Apple Developer Program team (Individual). A Team ID is public
+    # (it appears in every signature); it is not a credential.
+    DEVELOPMENT_TEAM: M3A5V2ZKZ4
 targets:
   SkeldriMac:
     type: application
