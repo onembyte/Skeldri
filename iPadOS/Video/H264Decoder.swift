@@ -31,7 +31,7 @@ final class H264Decoder: @unchecked Sendable {
                 formatDescription = format
                 activeStreamID = configuration.streamID
                 sequenceGate.configure(streamID: configuration.streamID)
-                DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
+                DispatchQueue.main.async { [weak self] in self?.displayLayer?.sampleBufferRenderer.flush() }
             } else {
                 SkeldriLogger.video.error("Decoder configuration failed: \(result)")
             }
@@ -92,22 +92,24 @@ final class H264Decoder: @unchecked Sendable {
             CMSetAttachment(sample, key: kCMSampleAttachmentKey_DisplayImmediately,
                             value: kCFBooleanTrue,
                             attachmentMode: kCMAttachmentMode_ShouldNotPropagate)
+            // Since iPadOS 17 the display layer delegates to its video renderer;
+            // the layer's own flush/enqueue are deprecated aliases of these calls.
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 guard let layer = displayLayer else { requestRecovery(for: header); return }
                 if layer.sampleBufferRenderer.status == .failed {
-                    layer.flush()
+                    layer.sampleBufferRenderer.flush()
                     requestRecovery(for: header)
                     return
                 }
                 guard layer.sampleBufferRenderer.isReadyForMoreMediaData else {
                     // Never let AVFoundation turn temporary decoder pressure into
                     // seconds of stale presentation. Flush and resume at an IDR.
-                    layer.flush()
+                    layer.sampleBufferRenderer.flush()
                     requestRecovery(for: header)
                     return
                 }
-                layer.enqueue(sample)
+                layer.sampleBufferRenderer.enqueue(sample)
                 acknowledge(header, requiresKeyframe: false)
             }
         }
@@ -118,7 +120,7 @@ final class H264Decoder: @unchecked Sendable {
             self?.formatDescription = nil
             self?.activeStreamID = nil
             self?.sequenceGate.reset()
-            DispatchQueue.main.async { [weak self] in self?.displayLayer?.flush() }
+            DispatchQueue.main.async { [weak self] in self?.displayLayer?.sampleBufferRenderer.flush() }
         }
     }
 

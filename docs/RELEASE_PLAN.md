@@ -115,8 +115,11 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 - [x] [C] Run `./scripts/doctor.sh`, `./scripts/test.sh`, `./scripts/build.sh` and
       `./scripts/release-audit.sh` on the released Xcode. Record the toolchain in
       `docs/ENVIRONMENT.md`. Done 2026-10-10 on Xcode 27.1 RC: 83 tests pass, both
-      apps build, and the unsigned audit passes. One leftover: five iOS 18
-      deprecation warnings in `iPadOS/Video/H264Decoder.swift`.
+      apps build, and the unsigned audit passes. The five iOS 18
+      deprecation warnings in `iPadOS/Video/H264Decoder.swift` are fixed: the
+      decoder now calls its layer's `sampleBufferRenderer` directly. Both apps
+      build with zero warnings. The video path gets re-checked on the device in
+      1.C.
 
 ### 0.C Repo baseline (merges need Franco's yes)
 
