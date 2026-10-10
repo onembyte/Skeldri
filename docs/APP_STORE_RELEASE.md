@@ -1,6 +1,15 @@
 # App Store Release Checklist
 
-Skeldri has two modern distribution bundles: `com.onembyte.skeldri.mac` and `com.onembyte.skeldri.ipad`. This repository does not upload or publish either app.
+Skeldri has two modern distribution bundles: `com.onembyte.skeldri.mac` and `com.onembyte.skeldri.ipad`. The step-by-step release checklist is [RELEASE_PLAN.md](RELEASE_PLAN.md).
+
+## Signed App Store builds
+
+```bash
+./scripts/release.sh --team TEAM_ID --build 1          # archive, export, check; uploads nothing
+./scripts/release.sh --build 1 --upload                # upload exactly those checked archives
+```
+
+`release.sh` runs the tests, archives both apps with the paid team's automatic signing, exports App Store packages to `.build/Release/<version>-<build>`, and refuses to continue unless each signed app verifies, is signed by a distribution certificate for that team, is not debuggable, keeps the Mac sandbox and network-server entitlements, carries its privacy manifest, matches the expected bundle identifier, version, build number, and export-compliance key, and has no quarantine attribute. Signing and upload use the Apple ID signed in to Xcode; no API key or password is stored. Every upload needs a build number higher than any already sent for that version.
 
 ## Automated release audit
 

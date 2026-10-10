@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!--
+  Export options for App Store Connect builds of SkeldriMac and SkeldriPad.
+  scripts/release.sh copies this file, adds the paid Team ID, and switches
+  `destination` to `upload` only when it is run with explicit consent (--upload).
+  Build numbers come from CURRENT_PROJECT_VERSION, never from Xcode.
+-->
+<dict>
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>destination</key>
+	<string>export</string>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<key>uploadSymbols</key>
+	<true/>
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
+	<key>testFlightInternalTestingOnly</key>
+	<false/>
+</dict>
+</plist>

@@ -109,7 +109,8 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 
 - [ ] [C] Review Skeldri PR #2 and refresh its description. **[F]** approves; then
       fast-forward `main` (main is an ancestor of the branch).
-- [ ] [C] Branch `release/1.0` from `main`. All release work below happens there.
+- [x] [C] Branch `release/1.0`. It was created from the PR #2 head, which `main`
+      fast-forwards to. All release work below happens there.
 - [ ] [C] Afi: review PR #1 (`agent/app-store-security`). **[F]** approves the
       merge into `main`. The 1.E install script builds on top of it.
 
@@ -121,20 +122,20 @@ Config changes; script changes get a dry run.
       ID is not secret, and the setting survives `xcodegen generate`.
 - [ ] Set the bundle IDs according to D2. With (a), both targets use
       `com.onembyte.skeldri`.
-- [ ] Add `MARKETING_VERSION: 1.0` and `CURRENT_PROJECT_VERSION` to `project.yml`.
+- [x] Add `MARKETING_VERSION: 1.0` and `CURRENT_PROJECT_VERSION` to `project.yml`.
       Change both Info.plists to `$(MARKETING_VERSION)` /
       `$(CURRENT_PROJECT_VERSION)`. Make `release-audit.sh` compare against the
       build settings instead of the literals "1.0" / "1".
-- [ ] Set the Mac `PRODUCT_NAME` to `Skeldri`. Today Finder, Spotlight and the
+- [x] Set the Mac `PRODUCT_NAME` to `Skeldri`. Today Finder, Spotlight and the
       privacy panes all show "SkeldriMac". Update `release-audit.sh` and
       `install-personal.sh` to match.
-- [ ] Add `ExportOptions-AppStore.plist` with:
+- [x] Add `ExportOptions-AppStore.plist` with:
       - `method` = `app-store-connect`
       - `destination` = `upload`
       - `signingStyle` = `automatic`
       - `teamID`
       - `uploadSymbols` = true
-- [ ] Add `scripts/release.sh`. It runs tests, then a signed Release archive per
+- [x] Add `scripts/release.sh`. It runs tests, then a signed Release archive per
       platform, then checks the signed product:
       - entitlements are sandbox + network only, with no `get-task-allow`;
       - `codesign --verify --deep --strict` passes;
@@ -143,8 +144,10 @@ Config changes; script changes get a dry run.
 
       It then validates. It uploads only with an explicit `--upload` flag. The
       build number is passed in and must increase with every upload.
-- [ ] Regenerate `Skeldri.xcodeproj`, then commit `project.yml` together with the
-      project file.
+- [x] Regenerate `Skeldri.xcodeproj`, then commit `project.yml` together with the
+      project file. XcodeGen 2.46.0 reproduces the committed project exactly.
+- [ ] [C] After 0.B: compile and run every script on the released Xcode. None of
+      the 0.D changes has been compiled or archived yet.
 - [ ] Switch `install-personal.sh` to the paid team. Development profiles then
       last 1 year instead of 7 days, and that also covers the Afi sideload on the
       iPad 4.
