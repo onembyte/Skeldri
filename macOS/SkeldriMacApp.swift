@@ -25,8 +25,10 @@ struct SkeldriMacApp: App {
 @MainActor
 final class SkeldriMacAppDelegate: NSObject, NSApplicationDelegate {
     let model = MacAppModel()
+    private lazy var setupGuide = SetupGuideWindowController(model: model)
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        model.onSetupGuideRequested = { [weak self] in self?.setupGuide.show() }
         Task { await model.start() }
     }
 
@@ -63,6 +65,13 @@ final class MacAppModel: ObservableObject {
     @Published var annotationsVisible = true
     @Published var inputPermission = CGPreflightPostEventAccess()
     @Published var errorMessage: String?
+    /// macOS raises each permission prompt only once; these remember that it was used.
+    @Published private(set) var hasRequestedScreenRecording = false
+    @Published private(set) var hasRequestedPointerControl = false
+    /// Opens the setup guide. Set by the composition root, which owns windows.
+    var onSetupGuideRequested: (() -> Void)?
+    private let setup = SetupPreferences()
+    private var isEnumeratingDisplays = false
     let drawingState = DrawingState()
     private let overlay = OverlayWindowController()
     private let server = MacNetworkServer()
@@ -88,6 +97,8 @@ final class MacAppModel: ObservableObject {
     private var outstandingLectureRequestID: UUID?
 
     init() {
+        hasRequestedScreenRecording = setup.hasRequestedScreenRecording
+        hasRequestedPointerControl = setup.hasRequestedPointerControl
         server.onListenerStateChanged = { [weak self] ready, detail in
             Task { @MainActor in
                 guard let self else { return }
@@ -182,6 +193,11 @@ final class MacAppModel: ObservableObject {
         input.onPermissionChanged = { [weak self] granted in
             Task { @MainActor in self?.inputPermission = granted }
         }
+        input.onPermissionNeeded = { [weak self] in
+            // The iPad chose Trackpad but this Mac never allowed pointer control:
+            // explain it in the guide rather than raising the system prompt cold.
+            Task { @MainActor in self?.showSetupGuide() }
+        }
         capture.consumer = encoder
         encoder.onConfiguration = { [weak server, weak afiServer] configuration in
             server?.sendVideoConfiguration(configuration)
@@ -219,6 +235,22 @@ final class MacAppModel: ObservableObject {
             // modern listener, display discovery, or normal Skeldri workflow.
             SkeldriLogger.network.error("Afi compatibility unavailable: \(error.localizedDescription)")
         }
+        if SetupGuidePresentation.presentsAtLaunch(completedRevision: setup.completedGuideRevision) {
+            showSetupGuide()
+        }
+        await loadDisplaysIfPermitted()
+    }
+
+    /// Lists displays only once Screen Recording is allowed: ScreenCaptureKit
+    /// would otherwise raise the system prompt the moment Skeldri launches.
+    private func loadDisplaysIfPermitted() async {
+        guard DisplayEnumerationPolicy.shouldEnumerate(
+            hasCapturePermission: capturePermission,
+            hasDisplays: !screenPairs.isEmpty,
+            isEnumerating: isEnumeratingDisplays
+        ) else { return }
+        isEnumeratingDisplays = true
+        defer { isEnumeratingDisplays = false }
         do {
             screenPairs = try await DisplayManager().availableDisplays(); displays = screenPairs.map(\.1)
             guard !screenPairs.isEmpty else {
@@ -232,6 +264,21 @@ final class MacAppModel: ObservableObject {
         }
     }
 
+    var setupGuideState: SetupGuideState {
+        SetupGuideState(
+            screenRecording: PermissionPrompting.action(
+                isGranted: capturePermission, hasRequestedBefore: hasRequestedScreenRecording),
+            pointerControl: PermissionPrompting.action(
+                isGranted: inputPermission, hasRequestedBefore: hasRequestedPointerControl)
+        )
+    }
+
+    func showSetupGuide() { onSetupGuideRequested?() }
+
+    func completeSetupGuide() {
+        setup.completedGuideRevision = SetupGuidePresentation.currentRevision
+    }
+
     func selectDisplay(_ id: UInt32?) { showOverlayForSelection() }
     func toggleOverlay() { annotationsVisible.toggle(); annotationsVisible ? showOverlayForSelection() : overlay.hide() }
     func clear() {
@@ -240,17 +287,31 @@ final class MacAppModel: ObservableObject {
         server.sendControl(.clear)
         afiServer.sendControl(.clear)
     }
-    func requestInputPermission() { input.requestPermission() }
+    func requestInputPermission() {
+        switch setupGuideState.pointerControl {
+        case .none: return
+        case .openSettings: SystemSettingsLink.accessibility.open()
+        case .request:
+            hasRequestedPointerControl = true
+            setup.hasRequestedPointerControl = true
+            input.requestPermission()
+        }
+    }
     func requestCapturePermission() {
-        let granted = CGRequestScreenCaptureAccess()
-        capturePermission = granted || CGPreflightScreenCaptureAccess()
-        if !capturePermission {
-            errorMessage = "Grant Screen Recording access in System Settings, then quit and reopen Skeldri."
+        switch setupGuideState.screenRecording {
+        case .none: return
+        case .openSettings: SystemSettingsLink.screenRecording.open()
+        case .request:
+            hasRequestedScreenRecording = true
+            setup.hasRequestedScreenRecording = true
+            capturePermission = CGRequestScreenCaptureAccess() || CGPreflightScreenCaptureAccess()
+            Task { await loadDisplaysIfPermitted() }
         }
     }
     func refreshPermissions() {
         capturePermission = CGPreflightScreenCaptureAccess()
         inputPermission = input.hasPermission
+        Task { await loadDisplaysIfPermitted() }
     }
     func shutdown() {
         input.reset()
@@ -263,6 +324,7 @@ final class MacAppModel: ObservableObject {
     func approvePendingConnection() {
         guard capturePermission else {
             errorMessage = "Screen Recording access is required before an iPad can view this Mac."
+            showSetupGuide()
             return
         }
         if modernControlConnected { server.authorizeCurrentClient(true) }

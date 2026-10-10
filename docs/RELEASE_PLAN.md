@@ -249,9 +249,9 @@ Must-fix before Phase 2:
 
 | ID | App | Problem | Evidence | Fix |
 |---|---|---|---|---|
-| M1 | Mac | Menu-bar-only app: a reviewer launches it and sees nothing, and the icon can hide behind the notch | `macOS/Info.plist` `LSUIElement`; only `MenuBarExtra` | First-run window explaining the menu-bar icon, the permissions and the need for the iPad app; an About item |
-| M2 | Mac | Screen Recording prompt appears at launch, before the user has asked for anything | `SkeldriMacApp.swift:223` → `DisplayManager.swift:7` | Enumerate displays only after `CGPreflightScreenCaptureAccess()` succeeds or the user presses Grant |
-| M3 | Mac | Accessibility prompt has no in-app explanation | `MacMainView.swift:35`, `MacInputController.swift:19-26` | Explanation sheet before `CGRequestPostEventAccess()` |
+| M1 ✅ | Mac | Menu-bar-only app: a reviewer launches it and sees nothing, and the icon can hide behind the notch | `macOS/Info.plist` `LSUIElement`; only `MenuBarExtra` | First-run window explaining the menu-bar icon, the permissions and the need for the iPad app; an About item |
+| M2 ✅ | Mac | Screen Recording prompt appears at launch, before the user has asked for anything | `SkeldriMacApp.swift:223` → `DisplayManager.swift:7` | Enumerate displays only after `CGPreflightScreenCaptureAccess()` succeeds or the user presses Grant |
+| M3 ✅ | Mac | Accessibility prompt has no in-app explanation | `MacMainView.swift:35`, `MacInputController.swift:19-26` | Explanation sheet before `CGRequestPostEventAccess()` |
 | M4 | Mac | Hard-coded ANSI key codes for zoom | `MacInputController.swift:123-131` | Per D7 |
 | M5 | Mac | Afi listener always on, and not in the review notes | `SkeldriMacApp.swift:216`, `Info.plist` `_skeldri-afi._tcp` | Per D5 |
 | P1 | iPad | Denying Local Network permission leaves an endless spinner, with no Settings link | `iPadNetworkClient.swift:98-103` handles only `.failed`; `PeerConnection.swift:42` | Searching / denied / failed states; detect `.waiting(PolicyDenied)`; button to `openSettingsURLString` |
@@ -259,6 +259,14 @@ Must-fix before Phase 2:
 | P3 | iPad | "Awaiting approval" can hang forever, with no Cancel | `SkeldriPadApp.swift:124`, `DiscoveryView.swift:152` | Cancel button; client-side timeout; treat `.waiting` as a failure |
 | P4 | iPad | Toolbar about 730 pt wide clips in Split View, Slide Over and iPadOS 26 windows; Back sits under the window controls | `DrawingToolbar.swift:11-56`, `DrawingScreen.swift:161-176` | Compact-width layout; respect the top safe area |
 | R1 | Both | Docs disagree with the code | `APP_REVIEW_NOTES.md:5` says "one display" and "no key events" | Rewrite after D5, D7 and D8 |
+
+M1–M3 were done 2026-10-10 as one component, the Mac's first-run experience.
+Pure policies in `Shared/Domain/Setup` are tested (91 tests). The Skeldri Setup
+window opens on first launch, from the popover, and when an iPad needs
+permission. Displays are enumerated only after Screen Recording is allowed. The
+trackpad system prompt is raised only from the guide's **Allow…**. The guide was
+rendered and reviewed off-screen; the device checks are in `MANUAL_TESTING.md` →
+"Mac first launch".
 
 Should-fix:
 

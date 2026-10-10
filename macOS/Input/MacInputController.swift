@@ -5,6 +5,9 @@ import CoreGraphics
 /// A dedicated serial queue owns ordering, button state, and replay protection.
 final class MacInputController: @unchecked Sendable {
     var onPermissionChanged: (@Sendable (Bool) -> Void)?
+    /// Trackpad mode started without pointer-control permission. The owner shows
+    /// its explanation first; macOS is asked only when the person chooses to.
+    var onPermissionNeeded: (@Sendable () -> Void)?
 
     private let queue = DispatchQueue(label: "Skeldri.input", qos: .userInteractive)
     private var sequenceGate = TrackpadSequenceGate()
@@ -33,7 +36,7 @@ final class MacInputController: @unchecked Sendable {
             cursor.invalidate()
             desktopBounds = Self.activeDesktopBounds()
             if value {
-                if !CGPreflightPostEventAccess() { requestPermission() }
+                if !CGPreflightPostEventAccess() { onPermissionNeeded?() }
             } else {
                 releaseAllButtons()
             }

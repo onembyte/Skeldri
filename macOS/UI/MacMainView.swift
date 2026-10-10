@@ -27,12 +27,12 @@ struct MacMainView: View {
             }
             ConnectionStatusView(title: "Screen Recording", ready: model.capturePermission, detail: model.capturePermission ? "Ready" : "Permission required")
             if !model.capturePermission {
-                Button("Grant Screen Recording") { model.requestCapturePermission() }
+                Button("Set Up Screen Recording…") { model.showSetupGuide() }
             }
             ConnectionStatusView(title: "Local Network", ready: model.listenerReady, detail: model.listenerReady ? "Ready" : "Starting")
             ConnectionStatusView(title: "Trackpad Control", ready: model.inputPermission, detail: model.inputPermission ? "Ready" : "Optional")
             if !model.inputPermission {
-                Button("Enable Trackpad Control") { model.requestInputPermission() }
+                Button("Set Up Trackpad Control…") { model.showSetupGuide() }
             }
             LabeledContent("Display", value: model.displays.first(where: { $0.id == model.selectedDisplayID })?.name ?? "Unavailable")
             if let pending = model.pendingConnectionName {
@@ -60,8 +60,15 @@ struct MacMainView: View {
                 Button(model.annotationsVisible ? "Hide annotations" : "Show annotations") { model.toggleOverlay() }
                 Button("Clear") { model.clear() }
             }
-            Button("Privacy") { showingPrivacy = true }
-                .buttonStyle(.link)
+            HStack(spacing: 14) {
+                Button("Setup Guide") { model.showSetupGuide() }
+                Button("Privacy") { showingPrivacy = true }
+                Button("About Skeldri") {
+                    NSApplication.shared.activate()
+                    NSApplication.shared.orderFrontStandardAboutPanel(nil)
+                }
+            }
+            .buttonStyle(.link)
             if let error = model.errorMessage {
                 Text(error).font(.caption).foregroundStyle(.red).fixedSize(horizontal: false, vertical: true)
             }

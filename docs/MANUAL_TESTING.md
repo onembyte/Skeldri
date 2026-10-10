@@ -59,6 +59,19 @@
 - [ ] Denying or revoking Screen Recording reports "permission required"
 - [ ] Verify minimized, hidden, and other-Space behavior empirically and record the observed OS limitations
 
+## Mac first launch
+
+Test with a fresh setup: a new macOS user account, or after Skeldri's privacy grants are removed.
+
+- [ ] First launch opens the Skeldri Setup window. No Screen Recording prompt appears before **Allow…** is clicked.
+- [ ] The menu-bar step shows the real Skeldri mark, and the icon is visible in the menu bar.
+- [ ] Screen Recording **Allow…** raises the macOS prompt once. Afterwards the button reads **Open System Settings** and opens Screen & System Audio Recording.
+- [ ] After permission is granted (and Skeldri is reopened if macOS asks), the step shows **Allowed** and the popover names the display.
+- [ ] Choosing Trackpad on the iPad without pointer permission opens the guide instead of the macOS prompt. **Allow…** then raises it; later the button opens Accessibility.
+- [ ] **Done** closes the guide, and it does not open by itself on the next launch. The popover's **Setup Guide** reopens it.
+- [ ] **About Skeldri** shows the name, version, and copyright.
+- [ ] Approving an iPad without Screen Recording permission opens the guide.
+
 ## Mac usability and stability
 
 - [ ] Overlay passes mouse clicks and does not steal keyboard focus
