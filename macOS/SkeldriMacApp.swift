@@ -72,6 +72,14 @@ final class MacAppModel: ObservableObject {
     var onSetupGuideRequested: (() -> Void)?
     private let setup = SetupPreferences()
     private var isEnumeratingDisplays = false
+    /// Lets iPads running Skeldri Afi connect; off by default.
+    @Published var allowsOlderIPads = LegacyCompatibilityPolicy.allowsOlderIPadsByDefault {
+        didSet {
+            setup.allowsOlderIPads = allowsOlderIPads
+            reconcileLegacyListener()
+        }
+    }
+    private var legacyListening = false
     let drawingState = DrawingState()
     private let overlay = OverlayWindowController()
     private let server = MacNetworkServer()
@@ -99,6 +107,7 @@ final class MacAppModel: ObservableObject {
     init() {
         hasRequestedScreenRecording = setup.hasRequestedScreenRecording
         hasRequestedPointerControl = setup.hasRequestedPointerControl
+        allowsOlderIPads = setup.allowsOlderIPads
         server.onListenerStateChanged = { [weak self] ready, detail in
             Task { @MainActor in
                 guard let self else { return }
@@ -228,13 +237,7 @@ final class MacAppModel: ObservableObject {
             errorMessage = "Local network listener failed: \(error.localizedDescription)"
             return
         }
-        do {
-            try afiServer.start()
-        } catch {
-            // Compatibility is additive. Its failure must never take down the
-            // modern listener, display discovery, or normal Skeldri workflow.
-            SkeldriLogger.network.error("Afi compatibility unavailable: \(error.localizedDescription)")
-        }
+        reconcileLegacyListener()
         if SetupGuidePresentation.presentsAtLaunch(completedRevision: setup.completedGuideRevision) {
             showSetupGuide()
         }
@@ -261,6 +264,26 @@ final class MacAppModel: ObservableObject {
             if connected { publishDisplays() }
         } catch {
             errorMessage = "Display enumeration failed: \(error.localizedDescription)"
+        }
+    }
+
+    /// Starts or stops the Afi listener to match the owner's choice.
+    private func reconcileLegacyListener() {
+        switch LegacyCompatibilityPolicy.action(allowsOlderIPads: allowsOlderIPads, isListening: legacyListening) {
+        case .start:
+            do {
+                try afiServer.start()
+                legacyListening = true
+            } catch {
+                // Compatibility is additive. Its failure must never take down the
+                // modern listener, display discovery, or normal Skeldri workflow.
+                SkeldriLogger.network.error("Afi compatibility unavailable: \(error.localizedDescription)")
+            }
+        case .stop:
+            afiServer.stop()
+            legacyListening = false
+        case .none:
+            break
         }
     }
 

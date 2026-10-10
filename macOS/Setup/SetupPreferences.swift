@@ -11,6 +11,7 @@ final class SetupPreferences {
         static let completedGuideRevision = "setup.completedGuideRevision"
         static let requestedScreenRecording = "setup.requestedScreenRecording"
         static let requestedPointerControl = "setup.requestedPointerControl"
+        static let allowsOlderIPads = "compatibility.allowsOlderIPads"
     }
 
     init(defaults: UserDefaults = .standard) {
@@ -25,6 +26,12 @@ final class SetupPreferences {
     var hasRequestedScreenRecording: Bool {
         get { defaults.bool(forKey: Key.requestedScreenRecording) }
         set { defaults.set(newValue, forKey: Key.requestedScreenRecording) }
+    }
+
+    /// Whether iPads running Skeldri Afi may connect. Off unless chosen.
+    var allowsOlderIPads: Bool {
+        get { defaults.object(forKey: Key.allowsOlderIPads) as? Bool ?? LegacyCompatibilityPolicy.allowsOlderIPadsByDefault }
+        set { defaults.set(newValue, forKey: Key.allowsOlderIPads) }
     }
 
     var hasRequestedPointerControl: Bool {

@@ -51,10 +51,18 @@ final class AfiNetworkServer: @unchecked Sendable {
             }
         }
         listener.newConnectionHandler = { [weak self] connection in self?.accept(connection) }
-        self.listener = listener
-        listener.start(queue: queue)
+        // Swap listeners on the owning queue, in order with stop(). Assigning
+        // here directly let a stop() queued just before this start() cancel
+        // the new listener instead of the old one.
+        queue.async { [weak self] in
+            guard let self else { listener.cancel(); return }
+            self.listener?.cancel()
+            self.listener = listener
+            listener.start(queue: queue)
+        }
     }
 
+    /// Stops listening and drops any Afi client. Safe to follow with start().
     func stop() {
         queue.async { [weak self] in
             guard let self else { return }
@@ -63,6 +71,7 @@ final class AfiNetworkServer: @unchecked Sendable {
             control?.cancel()
             video?.cancel()
             listener?.cancel()
+            listener = nil
         }
     }
 

@@ -253,7 +253,7 @@ Must-fix before Phase 2:
 | M2 ✅ | Mac | Screen Recording prompt appears at launch, before the user has asked for anything | `SkeldriMacApp.swift:223` → `DisplayManager.swift:7` | Enumerate displays only after `CGPreflightScreenCaptureAccess()` succeeds or the user presses Grant |
 | M3 ✅ | Mac | Accessibility prompt has no in-app explanation | `MacMainView.swift:35`, `MacInputController.swift:19-26` | Explanation sheet before `CGRequestPostEventAccess()` |
 | M4 | Mac | Hard-coded ANSI key codes for zoom | `MacInputController.swift:123-131` | Per D7 |
-| M5 | Mac | Afi listener always on, and not in the review notes | `SkeldriMacApp.swift:216`, `Info.plist` `_skeldri-afi._tcp` | Per D5 |
+| M5 ✅ | Mac | Afi listener always on, and not in the review notes | `SkeldriMacApp.swift:216`, `Info.plist` `_skeldri-afi._tcp` | Per D5 |
 | P1 ✅ | iPad | Denying Local Network permission leaves an endless spinner, with no Settings link | `iPadNetworkClient.swift:98-103` handles only `.failed`; `PeerConnection.swift:42` | Searching / denied / failed states; detect `.waiting(PolicyDenied)`; button to `openSettingsURLString` |
 | P2 ✅ | iPad | Empty list never says a Mac app is needed (Guideline 4.2 risk) | `DiscoveryView.swift:70-89` | "Open Skeldri on your Mac on the same Wi-Fi", plus troubleshooting after about 10 s |
 | P3 ✅ | iPad | "Awaiting approval" can hang forever, with no Cancel | `SkeldriPadApp.swift:124`, `DiscoveryView.swift:152` | Cancel button; client-side timeout; treat `.waiting` as a failure |
@@ -293,6 +293,13 @@ Mac with 0.37 GB free; deleting the device recovered it. Before more simulator
 work, or the Phase 2 screenshots, Franco frees about 8 GB. Keep only the iOS
 27.0 (24A434) runtime: it runs every iPad. Xcode 27.1's iOS 27.1 runtime runs
 only the iPhone Duo.
+
+M5 was done 2026-10-10 (D5a). **Allow older iPads** in the popover is off by
+default; only then does the Mac run the `_skeldri-afi._tcp` listener, and
+turning it off drops any Afi client. `LegacyCompatibilityPolicy` is tested (104
+tests). Fixed while there: a race in `AfiNetworkServer` where a stop queued just
+before a start could cancel the new listener. The review notes (R1) still need
+to disclose the setting.
 
 Should-fix:
 

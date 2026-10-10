@@ -72,6 +72,13 @@ Test with a fresh setup: a new macOS user account, or after Skeldri's privacy gr
 - [ ] **About Skeldri** shows the name, version, and copyright.
 - [ ] Approving an iPad without Screen Recording permission opens the guide.
 
+## Older iPads (Skeldri Afi)
+
+- [ ] On a fresh install, **Allow older iPads** is off, and `dns-sd -B _skeldri-afi._tcp` finds nothing.
+- [ ] Turning it on makes the Mac appear in Skeldri Afi on the iPad 4; the connection still needs **Allow**.
+- [ ] Turning it off while Afi is connected disconnects Afi; turning it back on at once lets Afi reconnect.
+- [ ] The setting survives quitting and reopening Skeldri.
+
 ## Mac usability and stability
 
 - [ ] Overlay passes mouse clicks and does not steal keyboard focus

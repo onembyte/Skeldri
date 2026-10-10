@@ -27,6 +27,7 @@
 		1A51CC34A5CBAC8676F742CF /* SetupGuidePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D28241DC6FED9A1D1022C22 /* SetupGuidePresentation.swift */; };
 		1B353034AD90E23A3D897FAF /* DiscoveryStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D5A7C633DA704533215F6 /* DiscoveryStatusTests.swift */; };
 		1C7225D3FD93774E43195A0C /* LectureNavigationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06C637285D6B26A96F0F57C /* LectureNavigationPolicy.swift */; };
+		1C9E0ED3B5A82CF46EB4FD69 /* LegacyCompatibilityPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF26E3770B8E2A5AFA1BE0 /* LegacyCompatibilityPolicyTests.swift */; };
 		1CD199007DB8C7BE6346C6A5 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		20B30AB8705894AC32A33167 /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
@@ -66,6 +67,7 @@
 		44B6C5594FAFA1E4E918A467 /* ApprovalWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797301177AED399859C288F6 /* ApprovalWait.swift */; };
 		4709C9A7933F09CD4A1F337E /* SetupGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6F68FF88D0C92EFFC450BB /* SetupGuideView.swift */; };
 		4790753CC3B1B5E1A177F6D5 /* QuickColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */; };
+		481EEFBAC02D0AD83CCBFC12 /* LegacyCompatibilityPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE2081D8CB218528A80A07 /* LegacyCompatibilityPolicy.swift */; };
 		48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		48E49DBC273E4DD4EBB58BB3 /* LectureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A9C826C45C47BB193C597 /* LectureSource.swift */; };
 		4C760B9741B256AF34EA3CFB /* DisplaySidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */; };
@@ -99,6 +101,7 @@
 		78D3A727FD40A5E095494E0E /* OverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DD229B64EB0D530424A769 /* OverlayWindowController.swift */; };
 		7C73550B84A2B943E07E1A6D /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		7D45FD2E32463E9A2C80098D /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
+		7D8C746C7EE2174FAAFCAF69 /* LegacyCompatibilityPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE2081D8CB218528A80A07 /* LegacyCompatibilityPolicy.swift */; };
 		832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
 		9150384FB984A019CDFC97EA /* TouchDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94979FA5662548E99A898454 /* TouchDrawingView.swift */; };
 		91943120E505E0EFF0F50B53 /* LectureInputPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */; };
@@ -122,6 +125,7 @@
 		ACBE81DBC13B76A81E5782D2 /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576E6FB42D5BCD4E1717EC71 /* DrawingState.swift */; };
 		B017A205A9108314FD8F863F /* VideoFlowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402801EB066BC5180232032E /* VideoFlowControl.swift */; };
 		B2A65E1D68CB5CF90E16E806 /* TrackpadMotionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9750797A4B0811E0484C8F /* TrackpadMotionTests.swift */; };
+		B409148785FBFB56A04DBE29 /* LegacyCompatibilityPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE2081D8CB218528A80A07 /* LegacyCompatibilityPolicy.swift */; };
 		B522EB0EF25C56599212CCCF /* DisplayDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F1261228B49B8717685122 /* DisplayDescriptor.swift */; };
 		B655422CE5FB48EFEE19C5EE /* ExperienceModeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792BF47634DD95F210BC43D0 /* ExperienceModeTransition.swift */; };
 		B9A424418E65F1F75C686F4F /* DiscoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A965FD080A73549AD5FA5 /* DiscoveryView.swift */; };
@@ -201,6 +205,7 @@
 		35AD374CA2E084D8C3F30818 /* TrackpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadView.swift; sourceTree = "<group>"; };
 		36EDB74E53B1C6F06E75DB4F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		39A993F4541B9419C912A796 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
+		3AEE2081D8CB218528A80A07 /* LegacyCompatibilityPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyCompatibilityPolicy.swift; sourceTree = "<group>"; };
 		3D28241DC6FED9A1D1022C22 /* SetupGuidePresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupGuidePresentation.swift; sourceTree = "<group>"; };
 		3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInputPolicyTests.swift; sourceTree = "<group>"; };
 		3F8B668BC022452A76F4B3F6 /* SetupPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPolicyTests.swift; sourceTree = "<group>"; };
@@ -234,6 +239,7 @@
 		7D4A965FD080A73549AD5FA5 /* DiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryView.swift; sourceTree = "<group>"; };
 		82264D3115D066E08A928202 /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
 		86553A4F09D4849FB27647AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8AFF26E3770B8E2A5AFA1BE0 /* LegacyCompatibilityPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyCompatibilityPolicyTests.swift; sourceTree = "<group>"; };
 		907220C463BE2B6C233C4EAF /* SkeldriPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriPadApp.swift; sourceTree = "<group>"; };
 		94979FA5662548E99A898454 /* TouchDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDrawingView.swift; sourceTree = "<group>"; };
 		95DB2256D96C304F58080362 /* SkeldriPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkeldriPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -295,6 +301,7 @@
 				CB24E921AE92B0B833A1A907 /* LectureDomainTests.swift */,
 				3DBBB03C06A2A2BA99D5ADB4 /* LectureInputPolicyTests.swift */,
 				430173371EE99B870B35A9B9 /* LectureSourceCatalogTests.swift */,
+				8AFF26E3770B8E2A5AFA1BE0 /* LegacyCompatibilityPolicyTests.swift */,
 				6B1A797459BFD1A7CF35E842 /* PacketFramerTests.swift */,
 				56EE2A10A023CC54B97DA6A2 /* QuickColorPaletteTests.swift */,
 				F0E5DD7E36FC0FAB7B0BCAA2 /* SessionAuthorizationPolicyTests.swift */,
@@ -352,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				C36F327F9E3CC0C50F051B34 /* DisplayEnumerationPolicy.swift */,
+				3AEE2081D8CB218528A80A07 /* LegacyCompatibilityPolicy.swift */,
 				FC7E811A7728C4C726706C7A /* PermissionPrompting.swift */,
 				3D28241DC6FED9A1D1022C22 /* SetupGuidePresentation.swift */,
 			);
@@ -752,6 +760,7 @@
 				2CD8BF89E418C076C498CAF1 /* LectureSource.swift in Sources */,
 				185EB9A8B9EA96C3FE924D3A /* LectureSourceCatalog.swift in Sources */,
 				2319BB3D28ACECEB64CC53AF /* LectureSourceEnumerator.swift in Sources */,
+				7D8C746C7EE2174FAAFCAF69 /* LegacyCompatibilityPolicy.swift in Sources */,
 				B9C20C495CCEB9916DAFFF32 /* MacAnnotationView.swift in Sources */,
 				F145C08EA422178E72EF9010 /* MacInputController.swift in Sources */,
 				E8762B69E13FDE196C9E7610 /* MacMainView.swift in Sources */,
@@ -818,6 +827,8 @@
 				48E49DBC273E4DD4EBB58BB3 /* LectureSource.swift in Sources */,
 				2EF3D688FE245B2A9C88BE9B /* LectureSourceCatalog.swift in Sources */,
 				3F0A0818EE62645DF09ACFA4 /* LectureSourceCatalogTests.swift in Sources */,
+				B409148785FBFB56A04DBE29 /* LegacyCompatibilityPolicy.swift in Sources */,
+				1C9E0ED3B5A82CF46EB4FD69 /* LegacyCompatibilityPolicyTests.swift in Sources */,
 				5B7F8290DEC551679D28762E /* PacketFramer.swift in Sources */,
 				711CFBBE35AF11F37CB49282 /* PacketFramerTests.swift in Sources */,
 				BA281A275AA67DE48014968A /* PeerConnection.swift in Sources */,
@@ -882,6 +893,7 @@
 				C3A4218D858AD269D392E227 /* LectureSource.swift in Sources */,
 				3712D1B4C7CB21E0EB7476AE /* LectureSourceCatalog.swift in Sources */,
 				E419C7315AE654475CA0861E /* LectureViewportView.swift in Sources */,
+				481EEFBAC02D0AD83CCBFC12 /* LegacyCompatibilityPolicy.swift in Sources */,
 				2E4827EAE19E987A0B947D46 /* LiquidGlassStyle.swift in Sources */,
 				2146B427A091E9A7026E51F5 /* PacketFramer.swift in Sources */,
 				0AD912A67B2EDDF07850246C /* PeerConnection.swift in Sources */,

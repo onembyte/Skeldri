@@ -2,7 +2,7 @@
 
 ## Legacy compatibility
 
-Skeldri Mac advertises a second `_skeldri-afi._tcp` Bonjour service for the separate Skeldri Afi product. Its listener uses an explicit versioned JSON envelope and translates accepted messages into the same `ControlPacket` domain actions used by the modern client. The modern `_skeldri._tcp` protocol is unchanged. Capture, encoding, display reconciliation, annotation state, and trackpad injection remain single-owner services shared at the application layer.
+When the Mac's owner turns on **Allow older iPads** in the menu-bar popover (off by default), Skeldri Mac advertises a second `_skeldri-afi._tcp` Bonjour service for the separately installed Skeldri Afi client. With the setting off, nothing listens on that service type; turning it off also drops any connected Afi client. `LegacyCompatibilityPolicy` decides whether to start or stop the listener, and the listener swaps on its own serial queue, so a rapid off-and-on cannot cancel the new listener. Its listener uses an explicit versioned JSON envelope and translates accepted messages into the same `ControlPacket` domain actions used by the modern client. The modern `_skeldri._tcp` protocol is unchanged. Capture, encoding, display reconciliation, annotation state, and trackpad injection remain single-owner services shared at the application layer.
 
 Compatibility is additive and failure-isolated: inability to start the Afi listener does not prevent the modern listener or display setup. A modern Skeldri session has explicit priority; connecting it disconnects a legacy session and temporarily rejects new Afi clients, preventing legacy state or input from interfering with the current product.
 

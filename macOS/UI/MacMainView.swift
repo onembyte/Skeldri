@@ -60,6 +60,19 @@ struct MacMainView: View {
                 Button(model.annotationsVisible ? "Hide annotations" : "Show annotations") { model.toggleOverlay() }
                 Button("Clear") { model.clear() }
             }
+            // Off by default: only then does Skeldri advertise its second,
+            // compatibility service for the separately installed Afi client.
+            Toggle(isOn: $model.allowsOlderIPads) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Allow older iPads")
+                    Text("For iPads running Skeldri Afi. Each connection still needs your approval.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .toggleStyle(.switch)
+            .controlSize(.small)
             HStack(spacing: 14) {
                 Button("Setup Guide") { model.showSetupGuide() }
                 Button("Privacy") { showingPrivacy = true }
