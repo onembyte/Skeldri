@@ -7,3 +7,5 @@ xcuserdata/
 *.xcresult
 .swiftpm/
 .DS_Store
+target/
+linux/target/

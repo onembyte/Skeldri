@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "skeldri",
+  "name": "Skeldri DrawPad",
+  "version": "0.1.0",
+  "author": "Franco Michetti",
+  "license": "MIT",
+  "description": "iPad wireless screen mirroring and live annotation overlay for Omarchy.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Skeldri DrawPad",
+    "description": "iPad Mirroring & Annotation Controller",
+    "category": "Tools",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

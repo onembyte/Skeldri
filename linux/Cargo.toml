@@ -1,0 +1,36 @@
+[package]
+name = "skeldri-linux"
+version = "0.1.0"
+edition = "2021"
+authors = ["Franco Michetti"]
+description = "Linux daemon for Skeldri (DrawPad) iPad screen mirroring and annotation overlay"
+
+[[bin]]
+name = "skeldri"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1.43", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.13", features = ["v4", "serde"] }
+bytes = "1.10"
+byteorder = "1.5"
+base64 = "0.22"
+thiserror = "2.0"
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+mdns-sd = "0.13"
+dirs = "6.0"
+tiny-skia = "0.11"
+wayland-client = "0.31"
+wayland-protocols = { version = "0.32", features = ["client"] }
+wayland-protocols-wlr = { version = "0.3", features = ["client"] }
+memmap2 = "0.9"
+tempfile = "3.17"
+clap = { version = "4.5", features = ["derive"] }
+libc = "0.2"
+
+[dev-dependencies]
+tokio-test = "0.4"

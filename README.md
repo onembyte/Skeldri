@@ -24,9 +24,20 @@ Skeldri turns an iPad into a wireless finger-annotation surface and opt-in track
 
 - macOS 15 or later.
 - iPadOS 18 or later.
-- Xcode 27 beta or later for the currently checked-in project (Swift 6 and the current Liquid Glass SDK APIs).
+- Xcode 27 or later for the currently checked-in project (Swift 6 and the current Liquid Glass SDK APIs).
 - Mac and iPad connected to the same local network.
 - XcodeGen only when regenerating `Skeldri.xcodeproj`; it is not needed for normal builds.
+
+## Linux host (experimental)
+
+A separate Rust host for Linux (Omarchy / Hyprland, Wayland `wlr-layer-shell`) lives in [`linux/`](linux), with an Omarchy QuickShell bar plugin in [`plugins/skeldri`](plugins/skeldri). See the [Linux & Omarchy guide](docs/LINUX.md) and the [landing page](https://onembyte.github.io/Skeldri).
+
+> [!WARNING]
+> The Linux host still speaks the earlier DrawPad protocol (version 2, `_drawpad._tcp`). Skeldri 1.0 for iPad uses protocol 7 and `_skeldri._tcp`, so it cannot discover or connect to the Linux host until the host is updated.
+
+```bash
+curl -fsSL https://onembyte.github.io/Skeldri/install.sh | bash
+```
 
 The reference development environment is recorded in [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md).
 
@@ -116,6 +127,7 @@ Commit both `project.yml` and the regenerated `Skeldri.xcodeproj` when project s
 
 ## Documentation
 
+- [Linux / Omarchy Guide](docs/LINUX.md)
 - [Manual acceptance testing](docs/MANUAL_TESTING.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Implementation status](docs/IMPLEMENTATION_STATUS.md)
