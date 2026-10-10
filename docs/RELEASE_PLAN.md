@@ -254,9 +254,9 @@ Must-fix before Phase 2:
 | M3 ✅ | Mac | Accessibility prompt has no in-app explanation | `MacMainView.swift:35`, `MacInputController.swift:19-26` | Explanation sheet before `CGRequestPostEventAccess()` |
 | M4 | Mac | Hard-coded ANSI key codes for zoom | `MacInputController.swift:123-131` | Per D7 |
 | M5 | Mac | Afi listener always on, and not in the review notes | `SkeldriMacApp.swift:216`, `Info.plist` `_skeldri-afi._tcp` | Per D5 |
-| P1 | iPad | Denying Local Network permission leaves an endless spinner, with no Settings link | `iPadNetworkClient.swift:98-103` handles only `.failed`; `PeerConnection.swift:42` | Searching / denied / failed states; detect `.waiting(PolicyDenied)`; button to `openSettingsURLString` |
-| P2 | iPad | Empty list never says a Mac app is needed (Guideline 4.2 risk) | `DiscoveryView.swift:70-89` | "Open Skeldri on your Mac on the same Wi-Fi", plus troubleshooting after about 10 s |
-| P3 | iPad | "Awaiting approval" can hang forever, with no Cancel | `SkeldriPadApp.swift:124`, `DiscoveryView.swift:152` | Cancel button; client-side timeout; treat `.waiting` as a failure |
+| P1 ✅ | iPad | Denying Local Network permission leaves an endless spinner, with no Settings link | `iPadNetworkClient.swift:98-103` handles only `.failed`; `PeerConnection.swift:42` | Searching / denied / failed states; detect `.waiting(PolicyDenied)`; button to `openSettingsURLString` |
+| P2 ✅ | iPad | Empty list never says a Mac app is needed (Guideline 4.2 risk) | `DiscoveryView.swift:70-89` | "Open Skeldri on your Mac on the same Wi-Fi", plus troubleshooting after about 10 s |
+| P3 ✅ | iPad | "Awaiting approval" can hang forever, with no Cancel | `SkeldriPadApp.swift:124`, `DiscoveryView.swift:152` | Cancel button; client-side timeout; treat `.waiting` as a failure |
 | P4 | iPad | Toolbar about 730 pt wide clips in Split View, Slide Over and iPadOS 26 windows; Back sits under the window controls | `DrawingToolbar.swift:11-56`, `DrawingScreen.swift:161-176` | Compact-width layout; respect the top safe area |
 | R1 | Both | Docs disagree with the code | `APP_REVIEW_NOTES.md:5` says "one display" and "no key events" | Rewrite after D5, D7 and D8 |
 
@@ -268,6 +268,23 @@ trackpad system prompt is raised only from the guide's **Allow…**. The guide w
 rendered and reviewed off-screen; the device checks are in `MANUAL_TESTING.md` →
 "Mac first launch".
 
+P1–P3 (plus S4, S5, and the contrast part of S6) were done 2026-10-10 as one
+component, the iPad discovery screen.
+- `DiscoveryStatus` and `ApprovalWait` in `Shared/Domain/Discovery` are tested
+  (101 tests).
+- The network client reports Local Network denial (the DNS-SD policy-denied
+  error, per TN3179).
+- The list explains each state: searching, help after 10 s, denied (with Open
+  Settings), and unavailable.
+- Approval has Cancel and gives up after 75 s, which is after the Mac's 60 s,
+  now one shared constant.
+- Search restarts on return from the background.
+- Dim text reaches at least 4.5:1 contrast.
+
+Still to do here:
+- Visual check on an iPad simulator (needs an iPad-capable runtime; see below).
+- Once the App Store ID exists, link "Get it from the Mac App Store".
+
 Should-fix:
 
 | ID | App | Problem | Fix |
@@ -275,8 +292,8 @@ Should-fix:
 | S1 | Mac | Opaque full-bleed square icon looks wrong next to macOS rounded icons | Rebuild with the macOS template or Icon Composer |
 | S2 | Mac | `Host.current().localizedName` can stall the main thread at launch (`MacNetworkServer.swift:50`) | `NWListener.Service(name: nil)` |
 | S3 | Mac | `network.client` entitlement may be unnecessary | Remove it if Phase 1 shows the Mac never connects out |
-| S4 | iPad | Jargon errors such as "Incompatible protocol version", plus "Unknown error" (`SkeldriPadApp.swift:26,274`) | "Update Skeldri on both devices." |
-| S5 | iPad | Discovery is not refreshed when the app returns to the foreground (`SkeldriPadApp.swift:19-22`) | Refresh on `.active` |
+| S4 ✅ | iPad | Jargon errors such as "Incompatible protocol version", plus "Unknown error" (`SkeldriPadApp.swift:26,274`) | "Update Skeldri on both devices." |
+| S5 ✅ | iPad | Discovery is not refreshed when the app returns to the foreground (`SkeldriPadApp.swift:19-22`) | Refresh on `.active` |
 | S6 | iPad | White flash at launch; "Pull to refresh" text at about 2.5:1 contrast; "Colour" and "Color" both used | Set `UIColorName` on the launch screen; raise the contrast; use one spelling |
 | S7 | iPad | Fixed font sizes ignore Dynamic Type | Do not claim Dynamic Type support in App Store Connect for 1.0 |
 

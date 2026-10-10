@@ -1,3 +1,4 @@
+import dnssd
 import Foundation
 import Network
 
@@ -10,6 +11,7 @@ struct DiscoveredMac: Identifiable, Hashable {
 /// iPad Bonjour browser and dual-channel client adapter.
 final class iPadNetworkClient: @unchecked Sendable {
     var onServicesChanged: (@Sendable ([DiscoveredMac]) -> Void)?
+    var onBrowserStateChanged: (@Sendable (DiscoveryStatus.Browser) -> Void)?
     var onStateChanged: (@Sendable (Bool, String?) -> Void)?
     var onControlPacket: (@Sendable (ControlPacket) -> Void)?
     var onVideoPacket: (@Sendable (FramedPacket) -> Void)?
@@ -97,12 +99,31 @@ final class iPadNetworkClient: @unchecked Sendable {
         }
         browser.stateUpdateHandler = { [weak self] state in
             guard let self, generation == browserGeneration else { return }
-            if case let .failed(error) = state {
-                onStateChanged?(false, "Couldn't search for Macs: \(error.localizedDescription)")
+            switch state {
+            case .ready:
+                onBrowserStateChanged?(.ready)
+            case let .waiting(error):
+                // Waiting for a network is normal; waiting because Local Network
+                // access is off never ends on its own.
+                if Self.isLocalNetworkDenied(error) { onBrowserStateChanged?(.localNetworkDenied) }
+            case let .failed(error):
+                SkeldriLogger.network.error("Mac search failed: \(error.localizedDescription)")
+                onBrowserStateChanged?(Self.isLocalNetworkDenied(error) ? .localNetworkDenied : .unavailable)
+            case .setup, .cancelled:
+                break
+            @unknown default:
+                break
             }
         }
         self.browser = browser
         browser.start(queue: queue)
+    }
+
+    /// Browsing without Local Network access reports this DNS-SD policy error
+    /// (Apple TN3179), including while the permission alert is still showing.
+    private static func isLocalNetworkDenied(_ error: NWError) -> Bool {
+        if case let .dns(code) = error { return code == DNSServiceErrorType(kDNSServiceErr_PolicyDenied) }
+        return false
     }
 
     private func deduplicatedServices(from results: Set<NWBrowser.Result>) -> [DiscoveredMac] {

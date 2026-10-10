@@ -17,13 +17,20 @@ struct SkeldriPadApp: App {
             }
             .task { model.start() }
             .onChange(of: scenePhase) { _, phase in
-                if phase == .background { model.disconnect() }
-                else if phase != .active { model.suspendPointerInput() }
+                switch phase {
+                case .background:
+                    model.disconnect()
+                    model.didEnterBackground()
+                case .active:
+                    model.didBecomeActive()
+                default:
+                    model.suspendPointerInput()
+                }
             }
             .alert("Skeldri", isPresented: $model.showingError) {
                 Button("OK") {}
             } message: {
-                Text(model.errorMessage ?? "Unknown error")
+                Text(model.errorMessage ?? "Something went wrong. Try again.")
             }
         }
     }
@@ -34,6 +41,7 @@ final class iPadAppModel: ObservableObject {
     @Published var macs: [DiscoveredMac] = []
     @Published var connected = false { didSet { UIApplication.shared.isIdleTimerDisabled = connected } }
     @Published var awaitingMacApproval = false
+    @Published private(set) var discovery = DiscoveryStatus()
     @Published var errorMessage: String?
     @Published var showingError = false
     @Published var style = StrokeStyle.defaultPen
@@ -63,6 +71,11 @@ final class iPadAppModel: ObservableObject {
     let drawingState = DrawingState()
     let decoder = H264Decoder()
     private let network = iPadNetworkClient()
+    private var approvalWait = ApprovalWait()
+    private var discoveryHelpTimer: Task<Void, Never>?
+    /// Set while in the background, where Local Network access may be changed
+    /// in Settings; the search restarts on return.
+    private var discoveryNeedsRestart = false
     private var trackpadSequence: UInt64 = 0
     private static let trackpadSensitivityKey = "trackpad.sensitivity"
     private static let trackpadSpeedKey = "trackpad.speed"
@@ -90,7 +103,13 @@ final class iPadAppModel: ObservableObject {
             alpha: style.alpha,
             normalizedWidth: style.normalizedWidth
         )
-        network.onServicesChanged = { [weak self] values in Task { @MainActor in self?.macs = values } }
+        network.onServicesChanged = { [weak self] values in Task { @MainActor in
+            self?.macs = values
+            self?.discovery.macsChanged(count: values.count)
+        } }
+        network.onBrowserStateChanged = { [weak self] browser in Task { @MainActor in
+            self?.discovery.browserChanged(to: browser)
+        } }
         network.onStateChanged = { [weak self] value, error in Task { @MainActor in
             guard let self else { return }
             self.connected = value
@@ -99,7 +118,7 @@ final class iPadAppModel: ObservableObject {
                     self.lectureSession.apply(.disconnected)
                 }
                 self.inputMode = .drawing
-                self.awaitingMacApproval = false
+                self.endApprovalWait()
                 self.decoder.reset()
             }
             if let error { self.errorMessage = error; self.showingError = true }
@@ -118,11 +137,60 @@ final class iPadAppModel: ObservableObject {
             if packet.type == .videoFrame { decoder.decode(payload: packet.payload) }
         }
     }
-    func start() { network.startBrowsing() }
-    func refreshDiscovery() { network.refreshBrowsing() }
+    func start() { beginDiscovery() }
+    func refreshDiscovery() { beginDiscovery() }
+
+    func didEnterBackground() { discoveryNeedsRestart = true }
+
+    func didBecomeActive() {
+        guard discoveryNeedsRestart else { return }
+        discoveryNeedsRestart = false
+        if !connected { refreshDiscovery() }
+    }
+
+    /// Starts a clean search and, if nothing turns up, adds help after a delay.
+    private func beginDiscovery() {
+        discovery.restart()
+        discoveryHelpTimer?.cancel()
+        discoveryHelpTimer = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(DiscoveryStatus.helpDelaySeconds))
+            guard !Task.isCancelled else { return }
+            self?.discovery.helpDelayElapsed()
+        }
+        network.startBrowsing()
+    }
+
     func connect(_ mac: DiscoveredMac) {
-        awaitingMacApproval = true
+        beginApprovalWait()
         network.connect(to: mac.endpoint)
+    }
+
+    /// The person gave up waiting for the Mac's answer.
+    func cancelConnectionRequest() {
+        endApprovalWait()
+        network.disconnect()
+    }
+
+    private func beginApprovalWait() {
+        let attempt = approvalWait.begin()
+        awaitingMacApproval = true
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(ApprovalWait.timeout))
+            self?.approvalTimedOut(attempt)
+        }
+    }
+
+    private func endApprovalWait() {
+        approvalWait.end()
+        awaitingMacApproval = false
+    }
+
+    private func approvalTimedOut(_ attempt: UInt64) {
+        guard approvalWait.timeoutFired(for: attempt) else { return }
+        awaitingMacApproval = false
+        network.disconnect()
+        errorMessage = "Your Mac didn't respond. Make sure Skeldri is open on the Mac and both devices are on the same Wi\u{2011}Fi network, then try again."
+        showingError = true
     }
     func disconnect() {
         sendTrackpadReset()
@@ -132,7 +200,7 @@ final class iPadAppModel: ObservableObject {
         decoder.reset()
         inputMode = .drawing
         lectureSession.apply(.leave)
-        awaitingMacApproval = false
+        endApprovalWait()
     }
     func setInputMode(_ newMode: SkeldriInputMode) {
         guard newMode != inputMode else { return }
@@ -234,9 +302,9 @@ final class iPadAppModel: ObservableObject {
     private func apply(_ packet: ControlPacket) {
         switch packet {
         case .authorizationRequired:
-            awaitingMacApproval = true
+            if !approvalWait.isWaiting { beginApprovalWait() }
         case let .authorizationResult(approved):
-            awaitingMacApproval = false
+            endApprovalWait()
             if approved {
                 connected = true
             } else {
@@ -271,7 +339,10 @@ final class iPadAppModel: ObservableObject {
             }
         case let .lectureSourceUnavailable(reason, generation):
             lectureSession.apply(.sourceUnavailable(reason, generation: generation))
-        case let .incompatibleVersion(expected): errorMessage = "Incompatible protocol version. Mac expects \(expected)."; showingError = true
+        case let .incompatibleVersion(expected):
+            SkeldriLogger.network.error("Mac expects protocol \(expected); this iPad speaks \(ProtocolVersion.current)")
+            errorMessage = "This Mac has a different version of Skeldri. Update Skeldri on both your Mac and iPad, then try again."
+            showingError = true
         default: break
         }
     }

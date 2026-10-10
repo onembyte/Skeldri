@@ -5,6 +5,7 @@ import SwiftUI
 struct DiscoveryView: View {
     @ObservedObject var model: iPadAppModel
     @State private var showingPrivacy = false
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         ZStack {
@@ -14,8 +15,8 @@ struct DiscoveryView: View {
                 VStack(spacing: 28) {
                     header
 
-                    if model.macs.isEmpty {
-                        emptyState
+                    if model.discovery.presentation != .macs {
+                        statusCard
                     } else {
                         LazyVStack(spacing: 12) {
                             ForEach(model.macs) { mac in
@@ -26,19 +27,14 @@ struct DiscoveryView: View {
                     }
 
                     if model.awaitingMacApproval {
-                        Label("Approve this connection from the Skeldri menu on your Mac", systemImage: "lock.shield")
-                            .font(.system(size: 13, weight: .medium, design: .rounded))
-                            .foregroundStyle(.white.opacity(0.78))
-                            .padding(.horizontal, 18)
-                            .frame(height: 44)
-                            .background(.ultraThinMaterial, in: Capsule())
+                        approvalBanner
                     }
 
                     refreshHint
 
                     Button("Privacy") { showingPrivacy = true }
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(.white.opacity(0.48))
+                        .font(.system(.footnote, design: .rounded, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.62))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 32)
@@ -67,17 +63,50 @@ struct DiscoveryView: View {
         }
     }
 
-    private var emptyState: some View {
-        VStack(spacing: 14) {
-            ProgressView()
-                .tint(Color.cyan)
-                .controlSize(.small)
+    private var approvalBanner: some View {
+        HStack(spacing: 14) {
+            Label("Approve this connection from the Skeldri menu on your Mac", systemImage: "lock.shield")
+                .font(.system(.subheadline, design: .rounded, weight: .medium))
+                .foregroundStyle(.white.opacity(0.85))
+            Button("Cancel") { model.cancelConnectionRequest() }
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .foregroundStyle(.cyan)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .frame(minHeight: 44)
+        .background(.ultraThinMaterial, in: Capsule())
+    }
 
-            Text("NEW AVAILABLE CONNECTIONS WILL APPEAR HERE")
-                .font(.system(.caption, design: .monospaced, weight: .medium))
-                .tracking(1.4)
-                .foregroundStyle(.white.opacity(0.46))
-                .multilineTextAlignment(.center)
+    /// Says why the list is empty and what to do: a Mac app is required, and
+    /// without Local Network access nothing can ever appear.
+    @ViewBuilder private var statusCard: some View {
+        VStack(spacing: 14) {
+            switch model.discovery.presentation {
+            case .macs:
+                EmptyView()
+            case .searching, .searchingWithHelp:
+                ProgressView()
+                    .tint(Color.cyan)
+                    .accessibilityHidden(true)
+                statusText(title: "Looking for your Mac…",
+                           detail: "Open Skeldri on your Mac and keep both devices on the same Wi\u{2011}Fi network.")
+                if model.discovery.presentation == .searchingWithHelp {
+                    searchHelp
+                }
+            case .localNetworkDenied:
+                statusSymbol("wifi.exclamationmark")
+                statusText(title: "Allow Local Network access",
+                           detail: "Skeldri finds your Mac over your local network. Turn on Local Network for Skeldri in Settings.")
+                statusButton("Open Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                }
+            case .unavailable:
+                statusSymbol("exclamationmark.triangle")
+                statusText(title: "Can't search for Macs right now",
+                           detail: "Check that Wi\u{2011}Fi is on, then search again.")
+                statusButton("Search Again") { model.refreshDiscovery() }
+            }
         }
         .frame(maxWidth: 620, minHeight: 150)
         .padding(24)
@@ -88,12 +117,54 @@ struct DiscoveryView: View {
         }
     }
 
+    private var searchHelp: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Still nothing?").font(.system(.subheadline, design: .rounded, weight: .semibold))
+            Label("Skeldri for Mac is required. Get it from the Mac App Store.", systemImage: "macbook")
+            Label("Use the same Wi\u{2011}Fi network on both. Guest and public networks often hide devices from each other.",
+                  systemImage: "wifi")
+            Label("Pull down to search again.", systemImage: "arrow.down")
+        }
+        .font(.system(.footnote, design: .rounded))
+        .foregroundStyle(.white.opacity(0.75))
+        .frame(maxWidth: 460, alignment: .leading)
+        .padding(.top, 4)
+    }
+
+    private func statusSymbol(_ name: String) -> some View {
+        Image(systemName: name)
+            .font(.system(.title2, weight: .medium))
+            .foregroundStyle(.cyan)
+            .accessibilityHidden(true)
+    }
+
+    private func statusText(title: String, detail: String) -> some View {
+        VStack(spacing: 6) {
+            Text(title)
+                .font(.system(.headline, design: .rounded))
+            Text(detail)
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(.white.opacity(0.72))
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: 460)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func statusButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(title, action: action)
+            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+            .buttonStyle(.borderedProminent)
+            .tint(.cyan)
+            .foregroundStyle(.black)
+    }
+
     private var refreshHint: some View {
         Label("Pull to refresh", systemImage: "arrow.down")
-            .font(.system(size: 11, weight: .medium, design: .monospaced))
+            .font(.system(.caption2, design: .monospaced, weight: .medium))
             .textCase(.uppercase)
             .tracking(1.1)
-            .foregroundStyle(.white.opacity(0.30))
+            .foregroundStyle(.white.opacity(0.6))
     }
 }
 
