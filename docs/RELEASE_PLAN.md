@@ -100,11 +100,12 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
       (6.2 GB) was offloaded to the NAS as a verified tar, bringing free space to
       22 GB. More room if needed: `~/.cache/kolk-vendor-recovery` (4.2 GB),
       `~/dev/archive`, `brew cleanup`, all Franco's call.
-- [ ] [F] Install **released** Xcode 27 (build 27A266a, 2026-09-14), not a beta or
-      RC. This Mac runs macOS 27.2 beta 3, whose matching Xcode 27.2 beta cannot
-      upload. Franco downloads `Xcode_27.xip` from developer.apple.com (sign-in
-      required); Claude expands it into `/Applications` and moves the `.xip` to
-      the NAS. Open it once and let
+- [ ] [F/C] Install Xcode. **Xcode 27.1 RC** (27A9275, 2026-10-05) was
+      downloaded on 2026-10-09 and expanded into `/Applications`; its `.xip`
+      goes to the NAS. Apple accepts Release Candidate builds for TestFlight and
+      submission, but not betas. This Mac runs macOS 27.2 beta 3, whose matching
+      Xcode 27.2 beta cannot upload. Before the Phase 2 submission, check whether
+      27.1 has shipped final and re-archive with it if the build differs. Open it once and let
       it install its components. Add the Apple ID under Settings → Accounts and
       download the iPadOS platform.
 - [ ] [F] Point the command line at it with
