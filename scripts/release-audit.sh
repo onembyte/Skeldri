@@ -73,8 +73,9 @@ for manifest in \
   grep -q '35F9.1' "$manifest"
 done
 
-test "$(plutil -extract CFBundleIdentifier raw -o - "$MAC_PLIST")" = "com.onembyte.skeldri.mac"
-test "$(plutil -extract CFBundleIdentifier raw -o - "$PAD_PLIST")" = "com.onembyte.skeldri.ipad"
+# One identifier for both platforms makes them a single universal purchase.
+test "$(plutil -extract CFBundleIdentifier raw -o - "$MAC_PLIST")" = "com.onembyte.skeldri"
+test "$(plutil -extract CFBundleIdentifier raw -o - "$PAD_PLIST")" = "com.onembyte.skeldri"
 for plist in "$MAC_PLIST" "$PAD_PLIST"; do
   test "$(plutil -extract CFBundleShortVersionString raw -o - "$plist")" = "$MARKETING_VERSION"
   test "$(plutil -extract CFBundleVersion raw -o - "$plist")" = "$BUILD_NUMBER"

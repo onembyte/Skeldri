@@ -8,7 +8,7 @@ Compatibility is additive and failure-isolated: inability to start the Afi liste
 
 Skeldri has native macOS and iPadOS apps plus shared models and protocol code. The Mac is authoritative for display and connection configuration.
 
-The shipping bundle identifiers are `com.onembyte.skeldri.mac` and `com.onembyte.skeldri.ipad`. An earlier stage of the rename kept the original `com.example.drawpad.*` identifiers so signed development installations could upgrade in place; that migration is done. Because the identifier changed, an upgrading device installs a new app rather than replacing the old one, and macOS treats the Mac app as a new subject for Screen Recording and pointer-control permission.
+The shipping bundle identifier is `com.onembyte.skeldri`, shared by the Mac and iPad apps so the App Store offers them as one record and one universal purchase. Development builds before 1.0 used `com.onembyte.skeldri.mac` and `com.onembyte.skeldri.ipad` (and, earlier still, `com.example.drawpad.*`). Because the identifier changed, 1.0 installs as a new app rather than replacing a development build: macOS treats the Mac app as a new subject for Screen Recording and pointer-control permission, and the Mac's stable Bonjour identity, kept in its `UserDefaults` domain, is generated afresh.
 
 The macOS target is a menu-bar-only application (`LSUIElement`). Its app delegate owns startup so Bonjour discovery and display enumeration begin when the process launches, independently of whether the menu-bar popover is open.
 

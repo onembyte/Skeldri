@@ -21,12 +21,12 @@ struct LectureSourceCatalogTests {
     @Test func excludesSkeldriOwnWindowsToPreventRecursiveCapture() {
         let candidates = [
             candidate(id: 1, title: "Manual"),
-            candidate(id: 2, title: "Annotations", application: "Skeldri", bundle: "com.onembyte.skeldri.mac"),
-            candidate(id: 3, title: "Skeldri", application: "Skeldri", bundle: "com.onembyte.skeldri.mac")
+            candidate(id: 2, title: "Annotations", application: "Skeldri", bundle: "com.onembyte.skeldri"),
+            candidate(id: 3, title: "Skeldri", application: "Skeldri", bundle: "com.onembyte.skeldri")
         ]
 
         let sources = LectureSourceCatalog.windowSources(
-            from: candidates, excludingBundleIdentifier: "com.onembyte.skeldri.mac"
+            from: candidates, excludingBundleIdentifier: "com.onembyte.skeldri"
         )
 
         #expect(sources.map(\.id) == [1])

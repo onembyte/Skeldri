@@ -4,7 +4,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INSTALL_ROOT="$ROOT/.build/PersonalInstall"
 DERIVED_DATA="$INSTALL_ROOT/DerivedData"
-TEAM_FILE="$ROOT/.build/personal-team-id"
+# The paid team, shared with scripts/release.sh. The older .build/personal-team-id
+# (a free Personal Team) is deliberately no longer read: since 1.0 both apps use
+# com.onembyte.skeldri, and signing with a free team could claim that identifier
+# before the paid team registers it for the App Store.
+TEAM_FILE="$ROOT/.build/release-team-id"
 DEVICE_FILE="$ROOT/.build/personal-device-name"
 # Opt-in only: everything else this script writes stays inside the repository.
 APPLICATIONS_FILE="$ROOT/.build/personal-applications-install"
@@ -27,9 +31,9 @@ That choice is remembered. Keeping it on matters: refreshing the iPad while a
 stale copy remains in /Applications leaves the two speaking different protocol
 versions, which surfaces only as a failed connection.
 
-The Team ID and device name are saved only under the ignored .build directory.
-Apple Personal Team provisioning expires after 7 days; rerun this command to
-refresh the iPad installation.
+Use the paid Apple Developer Program Team ID, not a free Personal Team. The
+Team ID and device name are saved only under the ignored .build directory.
+Development profiles from the paid team last one year.
 EOF
 }
 
@@ -77,7 +81,7 @@ fi
 INSTALL_TO_APPLICATIONS="${INSTALL_TO_APPLICATIONS:-no}"
 
 if [[ ! "$TEAM_ID" =~ ^[A-Z0-9]{10}$ ]]; then
-    echo "A 10-character Apple Team ID is required." >&2
+    echo "The paid team's 10-character Apple Team ID is required (not a free Personal Team)." >&2
     echo "Run once with: ./scripts/install-personal.sh --team TEAM_ID --device \"Your iPad\"" >&2
     exit 2
 fi
@@ -103,7 +107,7 @@ xcodebuild \
     CODE_SIGN_STYLE=Automatic \
     build
 
-echo "Building SkeldriPad (Release, Personal Team)…"
+echo "Building SkeldriPad (Release)…"
 # Build against the specific device, not 'generic/platform=iOS'. Automatic
 # signing only registers a device it is actually pointed at, so a generic
 # destination silently produces a profile that omits this iPad — and the
@@ -194,4 +198,4 @@ echo
 echo "Personal installation complete."
 echo "Mac app: $LAUNCH_APP"
 echo "Mac archive: $MAC_ARCHIVE"
-echo "Rerun this script before the 7-day Personal Team profile expires."
+echo "The paid team's development profile lasts a year; rerun to refresh sooner."

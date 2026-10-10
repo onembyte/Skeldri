@@ -84,7 +84,7 @@ Select the `SkeldriPad` scheme, choose an installed iPad simulator, and run. Dis
 
 ### Personal installation without opening Xcode
 
-After selecting your free Personal Team in Xcode once, you can build, install, package, and launch both apps from Terminal:
+After signing in to Xcode with your paid Apple Developer Program account once, you can build, install, package, and launch both apps from Terminal. Use the paid team, not a free Personal Team: both apps use the App Store identifier `com.onembyte.skeldri`, and a free team could claim it.
 
 ```bash
 ./scripts/install-personal.sh --team YOUR_TEAM_ID --device "Your iPad Name"
@@ -109,7 +109,7 @@ while a stale copy remains in `/Applications` leaves the two speaking different
 protocol versions, which surfaces only as a failed connection. This is the one
 thing Skeldri writes outside its repository, so it is opt-in.
 
-The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall`. The iPad app behaves like a normal installed app while its provisioning profile is valid. Apple free Personal Team profiles expire after 7 days, so rerun the command weekly. Xcode must remain installed for its compiler, signing, and device tools, but it does not need to be open during normal use or refreshes.
+The optimized Mac app and its ZIP archive are written to `.build/PersonalInstall`. The iPad app behaves like a normal installed app while its provisioning profile is valid. Development profiles from the paid team last a year. Xcode must remain installed for its compiler, signing, and device tools, but it does not need to be open during normal use or refreshes.
 
 ## Privacy and security
 

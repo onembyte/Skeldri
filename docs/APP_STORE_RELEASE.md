@@ -1,6 +1,6 @@
 # App Store Release Checklist
 
-Skeldri has two modern distribution bundles: `com.onembyte.skeldri.mac` and `com.onembyte.skeldri.ipad`. The step-by-step release checklist is [RELEASE_PLAN.md](RELEASE_PLAN.md).
+Skeldri ships as one App Store record: the Mac and iPad apps share the bundle identifier `com.onembyte.skeldri` (universal purchase). The step-by-step release checklist is [RELEASE_PLAN.md](RELEASE_PLAN.md).
 
 ## Signed App Store builds
 

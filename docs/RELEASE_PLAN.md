@@ -18,8 +18,8 @@ Code changes start with a failing test.
 
 | App | Store | Bundle ID today | Minimum OS | State |
 |---|---|---|---|---|
-| Skeldri for Mac (`SkeldriMac`) | Mac App Store | `com.onembyte.skeldri.mac` | macOS 15 | Feature-complete; Read mode not yet verified on hardware |
-| Skeldri for iPad (`SkeldriPad`) | App Store | `com.onembyte.skeldri.ipad` | iPadOS 18 | Feature-complete; Read mode not yet verified on hardware |
+| Skeldri for Mac (`SkeldriMac`) | Mac App Store | `com.onembyte.skeldri` (was `.mac`) | macOS 15 | Feature-complete; Read mode not yet verified on hardware |
+| Skeldri for iPad (`SkeldriPad`) | App Store | `com.onembyte.skeldri` (was `.ipad`) | iPadOS 18 | Feature-complete; Read mode not yet verified on hardware |
 | Skeldri Afi (separate repo) | Sideload only | `com.onembyte.skeldri.afi` | iOS 10, armv7 | Works on the iPad 4 (A1458) |
 
 ### Facts that shape the plan
@@ -64,7 +64,7 @@ Code changes start with a failing test.
 | # | Decision | Options | Recommendation |
 |---|---|---|---|
 | D1 | How old iPads are served | **Decided 2026-10-09.** No App Store build for old iPads. SkeldriPad stays at iPadOS 18. Skeldri Afi is installed over USB by a script in its repo, with instructions (Phase 1.E). | — |
-| D2 | Bundle IDs | **(a)** Universal purchase: one App Store record "Skeldri" with Mac and iPad sharing the new ID `com.onembyte.skeldri`. **(b)** Two records with the current `.mac` and `.ipad` IDs. | **(a)**. One product page and one purchase, and each app clearly presents the other as its companion. A fresh ID also avoids any Personal Team reservation (fact 4). **This cannot be changed after the first upload.** |
+| D2 | Bundle IDs | **Decided 2026-10-09: one App Store record "Skeldri".** Mac and iPad share `com.onembyte.skeldri` (universal purchase). | — **This cannot be changed after the first upload.** The paid team must register the ID before anything is signed with it (0.E). |
 | D3 | Price | Free / paid / free with paid features later | Franco's call. Paid needs the Paid Apps Agreement, tax and banking. Under the EU DSA, a paid app almost certainly means declaring trader status, which publishes an address and phone number in the EU. |
 | D4 | Hosting for the privacy policy and support page, plus a contact | **(a)** Self-hosted on `francomichetti.com` (TrueNAS + Cloudflare Tunnel, like the portfolio). **(b)** GitHub Pages from the public Skeldri repo. That site already exists at `onembyte.github.io/Skeldri`, served from `main:/docs`. | **(a)**: self-hosted and private by default. The trade-off is uptime: App Review and users need the URLs to resolve, and that depends on the NAS. The support contact (which email address) is needed either way. |
 | D5 | The Afi compatibility listener in the store Mac build | **(a)** Keep it, as an "Allow older iPads" setting that is off by default, and disclose it in the review notes. **(b)** Compile it out of the store build. **(c)** Leave it as it is today: always on and undocumented. | **(a)**, and D1 makes it necessary: the USB-installed Afi only works if the App Store Mac app still listens for it. Nothing extra listens by default, and nothing is hidden from review (Guideline 2.3.1). With (b), the iPad 4 would need a separately signed Mac build that clashes with the store copy. **Working assumption until Franco says otherwise.** |
@@ -88,7 +88,9 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 - [ ] [F] In App Store Connect → Business, accept the current agreements. Add the
       Paid Apps Agreement, tax and banking only if D3 is paid.
 - [x] [F] Decide D1 (2026-10-09: USB install only for old iPads).
-- [ ] [F] Decide D2 (GATE 0). D3–D8 can wait until Phase 1 but must be settled
+- [x] [F] Decide D2 (2026-10-09: universal purchase, `com.onembyte.skeldri`).
+- [x] [F] Decide D9 (2026-10-09: 1.0 is Mac and iPad only).
+- [ ] [F] D3–D8 (see the table) can wait until Phase 1 but must be settled
       before Phase 2.
 
 ### 0.B Toolchain
@@ -126,7 +128,7 @@ Config changes; script changes get a dry run.
 
 - [ ] Add the paid `DEVELOPMENT_TEAM` to both app targets in `project.yml`. A team
       ID is not secret, and the setting survives `xcodegen generate`.
-- [ ] Set the bundle IDs according to D2. With (a), both targets use
+- [x] Set the bundle IDs according to D2. With (a), both targets use
       `com.onembyte.skeldri`.
 - [x] Add `MARKETING_VERSION: 1.0` and `CURRENT_PROJECT_VERSION` to `project.yml`.
       Change both Info.plists to `$(MARKETING_VERSION)` /

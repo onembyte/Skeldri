@@ -833,7 +833,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.mac;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri;
 				PRODUCT_NAME = Skeldri;
 				SDKROOT = macosx;
 			};
@@ -867,7 +867,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.ipad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -887,7 +887,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.mac;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri;
 				PRODUCT_NAME = Skeldri;
 				SDKROOT = macosx;
 			};
@@ -905,7 +905,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri.ipad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onembyte.skeldri;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
