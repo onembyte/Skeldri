@@ -100,7 +100,7 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
       (6.2 GB) was offloaded to the NAS as a verified tar, bringing free space to
       22 GB. More room if needed: `~/.cache/kolk-vendor-recovery` (4.2 GB),
       `~/dev/archive`, `brew cleanup`, all Franco's call.
-- [ ] [F/C] Install Xcode. **Xcode 27.1 RC** (27A9275, 2026-10-05) was
+- [x] [F/C] Install Xcode. **Xcode 27.1 RC** (27A9275, 2026-10-05) was
       downloaded on 2026-10-09 and expanded into `/Applications`; its `.xip`
       goes to the NAS. Apple accepts Release Candidate builds for TestFlight and
       submission, but not betas. This Mac runs macOS 27.2 beta 3, whose matching
@@ -108,13 +108,15 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
       27.1 has shipped final and re-archive with it if the build differs. Open it once and let
       it install its components. Add the Apple ID under Settings → Accounts and
       download the iPadOS platform.
-- [ ] [F] Point the command line at it with
+- [x] [F] Point the command line at it with
       `sudo xcode-select -s /Applications/Xcode.app` (a machine-wide change, so
       Franco runs it). The alternative is for Claude to prefix every command with
       `DEVELOPER_DIR`.
-- [ ] [C] Run `./scripts/doctor.sh`, `./scripts/test.sh`, `./scripts/build.sh` and
+- [x] [C] Run `./scripts/doctor.sh`, `./scripts/test.sh`, `./scripts/build.sh` and
       `./scripts/release-audit.sh` on the released Xcode. Record the toolchain in
-      `docs/ENVIRONMENT.md`.
+      `docs/ENVIRONMENT.md`. Done 2026-10-10 on Xcode 27.1 RC: 83 tests pass, both
+      apps build, and the unsigned audit passes. One leftover: five iOS 18
+      deprecation warnings in `iPadOS/Video/H264Decoder.swift`.
 
 ### 0.C Repo baseline (merges need Franco's yes)
 
@@ -164,8 +166,8 @@ Config changes; script changes get a dry run.
       build number is passed in and must increase with every upload.
 - [x] Regenerate `Skeldri.xcodeproj`, then commit `project.yml` together with the
       project file. XcodeGen 2.46.0 reproduces the committed project exactly.
-- [ ] [C] After 0.B: compile and run every script on the released Xcode. None of
-      the 0.D changes has been compiled or archived yet.
+- [x] [C] After 0.B: compile and run every script on the released Xcode. The
+      0.D changes compile, test and archive. `release.sh` is first run in 0.F.
 - [ ] Switch `install-personal.sh` to the paid team. Development profiles then
       last 1 year instead of 7 days, and that also covers the Afi sideload on the
       iPad 4.
