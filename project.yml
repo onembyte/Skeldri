@@ -9,6 +9,10 @@ settings:
     SWIFT_VERSION: "6.0"
     SWIFT_STRICT_CONCURRENCY: complete
     ENABLE_USER_SCRIPT_SANDBOXING: YES
+    # Every App Store Connect upload needs a higher CURRENT_PROJECT_VERSION;
+    # scripts/release.sh passes it explicitly. Info.plists read both values.
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
 targets:
   SkeldriMac:
     type: application
@@ -19,6 +23,8 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.mac
+        # Finder, Spotlight, and the privacy panes show the bundle name.
+        PRODUCT_NAME: Skeldri
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: macOS/Info.plist

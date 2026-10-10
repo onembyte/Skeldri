@@ -120,7 +120,7 @@ xcodebuild \
     CODE_SIGN_STYLE=Automatic \
     build
 
-MAC_APP="$DERIVED_DATA/Build/Products/Release/SkeldriMac.app"
+MAC_APP="$DERIVED_DATA/Build/Products/Release/Skeldri.app"
 IPAD_APP="$DERIVED_DATA/Build/Products/Release-iphoneos/SkeldriPad.app"
 MAC_ARCHIVE="$INSTALL_ROOT/SkeldriMac.zip"
 
@@ -160,17 +160,25 @@ fi
 echo "Launching SkeldriMac…"
 # `open` reuses an existing application process even when its on-disk binary was
 # just replaced. That can leave the Mac and iPad speaking different protocol
-# versions after an upgrade, so terminate only SkeldriMac and wait for its clean
-# shutdown before launching the newly built bundle.
-if pgrep -x SkeldriMac >/dev/null || pgrep -x DrawPadMac >/dev/null; then
-    killall SkeldriMac 2>/dev/null || true
-    killall DrawPadMac 2>/dev/null || true
+# versions after an upgrade, so terminate only the Mac companion and wait for its
+# clean shutdown before launching the newly built bundle. Builds before 1.0 ran
+# as SkeldriMac (or DrawPadMac); 1.0 runs as Skeldri.
+MAC_PROCESSES=(Skeldri SkeldriMac DrawPadMac)
+mac_companion_running() {
+    local name
+    for name in "${MAC_PROCESSES[@]}"; do
+        pgrep -x "$name" >/dev/null && return 0
+    done
+    return 1
+}
+if mac_companion_running; then
+    killall "${MAC_PROCESSES[@]}" 2>/dev/null || true
     for _ in {1..50}; do
-        if ! pgrep -x SkeldriMac >/dev/null && ! pgrep -x DrawPadMac >/dev/null; then break; fi
+        mac_companion_running || break
         sleep 0.1
     done
 fi
-if pgrep -x SkeldriMac >/dev/null || pgrep -x DrawPadMac >/dev/null; then
+if mac_companion_running; then
     echo "The previous Mac companion did not stop; quit it from the menu bar and rerun this installer." >&2
     exit 1
 fi
