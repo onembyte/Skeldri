@@ -281,9 +281,18 @@ component, the iPad discovery screen.
 - Search restarts on return from the background.
 - Dim text reaches at least 4.5:1 contrast.
 
+The searching and help states were checked on a 13" iPad Pro simulator (iOS
+27.0). Fixed from that check: a duplicate "pull down" line.
+
 Still to do here:
-- Visual check on an iPad simulator (needs an iPad-capable runtime; see below).
+- Check the denied state on a real iPad.
 - Once the App Store ID exists, link "Get it from the Mac App Store".
+
+**Disk GATE (2026-10-10):** a first simulator boot used about 5 GB and left the
+Mac with 0.37 GB free; deleting the device recovered it. Before more simulator
+work, or the Phase 2 screenshots, Franco frees about 8 GB. Keep only the iOS
+27.0 (24A434) runtime: it runs every iPad. Xcode 27.1's iOS 27.1 runtime runs
+only the iPhone Duo.
 
 Should-fix:
 

@@ -123,7 +123,6 @@ struct DiscoveryView: View {
             Label("Skeldri for Mac is required. Get it from the Mac App Store.", systemImage: "macbook")
             Label("Use the same Wi\u{2011}Fi network on both. Guest and public networks often hide devices from each other.",
                   systemImage: "wifi")
-            Label("Pull down to search again.", systemImage: "arrow.down")
         }
         .font(.system(.footnote, design: .rounded))
         .foregroundStyle(.white.opacity(0.75))
