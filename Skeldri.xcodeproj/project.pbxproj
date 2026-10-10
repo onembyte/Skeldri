@@ -11,6 +11,7 @@
 		01BFF9E375AFCF2831FD0C99 /* iPadNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24883CDD41353EBC1304DC /* iPadNetworkClient.swift */; };
 		05C8A099E76B39A5D90CDB43 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
 		07F49493F740721E0A123424 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86553A4F09D4849FB27647AD /* Assets.xcassets */; };
+		09848B2350F3A99AB16E0815 /* DiscoveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA66AEBF6563DA3D17548E4 /* DiscoveryStatus.swift */; };
 		0A02895D4A830C0682C084C3 /* LectureSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */; };
 		0AD912A67B2EDDF07850246C /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA82F9FE1F56B11D05904C /* PeerConnection.swift */; };
 		0BC01F2512710469CD7A2464 /* SkeldriPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907220C463BE2B6C233C4EAF /* SkeldriPadApp.swift */; };
@@ -24,6 +25,7 @@
 		1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A6E38920EA714E06060FA /* AfiControlProtocolTests.swift */; };
 		185EB9A8B9EA96C3FE924D3A /* LectureSourceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF60E21B76F9934980605324 /* LectureSourceCatalog.swift */; };
 		1A51CC34A5CBAC8676F742CF /* SetupGuidePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D28241DC6FED9A1D1022C22 /* SetupGuidePresentation.swift */; };
+		1B353034AD90E23A3D897FAF /* DiscoveryStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D5A7C633DA704533215F6 /* DiscoveryStatusTests.swift */; };
 		1C7225D3FD93774E43195A0C /* LectureNavigationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06C637285D6B26A96F0F57C /* LectureNavigationPolicy.swift */; };
 		1CD199007DB8C7BE6346C6A5 /* SkeldriLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29916ED673328B380123775B /* SkeldriLogger.swift */; };
 		1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C884B3C6027E83B4D10B575 /* AfiControlProtocol.swift */; };
@@ -61,15 +63,18 @@
 		4220BB40C41617DF293AEBE4 /* SetupPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA14941382BBA6A1CC39409C /* SetupPreferences.swift */; };
 		43CC5094E3F717B0326E94C8 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */; };
 		43E33BFB11C58A4706493694 /* PermissionPrompting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E811A7728C4C726706C7A /* PermissionPrompting.swift */; };
+		44B6C5594FAFA1E4E918A467 /* ApprovalWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797301177AED399859C288F6 /* ApprovalWait.swift */; };
 		4709C9A7933F09CD4A1F337E /* SetupGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6F68FF88D0C92EFFC450BB /* SetupGuideView.swift */; };
 		4790753CC3B1B5E1A177F6D5 /* QuickColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */; };
 		48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF51D5AEEF03156B4CFA68 /* ConnectionLifecycle.swift */; };
 		48E49DBC273E4DD4EBB58BB3 /* LectureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A9C826C45C47BB193C597 /* LectureSource.swift */; };
 		4C760B9741B256AF34EA3CFB /* DisplaySidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DF387FFE2ACF4755610478 /* DisplaySidebar.swift */; };
 		4C9156009243E84C52EB1D25 /* StrokeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F37D20EC3516E923AB574CD /* StrokeStyle.swift */; };
+		4F155E9421D5A34FE997A5DD /* ApprovalWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797301177AED399859C288F6 /* ApprovalWait.swift */; };
 		53C79556296EA0EE7BCB56C3 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8232CD785D3538ED944FC5 /* DrawingTool.swift */; };
 		5426B69E85FA264917F16666 /* VideoFlowControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC79FB10E2354725D43D4B2 /* VideoFlowControlTests.swift */; };
 		56906F7F78EF03DB5FCCBDD1 /* SetupGuidePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D28241DC6FED9A1D1022C22 /* SetupGuidePresentation.swift */; };
+		58E174DFE1960BC44EEE5B84 /* ApprovalWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797301177AED399859C288F6 /* ApprovalWait.swift */; };
 		595790A47B6259EFFE99F0EB /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F2B9997C1490A872208CC /* CoordinateMapper.swift */; };
 		5B23358F54208678F7C91569 /* PrivacyNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B48F92E03609BF87F39CC7 /* PrivacyNoticeView.swift */; };
 		5B7F8290DEC551679D28762E /* PacketFramer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ED91F9E70F5EEEC277275A /* PacketFramer.swift */; };
@@ -146,9 +151,11 @@
 		DCA62D7A23240AD475AA0907 /* StrokeHitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60CD95F2C99EC3FD91B2803 /* StrokeHitTesting.swift */; };
 		DCBE7BC8B6BC441C1F99017C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A31CD6D684777117B51B6A10 /* Assets.xcassets */; };
 		E0B49AC8427A85C6AC78BF53 /* QuickColorPaletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE2A10A023CC54B97DA6A2 /* QuickColorPaletteTests.swift */; };
+		E0EB7C0986E9BE2F34704267 /* DiscoveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA66AEBF6563DA3D17548E4 /* DiscoveryStatus.swift */; };
 		E2B0562C829F08513514B442 /* H264Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82264D3115D066E08A928202 /* H264Encoder.swift */; };
 		E321CB06C011F863B499CEDE /* SessionAuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DDA13BEAC899665ADE9C4 /* SessionAuthorizationPolicy.swift */; };
 		E419C7315AE654475CA0861E /* LectureViewportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01DBF31D8D90BB379B1DAE3 /* LectureViewportView.swift */; };
+		E477F8A9664E3CAC252CB3FB /* DiscoveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA66AEBF6563DA3D17548E4 /* DiscoveryStatus.swift */; };
 		E51E44E8434552E85809203F /* TrackpadMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA3C267B8EDBD089FCC2C2 /* TrackpadMotion.swift */; };
 		E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C46E5AD5625719078712C1 /* ConnectionChannel.swift */; };
 		E6ED25291C429D8D78C6A961 /* SetupGuidePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D28241DC6FED9A1D1022C22 /* SetupGuidePresentation.swift */; };
@@ -174,6 +181,7 @@
 		06BAE5A9DC28E64D94442224 /* LectureInputPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInputPolicy.swift; sourceTree = "<group>"; };
 		09A4EC9C41C2DC8CA715FE85 /* QuickColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickColorPalette.swift; sourceTree = "<group>"; };
 		0D394A0BB905F0E570400676 /* ControlPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacket.swift; sourceTree = "<group>"; };
+		0E4D5A7C633DA704533215F6 /* DiscoveryStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryStatusTests.swift; sourceTree = "<group>"; };
 		11B286B249947F7F58F7F1A6 /* LectureSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSessionState.swift; sourceTree = "<group>"; };
 		1418E8D13EA7486D4E581B8E /* SystemSettingsLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsLink.swift; sourceTree = "<group>"; };
 		167F03E854CBCB3094A9A532 /* TrackpadEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEventTests.swift; sourceTree = "<group>"; };
@@ -186,6 +194,7 @@
 		29916ED673328B380123775B /* SkeldriLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeldriLogger.swift; sourceTree = "<group>"; };
 		29DE6F21A4DF4DDC504AD850 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		2B8FDB05E6E6C3734289DBDA /* MacInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacInputController.swift; sourceTree = "<group>"; };
+		2DA66AEBF6563DA3D17548E4 /* DiscoveryStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryStatus.swift; sourceTree = "<group>"; };
 		2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPacketTests.swift; sourceTree = "<group>"; };
 		2F24883CDD41353EBC1304DC /* iPadNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadNetworkClient.swift; sourceTree = "<group>"; };
 		2F37D20EC3516E923AB574CD /* StrokeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeStyle.swift; sourceTree = "<group>"; };
@@ -220,6 +229,7 @@
 		7274D58B2879D4F2BF74F807 /* ExperienceModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceModeSelector.swift; sourceTree = "<group>"; };
 		78DD229B64EB0D530424A769 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
 		792BF47634DD95F210BC43D0 /* ExperienceModeTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceModeTransition.swift; sourceTree = "<group>"; };
+		797301177AED399859C288F6 /* ApprovalWait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalWait.swift; sourceTree = "<group>"; };
 		7D288D258DCC647D17AB42BD /* VideoStreamingProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStreamingProfile.swift; sourceTree = "<group>"; };
 		7D4A965FD080A73549AD5FA5 /* DiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryView.swift; sourceTree = "<group>"; };
 		82264D3115D066E08A928202 /* H264Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H264Encoder.swift; sourceTree = "<group>"; };
@@ -279,6 +289,7 @@
 				2E828AA30ED59E7D8C585754 /* ControlPacketTests.swift */,
 				4E116A0A1231024C57E6B6D8 /* CoordinateMapperTests.swift */,
 				F6164E7FE00120EA31732E97 /* DiscoveryIdentityTests.swift */,
+				0E4D5A7C633DA704533215F6 /* DiscoveryStatusTests.swift */,
 				C9A90329C377B5E330A16F44 /* DrawingStateTests.swift */,
 				51D1185F4E308DB8678458AF /* DrawingViewportTests.swift */,
 				CB24E921AE92B0B833A1A907 /* LectureDomainTests.swift */,
@@ -443,6 +454,7 @@
 		74F111B40C47806C590BAE8F /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				DFFE059CA9A141CB7D66FA30 /* Discovery */,
 				4A858C4B8E1BD08116BD68F2 /* Lecture */,
 				3791374280D8EDAB0EC57704 /* Setup */,
 			);
@@ -582,6 +594,15 @@
 			path = macOS;
 			sourceTree = "<group>";
 		};
+		DFFE059CA9A141CB7D66FA30 /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				797301177AED399859C288F6 /* ApprovalWait.swift */,
+				2DA66AEBF6563DA3D17548E4 /* DiscoveryStatus.swift */,
+			);
+			path = Discovery;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -709,12 +730,14 @@
 			files = (
 				1D6C1D9518AC055D0A55CDE7 /* AfiControlProtocol.swift in Sources */,
 				9352081EB17EBD4351202943 /* AfiNetworkServer.swift in Sources */,
+				58E174DFE1960BC44EEE5B84 /* ApprovalWait.swift in Sources */,
 				E5D567FE7FD5AD100FC80FA7 /* ConnectionChannel.swift in Sources */,
 				48518A03A67A8291FD8C053C /* ConnectionLifecycle.swift in Sources */,
 				003F26311874A0C8940887C9 /* ConnectionStatusView.swift in Sources */,
 				F2F2A3C85ADCEF98B4C03E23 /* ControlPacket.swift in Sources */,
 				77E0B9383970B3F3275AB064 /* CoordinateMapper.swift in Sources */,
 				6E3A11323635501DA189D70B /* DiscoveryIdentity.swift in Sources */,
+				E477F8A9664E3CAC252CB3FB /* DiscoveryStatus.swift in Sources */,
 				D4E609086940C15AAF83A952 /* DisplayDescriptor.swift in Sources */,
 				FE473DD3F5F6EE12D41C688E /* DisplayEnumerationPolicy.swift in Sources */,
 				E9AC7E61F4EFD1E71FA16CBC /* DisplayManager.swift in Sources */,
@@ -767,6 +790,7 @@
 			files = (
 				832B2DBE28D11DA15AE836E2 /* AfiControlProtocol.swift in Sources */,
 				1849DD7BE631F8F3DFF7C06B /* AfiControlProtocolTests.swift in Sources */,
+				44B6C5594FAFA1E4E918A467 /* ApprovalWait.swift in Sources */,
 				BDFBAA930278CD747669AF7D /* ConnectionChannel.swift in Sources */,
 				24B48D939A95E3C9B457D20F /* ConnectionLifecycle.swift in Sources */,
 				C38797BB2E289494641DDE8B /* ConnectionLifecycleTests.swift in Sources */,
@@ -776,6 +800,8 @@
 				306D688A9BBCE4976725B164 /* CoordinateMapperTests.swift in Sources */,
 				106A1DD2AA20A6524E10B9BD /* DiscoveryIdentity.swift in Sources */,
 				FA49C45D91144A7A44795E8D /* DiscoveryIdentityTests.swift in Sources */,
+				E0EB7C0986E9BE2F34704267 /* DiscoveryStatus.swift in Sources */,
+				1B353034AD90E23A3D897FAF /* DiscoveryStatusTests.swift in Sources */,
 				B522EB0EF25C56599212CCCF /* DisplayDescriptor.swift in Sources */,
 				39B75EF08EA3945CCFF4ABC6 /* DisplayEnumerationPolicy.swift in Sources */,
 				ACBE81DBC13B76A81E5782D2 /* DrawingState.swift in Sources */,
@@ -829,11 +855,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D650D00E95B76E8049506C74 /* AfiControlProtocol.swift in Sources */,
+				4F155E9421D5A34FE997A5DD /* ApprovalWait.swift in Sources */,
 				FCF9EFD7FA00E47E1DFD6421 /* ConnectionChannel.swift in Sources */,
 				BE9345119C907B6706937559 /* ConnectionLifecycle.swift in Sources */,
 				97F52AFD2BC04EEC84CFC173 /* ControlPacket.swift in Sources */,
 				6426B776045D46D3CEEEEE3F /* CoordinateMapper.swift in Sources */,
 				CB6DB25E10856A132B02B21E /* DiscoveryIdentity.swift in Sources */,
+				09848B2350F3A99AB16E0815 /* DiscoveryStatus.swift in Sources */,
 				B9A424418E65F1F75C686F4F /* DiscoveryView.swift in Sources */,
 				5D377403FB18A9E3CC3A641C /* DisplayDescriptor.swift in Sources */,
 				2BF154710E62AC8E114717F1 /* DisplayEnumerationPolicy.swift in Sources */,

@@ -260,7 +260,7 @@ final class MacNetworkServer: @unchecked Sendable {
     private func beginAuthorizationTimeout(for sessionID: UUID) {
         authorizationGeneration += 1
         let generation = authorizationGeneration
-        queue.asyncAfter(deadline: .now() + 60) { [weak self] in
+        queue.asyncAfter(deadline: .now() + ApprovalWait.macDecisionTimeout) { [weak self] in
             guard let self, generation == authorizationGeneration,
                   controlSessionID == sessionID, !authorized else { return }
             if let control { send(.authorizationResult(approved: false), to: control) }

@@ -229,7 +229,7 @@ final class AfiNetworkServer: @unchecked Sendable {
     private func beginAuthorizationTimeout(for sessionID: UUID) {
         authorizationGeneration += 1
         let generation = authorizationGeneration
-        queue.asyncAfter(deadline: .now() + 60) { [weak self] in
+        queue.asyncAfter(deadline: .now() + ApprovalWait.macDecisionTimeout) { [weak self] in
             guard let self, generation == authorizationGeneration,
                   controlSessionID == sessionID, !authorized else { return }
             disconnectCurrentClient()
