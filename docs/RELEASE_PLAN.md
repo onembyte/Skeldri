@@ -95,9 +95,16 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 
 ### 0.B Toolchain
 
-- [ ] [F] Free disk space. Xcode 27, the iPadOS platform and one iPad simulator
-      need about 30 GB free; today there is 11 GB.
-- [ ] [F] Install **released** Xcode 27.x, not a beta or RC. Open it once and let
+- [x] [F/C] Free disk space. Xcode 27, the iPadOS platform and one iPad
+      simulator need about 25–30 GB. On 2026-10-09 the Afi Xcode 9 toolchain
+      (6.2 GB) was offloaded to the NAS as a verified tar, bringing free space to
+      22 GB. More room if needed: `~/.cache/kolk-vendor-recovery` (4.2 GB),
+      `~/dev/archive`, `brew cleanup`, all Franco's call.
+- [ ] [F] Install **released** Xcode 27 (build 27A266a, 2026-09-14), not a beta or
+      RC. This Mac runs macOS 27.2 beta 3, whose matching Xcode 27.2 beta cannot
+      upload. Franco downloads `Xcode_27.xip` from developer.apple.com (sign-in
+      required); Claude expands it into `/Applications` and moves the `.xip` to
+      the NAS. Open it once and let
       it install its components. Add the Apple ID under Settings → Accounts and
       download the iPadOS platform.
 - [ ] [F] Point the command line at it with
@@ -119,8 +126,10 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
       public web page.
 - [x] [C] Branch `release/1.0`. It was created from the PR #2 head, which `main`
       fast-forwards to. All release work below happens there.
-- [ ] [C] Afi: review PR #1 (`agent/app-store-security`). **[F]** approves the
-      merge into `main`. The 1.E install script builds on top of it.
+- [ ] [C] Afi: review PR #1 (`agent/app-store-security`). It fast-forwards `main`.
+      On 2026-10-09 its host tests passed and its armv7 link was verified. The
+      device Allow/Reject/reconnect check is still open (Phase 1.E); **[F]**
+      approves the merge after that.
 
 ### 0.D Release configuration [C]
 
