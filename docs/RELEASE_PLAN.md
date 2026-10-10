@@ -66,10 +66,11 @@ Code changes start with a failing test.
 | D1 | How old iPads are served | **Decided 2026-10-09.** No App Store build for old iPads. SkeldriPad stays at iPadOS 18. Skeldri Afi is installed over USB by a script in its repo, with instructions (Phase 1.E). | — |
 | D2 | Bundle IDs | **(a)** Universal purchase: one App Store record "Skeldri" with Mac and iPad sharing the new ID `com.onembyte.skeldri`. **(b)** Two records with the current `.mac` and `.ipad` IDs. | **(a)**. One product page and one purchase, and each app clearly presents the other as its companion. A fresh ID also avoids any Personal Team reservation (fact 4). **This cannot be changed after the first upload.** |
 | D3 | Price | Free / paid / free with paid features later | Franco's call. Paid needs the Paid Apps Agreement, tax and banking. Under the EU DSA, a paid app almost certainly means declaring trader status, which publishes an address and phone number in the EU. |
-| D4 | Hosting for the privacy policy and support page, plus a contact | **(a)** Self-hosted on `francomichetti.com` (TrueNAS + Cloudflare Tunnel, like the portfolio). **(b)** GitHub Pages from the public Skeldri repo. | **(a)**: self-hosted and private by default. The trade-off is uptime: App Review and users need the URLs to resolve, and that depends on the NAS. The support contact (which email address) is needed either way. |
+| D4 | Hosting for the privacy policy and support page, plus a contact | **(a)** Self-hosted on `francomichetti.com` (TrueNAS + Cloudflare Tunnel, like the portfolio). **(b)** GitHub Pages from the public Skeldri repo. That site already exists at `onembyte.github.io/Skeldri`, served from `main:/docs`. | **(a)**: self-hosted and private by default. The trade-off is uptime: App Review and users need the URLs to resolve, and that depends on the NAS. The support contact (which email address) is needed either way. |
 | D5 | The Afi compatibility listener in the store Mac build | **(a)** Keep it, as an "Allow older iPads" setting that is off by default, and disclose it in the review notes. **(b)** Compile it out of the store build. **(c)** Leave it as it is today: always on and undocumented. | **(a)**, and D1 makes it necessary: the USB-installed Afi only works if the App Store Mac app still listens for it. Nothing extra listens by default, and nothing is hidden from review (Guideline 2.3.1). With (b), the iPad 4 would need a separately signed Mac build that clashes with the store copy. **Working assumption until Franco says otherwise.** |
 | D6 | Transport security in 1.0 | **(a)** Ship plain TCP with clear disclosure. **(b)** Before 1.0, add authenticated encryption to the modern Mac↔iPad channels: TLS 1.3 in Network.framework, with a key from a pairing code shown on the Mac. | **(b)**, because an approved session can drive the pointer. This is the largest Phase 1 item. Afi stays plain TCP, behind the D5 opt-in. Export compliance must be re-answered: OS-provided TLS is normally exempt, but verify. Choosing (a) is acceptable if the description promises nothing about security and states "trusted networks". |
 | D7 | Zoom through ⌘+ / ⌘− keystrokes | **(a)** Keep it, but look up the keys from the current keyboard layout. The hard-coded ANSI key codes 24 and 27 fire other shortcuts on Spanish and German layouts. **(b)** Remove pinch-zoom in Trackpad mode for 1.0. | **(a)**, if Phase 1 testing on Franco's own keyboard layout confirms the bug and the fix. It stays disclosed in the review notes. It does conflict with the AGENTS.md "no keyboard control" rule, so Franco should confirm the exception explicitly. |
+| D9 | The Linux host on `main` (added 2026-08-25) | **(a)** Ship 1.0 for Mac and iPad only. In README and on the landing page, mark the Linux host as not yet compatible with Skeldri 1.0 for iPad. **(b)** Port the Linux host to protocol 7 before launch. | **(a)** for 1.0, (b) as follow-up work. The Linux host speaks DrawPad protocol 2 and advertises `_drawpad._tcp`, so the 1.0 iPad app (protocol 7, `_skeldri._tcp`) cannot even find it. Yet `onembyte.github.io/Skeldri` publicly advertises "Linux and macOS". If D6(b) adds encryption, the Linux host must adopt it too. |
 | D8 | Read mode in 1.0 | Ship it after the Phase 1 hardware checks pass / hide it behind a build flag for 1.0 | Test first (Phase 1). Hide it only if it fails Gate F. |
 
 Also needed from Franco:
@@ -107,8 +108,13 @@ Goal: both apps installed from TestFlight on Franco's own Mac and iPad.
 
 ### 0.C Repo baseline (merges need Franco's yes)
 
-- [ ] [C] Review Skeldri PR #2 and refresh its description. **[F]** approves; then
-      fast-forward `main` (main is an ancestor of the branch).
+- [ ] [C] Merge `origin/main` into `release/1.0`. Main can't fast-forward: it
+      gained the Linux host, installer and landing page on 2026-08-25. The merge
+      conflicts only in `README.md`, whose wording depends on D9. **GATE: D9.**
+- [ ] [C] Review and refresh Skeldri PR #2. **[F]** approves before `main` moves.
+      Note that `main:/docs` is published by GitHub Pages at
+      `onembyte.github.io/Skeldri`: every file merged into `docs/` becomes a
+      public web page.
 - [x] [C] Branch `release/1.0`. It was created from the PR #2 head, which `main`
       fast-forwards to. All release work below happens there.
 - [ ] [C] Afi: review PR #1 (`agent/app-store-security`). **[F]** approves the
