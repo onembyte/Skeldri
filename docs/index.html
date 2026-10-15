@@ -91,6 +91,12 @@
 
   <!-- Hero Section -->
   <section class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
+    <!-- Compatibility notice: remove once the Linux host speaks protocol 7. -->
+    <div role="note" class="max-w-2xl mx-auto mb-10 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-sm text-left leading-relaxed">
+      <strong class="text-amber-100">Not yet compatible with Skeldri 1.0 for iPad.</strong>
+      The Linux host on this page still uses the earlier DrawPad protocol (version 2, <code class="font-mono text-xs">_drawpad._tcp</code>). Skeldri 1.0 for Mac and iPad uses protocol 7, so the iPad app cannot find this host until it is updated.
+    </div>
+
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-6">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
       Linux (Omarchy / Hyprland) & macOS Native

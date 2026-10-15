@@ -2,9 +2,13 @@
 
 ## Project status
 
-DrawPad is a local-development MVP, not a hardened remote-desktop product. It listens only through its Bonjour-advertised local-network service and accepts one iPad session. Protocol version compatibility is checked, but V1 does not authenticate or encrypt peers at the application layer.
+Skeldri listens through Bonjour-advertised local-network services and accepts one approved iPad session. Every connection uses a random session identifier to bind its control and video channels. The Mac must explicitly approve each new session before it transmits screen content or accepts drawing, display-selection, or trackpad commands. Pending and unclassified connections are bounded and time out.
 
-Use DrawPad only on a trusted LAN. Do not expose its listener through port forwarding, a public address, or an untrusted network.
+This approval is authorization, not cryptographic pairing. Application payloads are not end-to-end encrypted and a hostile local network remains outside the threat model. Use Skeldri only on a trusted LAN. A future release can add an authenticated key exchange without changing drawing or video ownership.
+
+Optional pointer input is separately permission-gated by macOS, explicitly enabled from the iPad, sequence checked, value bounded, and reset whenever its session or mode ends. Skeldri never bypasses Screen Recording or Accessibility consent.
+
+Use Skeldri only on a trusted LAN. Do not expose its listener through port forwarding, a public address, or an untrusted network.
 
 ## Reporting a vulnerability
 

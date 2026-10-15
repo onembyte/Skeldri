@@ -1,6 +1,6 @@
 # Clean Architecture and SOLID
 
-DrawPad uses dependency direction rather than framework folders as its primary architectural rule:
+Skeldri uses dependency direction rather than framework folders as its primary architectural rule:
 
 1. **Domain (`Shared/Models`, `Shared/Drawing`)** contains value types and deterministic drawing rules. It imports no UI or networking framework.
 2. **Application (`Shared/Protocol` and target coordinators/view models)** defines use-case messages and service boundaries.

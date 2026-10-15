@@ -2,13 +2,22 @@ import Foundation
 
 /// Codable control-plane message. Explicit associated values keep mutations deterministic.
 enum ControlPacket: Codable, Sendable, Equatable {
-    case hello(version: Int, channel: ConnectionChannel, client: String)
+    case hello(version: Int, channel: ConnectionChannel, client: String, sessionID: UUID)
     case incompatibleVersion(expected: Int)
+    case authorizationRequired
+    case authorizationResult(approved: Bool)
     case ping(id: UUID, sentAt: Double)
     case pong(id: UUID, sentAt: Double)
+    case videoAcknowledgement(streamID: UUID, sequence: UInt64, requiresKeyframe: Bool)
+    case inputMode(SkeldriInputMode)
+    case trackpad(TrackpadEvent)
     case displays([DisplayDescriptor])
     case display(DisplayDescriptor)
     case selectDisplay(id: UInt32)
+    case requestLectureSourceSelection(requestID: UUID)
+    case lectureSourceSelected(LectureSourceDescriptor, generation: UUID)
+    case lectureSourceUnavailable(reason: LectureSourceUnavailableReason, generation: UUID)
+    case leaveLectureMode
     case strokeBegin(id: UUID, style: StrokeStyle, point: StrokePoint)
     case strokePoints(id: UUID, points: [StrokePoint])
     case strokeEnd(id: UUID)
@@ -29,6 +38,7 @@ struct VideoConfiguration: Codable, Sendable, Equatable {
 /// Metadata preceding one length-delimited H.264 access unit payload.
 struct VideoFrameHeader: Codable, Sendable, Equatable {
     let streamID: UUID
+    let sequence: UInt64
     let presentationTime: Double
     let isKeyframe: Bool
 }

@@ -1,6 +1,6 @@
-name: DrawPad
+name: Skeldri
 options:
-  bundleIdPrefix: com.example.drawpad
+  bundleIdPrefix: com.onembyte.skeldri
   deploymentTarget:
     macOS: "15.0"
     iOS: "18.0"
@@ -9,8 +9,15 @@ settings:
     SWIFT_VERSION: "6.0"
     SWIFT_STRICT_CONCURRENCY: complete
     ENABLE_USER_SCRIPT_SANDBOXING: YES
+    # Every App Store Connect upload needs a higher CURRENT_PROJECT_VERSION;
+    # scripts/release.sh passes it explicitly. Info.plists read both values.
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # The paid Apple Developer Program team (Individual). A Team ID is public
+    # (it appears in every signature); it is not a credential.
+    DEVELOPMENT_TEAM: M3A5V2ZKZ4
 targets:
-  DrawPadMac:
+  SkeldriMac:
     type: application
     platform: macOS
     sources:
@@ -18,16 +25,23 @@ targets:
       - macOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.mac
-        GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: DrawPad
-        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
-        INFOPLIST_KEY_LSMultipleInstancesProhibited: YES
-        CODE_SIGN_ENTITLEMENTS: macOS/DrawPadMac.entitlements
+        # Mac and iPad share one identifier: one App Store record, one universal purchase.
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri
+        # Finder, Spotlight, and the privacy panes show the bundle name.
+        PRODUCT_NAME: Skeldri
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: macOS/Info.plist
+        CODE_SIGN_ENTITLEMENTS: macOS/SkeldriMac.entitlements
         CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
     entitlements:
-      path: macOS/DrawPadMac.entitlements
-  DrawPadiPad:
+      path: macOS/SkeldriMac.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        # Server only: the Mac listens for iPads and never opens a connection out.
+        com.apple.security.network.server: true
+  SkeldriPad:
     type: application
     platform: iOS
     sources:
@@ -35,12 +49,13 @@ targets:
       - iPadOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.ipad
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: iPadOS/Info.plist
         CODE_SIGN_STYLE: Automatic
         TARGETED_DEVICE_FAMILY: 2
-  DrawPadTests:
+  SkeldriTests:
     type: bundle.unit-test
     platform: macOS
     sources:
@@ -48,21 +63,21 @@ targets:
       - Tests
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.drawpad.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.onembyte.skeldri.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
-  DrawPadMac:
+  SkeldriMac:
     build:
       targets:
-        DrawPadMac: all
-  DrawPadiPad:
+        SkeldriMac: all
+  SkeldriPad:
     build:
       targets:
-        DrawPadiPad: all
-  DrawPadTests:
+        SkeldriPad: all
+  SkeldriTests:
     build:
       targets:
-        DrawPadTests: [test]
+        SkeldriTests: [test]
     test:
       targets:
-        - DrawPadTests
+        - SkeldriTests

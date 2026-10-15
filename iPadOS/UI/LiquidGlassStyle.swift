@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Shared visual language for DrawPad's floating controls.
+/// Shared visual language for Skeldri's floating controls.
 ///
 /// The newest systems receive native Liquid Glass rendering. Older supported
 /// iPadOS releases retain the same geometry with a material-based fallback.
