@@ -139,4 +139,4 @@ Commit both `project.yml` and the regenerated `Skeldri.xcodeproj` when project s
 
 ## License
 
-No open-source license has been selected yet. Until the repository owner adds one, the source remains under default copyright terms.
+[MIT](LICENSE) © 2026 Franco Michetti
